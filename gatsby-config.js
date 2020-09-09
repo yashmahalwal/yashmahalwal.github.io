@@ -1,9 +1,10 @@
 module.exports = {
+  pathPrefix: "/personal-website",
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
-    'gatsby-plugin-scss-typescript',
+    "gatsby-plugin-scss-typescript",
     `gatsby-transformer-typescript-css-modules`,
     {
       resolve: `gatsby-source-filesystem`,

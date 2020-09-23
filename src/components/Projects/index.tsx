@@ -52,7 +52,7 @@ const Projects: React.FunctionComponent<Props> = ({
           // Check SASS : 200ms animations + 100ms delay
         }, 300)
       )
-    }
+    } else setCurrent(globalCurrent)
   }, [globalCurrent])
 
   const [projectTheme, title, subtitle] = useMemo(() => {

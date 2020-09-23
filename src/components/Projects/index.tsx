@@ -55,12 +55,20 @@ const Projects: React.FunctionComponent<Props> = ({
     }
   }, [globalCurrent])
 
-  const [projectTheme, title] = useMemo(() => {
+  const [projectTheme, title, subtitle] = useMemo(() => {
     switch (current) {
       case "Megatreopuz":
-        return [classes.megatreopuz, "Megatreopuz"]
+        return [
+          classes.megatreopuz,
+          "Megatreopuz",
+          "A secure, scalable and powerful cryptic online hunt platform",
+        ]
       case "Nirikshak":
-        return [classes.nirikshak, "Nirikshak"]
+        return [
+          classes.nirikshak,
+          "Nirikshak",
+          "An autonomous REST API testing framework",
+        ]
     }
   }, [current])
   return (
@@ -98,6 +106,15 @@ const Projects: React.FunctionComponent<Props> = ({
           >
             {title}
           </h3>
+          <h4
+            className={clsx(
+              classes.subtitle,
+              classes.opacityTransition,
+              enter && classes.opacityEnter
+            )}
+          >
+            {subtitle}
+          </h4>
           <button
             className={clsx(
               classes.moreButton,

@@ -12,3 +12,4 @@ export const labelBackground: string;
 export const labelImageBackground: string;
 export const labelCard: string;
 export const title: string;
+export const subtitle: string;

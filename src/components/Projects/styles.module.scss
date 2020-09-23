@@ -35,7 +35,7 @@
   &::after {
     content: " ";
     position: absolute;
-    bottom: -10px;
+    bottom: -5px;
     width: 0px;
     height: 5px;
     margin: 5px 0 0;
@@ -85,9 +85,16 @@
   flex-direction: column;
   box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.45);
   .title {
+    text-align: center;
     font-family: "Dancing Script", cursive;
     font-size: 3rem;
-    transition: opacity 200ms 100ms;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-family: "Dancing Script", cursive;
+    font-size: 1.2rem;
+    padding: 0 10px;
   }
 }
 
@@ -134,6 +141,9 @@
     .title {
       font-size: 2.5rem;
     }
+    .subtitle {
+      font-size: 1rem;
+    }
   }
 
   .enter-card {
@@ -143,6 +153,10 @@
 }
 
 @media (max-width: 380px) {
+  .subtitle {
+    display: none;
+  }
+
   .default-dimension {
     height: 300px;
     width: 200px;

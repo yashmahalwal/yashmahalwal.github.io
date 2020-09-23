@@ -12,6 +12,11 @@ const Index: React.FC<PageProps> = () => {
       <div style={{ height: "100vh" }}></div>
       <Projects current={current} />
       <button
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+        }}
         onClick={() =>
           setCurrent(c => (c == "Megatreopuz" ? "Nirikshak" : "Megatreopuz"))
         }

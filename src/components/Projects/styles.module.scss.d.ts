@@ -13,3 +13,5 @@ export const labelImageBackground: string;
 export const labelCard: string;
 export const title: string;
 export const subtitle: string;
+export const projectList: string;
+export const projectBadge: string;

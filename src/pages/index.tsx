@@ -14,7 +14,8 @@ const Index: React.FC<PageProps> = () => {
       <Helmet>
         <title>Yash Mahalwal - Web Development Solutions</title>
       </Helmet>
-      <div style={{ height: "100vh" }}></div>
+      <div style={{ height: "100vh" }}>
+      </div>
       <Projects updateState={setCurrent} current={current} />
       <div style={{ height: "100vh" }}></div>
     </>

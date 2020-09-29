@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap");
 h1,
 h2,
 h3,
@@ -7,6 +7,19 @@ h5 {
   margin-bottom: 20px;
 }
 
-html {
-  font-family: "Roboto", sans-serif;
+body,
+input,
+textarea,
+button {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+img,
+li {
+  margin: 0;
+}
+
+*::selection {
+  background: #000;
+  color: white;
 }

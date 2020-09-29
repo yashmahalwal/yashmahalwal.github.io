@@ -1,4 +1,4 @@
-export const section: string;
+export const cardHolder: string;
 export const exhibition: string;
 export const moreButton: string;
 export const nirikshak: string;
@@ -13,5 +13,9 @@ export const labelImageBackground: string;
 export const labelCard: string;
 export const title: string;
 export const subtitle: string;
+export const expandedCard: string;
+export const innerCard: string;
+export const projectListWrapper: string;
 export const projectList: string;
 export const projectBadge: string;
+export const disabled: string;

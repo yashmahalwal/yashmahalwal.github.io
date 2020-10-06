@@ -108,7 +108,6 @@
 
   transition: width 400ms 300ms ease-in-out, height 400ms 800ms ease-in-out;
   &.expanded-card {
-    // box-shadow: none;
     height: 100vh;
     width: 100%;
   }

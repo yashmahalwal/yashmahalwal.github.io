@@ -3,6 +3,9 @@ import classes from "./styles.module.scss"
 import clsx from "clsx"
 import { ProjectNames } from "../../pages"
 import global from "../../../global.css"
+import Megatreopuz from "./Megatreopuz"
+import closeClasses from "./close.module.scss"
+import { useEffectExceptMount } from "../utils/useEffectExceptMount"
 interface Props {
   current: ProjectNames
   updateState: (project: ProjectNames) => void
@@ -13,6 +16,13 @@ interface CardProps extends Props {
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+function check(element: HTMLElement | null, callback: () => void) {
+  if (!element) return
+  if (Math.abs(document.documentElement.scrollTop - element.offsetTop) > 10)
+    requestAnimationFrame(() => check(element, callback))
+  else callback()
+}
+
 const ProjectCards: React.FunctionComponent<CardProps> = ({
   current: globalCurrent,
   updateState,
@@ -21,6 +31,8 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
 }) => {
   // Visibility toggle
   const [enter, setEnter] = useState(false)
+  // Expansion toggle
+  const [expandedState, setExpandedState] = useState(expanded)
   // The current project kept in internal state for the transition sync
   const [current, setCurrent] = useState(globalCurrent)
   // For intersection observer
@@ -51,7 +63,7 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
     }
   }, [sectionRef.current])
 
-  useEffect(() => {
+  useEffectExceptMount(() => {
     if (enter) {
       setEnter(false)
       // Ensure that the paint has completed
@@ -68,6 +80,26 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
     } else setCurrent(globalCurrent)
   }, [globalCurrent])
 
+  useEffectExceptMount(() => {
+    const animationTimeout = 1400
+
+    sectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+    })
+
+    requestAnimationFrame(() =>
+      check(sectionRef.current, () => {
+        if (expanded) {
+          setExpandedState(true)
+          setTimeout(() => {
+            document.getElementById("project-details")?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }, animationTimeout)
+        } else setTimeout(() => setExpandedState(false), animationTimeout)
+      })
+    )
+  }, [expanded])
   // Content of the card
   const [projectTheme, title, subtitle] = useMemo(() => {
     switch (current) {
@@ -87,14 +119,14 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
   }, [current])
 
   return (
-    <article ref={sectionRef} className={classes.exhibition}>
+    <article id="project-cards" ref={sectionRef} className={classes.exhibition}>
       <div className={classes.cardHolder}>
         {/* The simple background */}
         <div
           className={clsx(
             classes.defaultDimension,
             classes.labelBackground,
-            enter && classes.enterCard,
+            enter && !expandedState && classes.enterCard,
             projectTheme
           )}
         ></div>
@@ -103,7 +135,7 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
           className={clsx(
             classes.defaultDimension,
             classes.labelImageBackground,
-            enter && classes.enterCard,
+            enter && !expandedState && classes.enterCard,
             projectTheme
           )}
         ></div>
@@ -139,11 +171,11 @@ const ProjectCards: React.FunctionComponent<CardProps> = ({
             </h4>
             {/* The button */}
             <button
-              onClick={() => setExpanded(e => !e)}
+              onClick={() => setExpanded(true)}
               className={clsx(
                 classes.moreButton,
                 classes.opacityTransition,
-                enter && !expanded && classes.opacityEnter,
+                enter && !expandedState && classes.opacityEnter,
                 projectTheme
               )}
             >
@@ -188,11 +220,41 @@ const Buttons: React.FunctionComponent<Props> = ({ updateState, current }) => {
   )
 }
 
+interface CloseProps {
+  onClick: () => void
+  visible: boolean
+}
+
+const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
+  return (
+    <button
+      className={clsx(
+        closeClasses.close,
+        classes.opacityTransition,
+        visible && classes.opacityEnter
+      )}
+      onClick={onClick}
+    ></button>
+  )
+}
+
 const Projects: React.FunctionComponent<Props> = props => {
   const [expanded, setExpanded] = useState(false)
+  const [expandedState, setExpandedState] = useState(expanded)
+
+  useEffectExceptMount(() => {
+    requestAnimationFrame(() =>
+      check(document.getElementById("project-cards"), () =>
+        setExpandedState(expanded)
+      )
+    )
+  }, [expanded])
+
   return (
     <section>
+      <Close visible={expanded} onClick={() => setExpanded(false)} />
       <ProjectCards expanded={expanded} setExpanded={setExpanded} {...props} />
+      <div id="project-details">{expandedState && <Megatreopuz />}</div>
     </section>
   )
 }

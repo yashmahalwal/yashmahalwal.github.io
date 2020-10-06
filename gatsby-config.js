@@ -4,7 +4,6 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     "gatsby-plugin-scss-typescript",
-    `gatsby-transformer-typescript-css-modules`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {

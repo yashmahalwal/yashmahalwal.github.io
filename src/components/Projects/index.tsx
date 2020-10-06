@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useMemo } from "react"
 import classes from "./styles.module.scss"
 import clsx from "clsx"
 import { ProjectNames } from "../../pages"
-import global from "../../../global.css"
 import Megatreopuz from "./Megatreopuz"
 import closeClasses from "./close.module.scss"
 import { useEffectExceptMount } from "../utils/useEffectExceptMount"
@@ -211,7 +210,7 @@ const Buttons: React.FunctionComponent<Props> = ({ updateState, current }) => {
               onClick={() => updateState(p.name)}
             >
               <img src={p.logo} alt={p.alt + " logo"} />
-              <span className={global.hidden}>{p.name}</span>
+              <span className={"hidden"}>{p.name}</span>
             </button>
           </li>
         ))}

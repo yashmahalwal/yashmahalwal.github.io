@@ -1,10 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:wght@400&display=swap");
 h1,
 h2,
 h3,
 h4,
 h5 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+* {
+  font-family: "Nunito Sans", sans-serif;
 }
 
 body,
@@ -14,12 +18,42 @@ button {
   font-family: "Nunito Sans", sans-serif;
 }
 
+body {
+  position: relative;
+}
+
 img,
-li {
+li,
+p,
+figure {
   margin: 0;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+figure > img {
+  display: block;
+  max-width: 100%;
+  margin: auto;
 }
 
 *::selection {
   background: #000;
   color: white;
+}
+
+dl {
+  margin: 0;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-bottom: 1rem;
 }

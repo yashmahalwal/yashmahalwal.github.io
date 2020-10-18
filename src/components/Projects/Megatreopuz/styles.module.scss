@@ -1,8 +1,195 @@
 .article {
-  padding-top: 20px;
-  background-color: dodgerblue;
-  height: 100vh;
-  h3:first-child {
-    text-align: center;
+  h4 {
+    font-size: 1.5rem;
+  }
+  position: relative;
+}
+
+.device {
+  margin: 2rem auto 4rem;
+  & > div {
+    margin: auto;
+  }
+  position: relative;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: black;
+  border-width: 15px 15px 45px;
+  background-color: black;
+  width: 560px;
+  height: 320px;
+  background-size: cover;
+
+  img {
+    width: 100%;
+  }
+
+  & > img:first-child {
+    display: block;
+  }
+  & > img:nth-child(2) {
+    display: none;
+  }
+
+  /* The keyboard of the laptop */
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 600px;
+    height: 22px;
+    background: black;
+    border-radius: 6px;
+    top: 310px;
+    left: -36px;
+  }
+
+  /* The top of the keyboard */
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 120px;
+    height: 8px;
+    bottom: -68px;
+    left: 50%;
+    transform: translate(-50%);
+    background: #f1f1f1;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 1;
+  }
+}
+
+@media all and (max-width: 900px) {
+  .device {
+    position: relative;
+    width: 250px;
+    height: 450px;
+    border: 16px black solid;
+    border-top-width: 60px;
+    border-bottom-width: 60px;
+    background-size: cover;
+    border-radius: 36px;
+
+    img {
+      width: 100%;
+    }
+    & > img:first-child {
+      display: none;
+    }
+    & > img:nth-child(2) {
+      display: block;
+    }
+
+    /* The horizontal line on the top of the device */
+    &::before {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 5px;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    /* The circle on the bottom of the device */
+    &::after {
+      content: "";
+      display: block;
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      left: 50%;
+      top: unset;
+      bottom: -65px;
+      transform: translate(-50%, -50%);
+      background: #f1f1f1;
+      border-radius: 50%;
+    }
+  }
+}
+
+.introduction,
+.interface,
+.architecture {
+  padding: 72px 36px 50px;
+}
+
+.interface {
+  background-color: #ececec;
+}
+
+.architecture {
+  h4 {
+    margin-bottom: 2rem;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .introduction,
+  .interface,
+  .architecture {
+    padding: 36px;
+  }
+}
+
+.image-stack {
+  background-color: #ececec;
+  overflow: hidden;
+  height: 60vh;
+
+  .image-holder {
+    transform: rotate(-30deg);
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+  }
+
+  img {
+    transform: translateY(-50px);
+    width: 400px;
+    margin: 2rem;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media all and (max-width: 500px) {
+  .image-stack {
+    img {
+      width: 200px;
+      margin: 1rem;
+    }
+
+    .row:last-child {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.logos {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  figure {
+    margin-top: 1rem;
+  }
+  img {
+    max-height: 70px;
+    max-width: 100px;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .logos {
+    flex-direction: column;
+    align-items: center;
   }
 }

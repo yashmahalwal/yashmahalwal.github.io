@@ -1,27 +1,81 @@
-.close {
-  all: unset;
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  width: 20px;
-  height: 20px;
-  z-index: 200;
-  cursor: pointer;
+@keyframes enterButton {
+  to {
+    opacity: 1;
+  }
 }
-.close:hover {
+
+@keyframes exitButton {
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
-.close:before,
-.close:after {
+
+.holder {
   position: absolute;
-  left: 15px;
-  content: " ";
-  height: 33px;
-  width: 2px;
-  background-color: #333;
+  bottom: 72px;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  opacity: 0;
+  animation: enterButton 500ms 1200ms forwards;
+  &.exit {
+    opacity: 1;
+    animation: exitButton 500ms forwards;
+  }
 }
-.close:before {
-  transform: rotate(45deg);
+
+@media all and (max-width: 500px) {
+  .holder {
+    bottom: 36px;
+  }
 }
-.close:after {
-  transform: rotate(-45deg);
+
+.wrapper {
+  position: sticky;
+  top: 20px;
+}
+
+.button {
+  background-color: unset;
+  border: unset;
+  color: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  padding: 5px;
+  transition: background 300ms;
+  &:hover {
+    background: rgba(0, 0, 0, 0.4);
+  }
+  &:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.svg-icon {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+@media all and (max-width: 500px) {
+  .svg-icon {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #fff;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
 }

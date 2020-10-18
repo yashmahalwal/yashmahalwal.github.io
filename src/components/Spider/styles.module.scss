@@ -1,0 +1,145 @@
+$spider-size: 60px;
+$leg-size: 20px;
+$web-height: 80vh;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+.spider {
+  position: fixed;
+  display: inline-block;
+  top: 0;
+  bottom: 0;
+  left: -2 * $spider-size - 20px;
+  opacity: 0;
+  transition: left 1000ms, opacity 1000ms;
+  transform-origin: top;
+  animation: swing 8s infinite;
+
+  &.enter {
+    opacity: 1;
+    left: $spider-size * 0.4 + 10px;
+  }
+}
+
+.spiderweb {
+  @include size(1px, $web-height);
+  margin-left: $spider-size / 2 - 1px;
+  background-color: rgba(black, 0.7);
+}
+
+.body {
+  @include size($spider-size, $spider-size * 0.8);
+  position: absolute;
+  border-radius: 50%;
+  background-color: black;
+  top: $web-height;
+  left: 0;
+}
+
+.eye {
+  @include size($spider-size / 3);
+  position: absolute;
+  bottom: $spider-size / 5;
+  background-color: white;
+  border-radius: 50%;
+
+  &:after {
+    @include size($spider-size / 15);
+    content: "";
+    display: block;
+    margin: 55%;
+    background-color: black;
+    border-radius: 50px;
+    animation: look 8s infinite;
+  }
+
+  &.left {
+    left: $spider-size / 7;
+  }
+
+  &.right {
+    right: $spider-size / 7;
+  }
+}
+
+.legs {
+  position: absolute;
+  top: calc(#{$web-height} + #{$spider-size * 0.4});
+  z-index: -1;
+
+  &.left {
+    left: -$spider-size / 2 - 10px;
+  }
+
+  &.right {
+    right: -$spider-size;
+  }
+}
+
+.leg {
+  @include size($leg-size * 2, $leg-size);
+  margin-top: -$leg-size / 2;
+  border: 5px solid transparent;
+  border-top-color: black;
+  border-radius: 50% /#{$leg-size} $leg-size 0 0;
+}
+
+@for $i from 1 through 3 {
+  .legs.left .leg:nth-child(#{$i}) {
+    transform: rotate(40deg - $i * 30deg);
+    margin-left: $i * 10px;
+  }
+
+  .legs.right .leg:nth-child(#{$i}) {
+    transform: rotate(-40deg + $i * 30deg);
+    margin-left: $i * -10px;
+  }
+}
+
+@keyframes swing {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes look {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(-110%);
+  }
+  95% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .spider {
+    display: none;
+  }
+}

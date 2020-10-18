@@ -8,16 +8,16 @@ import { Helmet } from "react-helmet"
 export type ProjectNames = "Megatreopuz" | "Nirikshak"
 
 const Index: React.FC<PageProps> = () => {
-  const [current, setCurrent] = useState<ProjectNames>("Megatreopuz")
   return (
     <>
       <Helmet>
         <title>Yash Mahalwal - Web Development Solutions</title>
       </Helmet>
-      <div style={{ height: "100vh" }}>
-      </div>
-      <Projects updateState={setCurrent} current={current} />
       <div style={{ height: "100vh" }}></div>
+      <Projects />
+      <div
+        style={{ height: "200vh", position: "relative", background: "#ececec" }}
+      ></div>
     </>
   )
 }

@@ -3,3 +3,9 @@ https://kern.inc/
 
 Logos: 
 https://www.freelogodesign.org/
+
+Spider:
+https://codepen.io/hadarweiss/pen/jPZGWN?__cf_chl_jschl_tk__=69a0a785df07e9c50677fcc07058fec8fe29ed14-1602763811-0-AdovTibzdfhP7Ojp0qTXrjAGQO-xvv0FLGbDjdKUqur_YspeB3ndPOtqhWW1glyGZMc9Et5hMqYbkK2nNvJP9T6aPvwbPBwOwttbuOWVW_Q34ZB0OXninX8-IIX8KtXDtTy3ujRbAKP9VGI6djvRtu1xnBnTf1xdibP0AwNsxho-bPK37VzA6LD5bbFnagXEiRDUQa6HLQUaEy3rVhSpTJw-oT7Kp_66dvFbVFRhG9ddaTAYODwGKY7eV6cyjfDJXrlPhEvztGW4PyaCZ34220VS-dg9XMplblfDPzECtYzt7qDOVd--0KpYRYMr1MBJlGuIgtcAAWP_ditLsZcWBkWHOaRbBkHoPrsSmY8H9zhk
+
+Low poly triangle:
+https://trianglify.io/

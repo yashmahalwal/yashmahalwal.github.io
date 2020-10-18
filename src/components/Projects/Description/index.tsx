@@ -19,6 +19,22 @@ interface ProjectDescProps {
 }
 
 const PlaceHolder: React.FC = () => null
+const NotFound: React.FC<ProjectProps> = ({ onLoad }) => {
+  useEffect(onLoad, [])
+
+  return (
+    <article
+      style={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <h1>Not implemented</h1>
+    </article>
+  )
+}
 
 const ProjectDescription = React.forwardRef<HTMLDivElement, ProjectDescProps>(
   ({ onLoad, visible, current }, outerRef) => {
@@ -31,7 +47,9 @@ const ProjectDescription = React.forwardRef<HTMLDivElement, ProjectDescProps>(
           <Suspense fallback={<PlaceHolder />}>
             <Child onLoad={onLoad} />
           </Suspense>
-        ) : null}
+        ) : (
+          <NotFound onLoad={onLoad} />
+        )}
       </div>
     )
   }

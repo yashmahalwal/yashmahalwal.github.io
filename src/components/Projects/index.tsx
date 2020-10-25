@@ -280,9 +280,9 @@ const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
 
 const Projects: React.FunctionComponent = () => {
   // Is the project card in fullscreen
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(false)
   // Render details
-  const [showDetails, setShowDetails] = useState(true)
+  const [showDetails, setShowDetails] = useState(false)
   // Loading state
   const [loading, setLoading] = useState(false)
   // Current project

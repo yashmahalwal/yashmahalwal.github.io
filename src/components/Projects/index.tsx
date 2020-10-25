@@ -15,7 +15,7 @@ const projects: { name: ProjectNames; alt: string; logo: string }[] = [
 
 interface ButtonsProps {
   current: ProjectNames
-  updateState: (project: ProjectNames) => void
+  updateState: React.Dispatch<React.SetStateAction<ProjectNames>>
   disabled?: boolean
 }
 
@@ -40,13 +40,14 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
     const [expandedState, setExpandedState] = useState(expanded)
     // The current project kept in internal state for the transition sync
     const [current, setCurrent] = useState(globalCurrent)
-
+    // The card with content
+    const cardRef = useRef<HTMLDivElement>(null)
     // Delayed loading indicator: Better UX
     const [showLoading, setShowLoading] = useState(loading)
     const timer = useRef<number>()
     useEffectExceptMount(() => {
       if (loading) {
-        timer.current = window.setTimeout(() => setShowLoading(true), 1000)
+        timer.current = window.setTimeout(() => setShowLoading(true), 2000)
       } else {
         clearTimeout(timer.current)
         setShowLoading(false)
@@ -54,7 +55,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
     }, [loading])
 
     // Opacity transition duration
-    const opacityDuration = expandedState ? 300 : 0
+    const opacityDuration = expandedState ? 300 : 100
 
     // Cards closed. Flip and open when in view
     useEffect(() => {
@@ -92,6 +93,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
           setTimeout(() => {
             setEnter(true)
             setCurrent(globalCurrent)
+            cardRef.current?.focus({ preventScroll: true })
             // 300ms is enough to push to next cycle
             // To let the previous CSS animations complete
             // Check SASS : 200ms animations + 100ms delay
@@ -106,29 +108,35 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
     }, [expanded])
 
     // Content of the cards
-    const [projectTheme, title, subtitle] = useMemo(() => {
+    const [projectTheme, title, subtitle, slideNumber] = useMemo(() => {
       switch (current) {
         case "Megatreopuz":
           return [
             classes.megatreopuz,
             "Megatreopuz",
             "A secure, scalable and powerful cryptic hunt platform",
+            1,
           ]
         case "Nirikshak":
           return [
             classes.nirikshak,
             "Nirikshak",
             "An autonomous REST API testing framework",
+            ,
+            2,
           ]
       }
     }, [current])
 
     return (
       <article
-        id="project-cards"
         ref={articleRef}
+        id="project-cards"
         className={classes.exhibition}
       >
+        <div className="hidden" aria-live="polite" aria-atomic>
+          {title}: Project {slideNumber} of {projects.length}
+        </div>
         <div className={classes.cardHolder}>
           {/* The simple background */}
           <div
@@ -157,17 +165,29 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
               expanded && classes.expandedCard
             )}
           >
-            <div className={clsx(classes.innerCard, classes.defaultDimension)}>
+            <div
+              ref={cardRef}
+              tabIndex={-1}
+              className={clsx(classes.innerCard, classes.defaultDimension)}
+            >
               {/* Title */}
-              <Opacity duration={opacityDuration} visible={enter}>
+              <Opacity
+                unmountOnExit={false}
+                mountOnEnter={false}
+                duration={opacityDuration}
+                visible={enter}
+              >
                 <h3 className={clsx(classes.title)}>{title}</h3>
                 {/* Subtitle */}
-                <h5 className={clsx(classes.subtitle)}>{subtitle}</h5>
+                <p className={clsx(classes.subtitle)}>{subtitle}</p>
               </Opacity>
-              <div className={classes.moreButtonHolder}>
+              <div className={classes.moreButtonHolder} aria-live="polite">
                 {/* Loading indicator */}
                 <Opacity duration={opacityDuration} visible={showLoading}>
-                  <div className={clsx(classes.loader, projectTheme)}>
+                  <div
+                    role="progressbar"
+                    className={clsx(classes.loader, projectTheme)}
+                  >
                     <span className="hidden">Loading</span>
                   </div>
                 </Opacity>
@@ -178,6 +198,8 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
                 >
                   <button
                     disabled={loading}
+                    aria-controls="project-details"
+                    aria-expanded={expanded}
                     onClick={expandCard}
                     className={clsx(classes.moreButton, projectTheme)}
                   >
@@ -236,13 +258,19 @@ const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
     <div className={clsx(closeClasses.holder)}>
       <div className={closeClasses.wrapper}>
         <Opacity visible={visible}>
-          <button className={clsx(closeClasses.button)} onClick={onClick}>
+          <button
+            aria-controls="project-details"
+            aria-expanded={visible}
+            className={clsx(closeClasses.button)}
+            onClick={onClick}
+          >
             <svg className={closeClasses.svgIcon} viewBox="0 0 20 20">
               <path
                 fill="none"
                 d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"
               ></path>
             </svg>{" "}
+            <span className="hidden">Close project details</span>
           </button>
         </Opacity>
       </div>
@@ -252,48 +280,54 @@ const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
 
 const Projects: React.FunctionComponent = () => {
   // Is the project card in fullscreen
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   // Render details
-  const [showDetails, setShowDetails] = useState(false)
+  const [showDetails, setShowDetails] = useState(true)
   // Loading state
   const [loading, setLoading] = useState(false)
   // Current project
-  const [current, setCurrent] = useState<ProjectNames>("Megatreopuz")
+  const [current, setCurrent] = useState<ProjectNames>("Nirikshak")
   // Reference to card section
   const cardRef = useRef<HTMLDivElement>(null)
   // Reference to description section
   const descriptionRef = useRef<HTMLDivElement>(null)
 
+  function expand() {
+    // When know more button is clicked
+    setLoading(true)
+    setShowDetails(true)
+  }
+
+  function close() {
+    // Scroll to the card section and then close
+    cardRef.current?.scrollIntoView({
+      behavior: "smooth",
+    })
+    checkIfElementOnTop(cardRef.current, () => {
+      // Shrink fullscreen card to normal
+      setExpanded(false)
+      // Unmount details
+      setShowDetails(false)
+      cardRef.current?.focus({
+        preventScroll: true,
+      })
+    })
+  }
+
   return (
     <section className={classes.projectSection}>
       <h2 className="hidden">Work</h2>
+
       <ProjectCards
         ref={cardRef}
         loading={loading}
         expanded={expanded}
-        expandCard={() => {
-          // When know more button is clicked
-          setLoading(true)
-          setShowDetails(true)
-        }}
+        expandCard={expand}
         current={current}
         updateState={setCurrent}
       />
-      <Close
-        visible={expanded}
-        onClick={() => {
-          // Scroll to the card section and then close
-          cardRef.current?.scrollIntoView({
-            behavior: "smooth",
-          })
-          checkIfElementOnTop(cardRef.current, () => {
-            // Shrink fullscreen card to normal
-            setExpanded(false)
-            // Unmount details
-            setShowDetails(false)
-          })
-        }}
-      />
+      <Close visible={expanded} onClick={close} />
+
       {showDetails && (
         <ProjectDescription
           current={current}
@@ -316,6 +350,12 @@ const Projects: React.FunctionComponent = () => {
                 descriptionRef.current?.scrollIntoView({
                   behavior: "smooth",
                 })
+
+                checkIfElementOnTop(descriptionRef.current, () =>
+                  descriptionRef.current?.focus({
+                    preventScroll: true,
+                  })
+                )
               }, 1200)
             })
           }}

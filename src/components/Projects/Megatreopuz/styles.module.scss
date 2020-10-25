@@ -3,10 +3,13 @@
     font-size: 1.5rem;
   }
   position: relative;
+  &:focus {
+    outline: none;
+  }
 }
 
 .device {
-  margin: 2rem auto 4rem;
+  margin: 0rem auto 3rem;
   & > div {
     margin: auto;
   }
@@ -63,6 +66,7 @@
 
 @media all and (max-width: 900px) {
   .device {
+    margin: 0rem auto 2rem;
     position: relative;
     width: 250px;
     height: 450px;
@@ -123,7 +127,8 @@
   background-color: #ececec;
 }
 
-.architecture {
+.architecture,
+.interface {
   h4 {
     margin-bottom: 2rem;
   }

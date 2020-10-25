@@ -5,8 +5,7 @@ import classes from "./styles.module.scss"
 
 const Hero: React.FC = () => {
   return (
-    <section className={classes.imageStack}>
-      <h4 className="hidden">A peek into megatreopuz</h4>
+    <section aria-hidden={true} className={classes.imageStack}>
       <div className={classes.imageHolder}>
         <div className={classes.row}>
           <img src="/dashboard-light.png" alt="Megatreopuz Dashboard Light" />
@@ -124,7 +123,9 @@ const Megatreopuz: React.FC<ProjectProps> = ({ onLoad }) => {
 
       img.onload = img.onerror = () => {
         imagesLoaded.current++
-        if (imagesLoaded.current === imgList.length) onLoad()
+        if (imagesLoaded.current === imgList.length) {
+          onLoad()
+        }
       }
 
       img.src = imgList[i].src
@@ -132,7 +133,7 @@ const Megatreopuz: React.FC<ProjectProps> = ({ onLoad }) => {
   }, [])
 
   return (
-    <article ref={ref} className={classes.article}>
+    <article tabIndex={-1} ref={ref} className={classes.article}>
       <h3 className="hidden">Megatreopuz</h3>
       <Hero />
       <Introduction />

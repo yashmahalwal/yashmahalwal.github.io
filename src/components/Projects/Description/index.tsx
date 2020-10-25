@@ -12,6 +12,11 @@ Router.set(
   React.lazy(() => import("../Megatreopuz"))
 )
 
+Router.set(
+  "Nirikshak",
+  React.lazy(() => import("../Nirikshak"))
+)
+
 interface ProjectDescProps {
   onLoad: () => void
   visible: boolean
@@ -19,36 +24,20 @@ interface ProjectDescProps {
 }
 
 const PlaceHolder: React.FC = () => null
-const NotFound: React.FC<ProjectProps> = ({ onLoad }) => {
-  useEffect(onLoad, [])
-
-  return (
-    <article
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <h1>Not implemented</h1>
-    </article>
-  )
-}
 
 const ProjectDescription = React.forwardRef<HTMLDivElement, ProjectDescProps>(
   ({ onLoad, visible, current }, outerRef) => {
     const ref = outerRef as RefObject<HTMLDivElement>
+    const extraProps: React.HTMLAttributes<HTMLDivElement> = {}
+    if (!visible) extraProps["aria-hidden"] = true
 
     const Child = React.useMemo(() => Router.get(current), [current])
     return (
-      <div ref={ref} className={clsx(!visible && "hidden")}>
-        {Child ? (
+      <div role="region" id="project-details" ref={ref} className={clsx(!visible && "hidden")} {...extraProps}>
+        {Child && (
           <Suspense fallback={<PlaceHolder />}>
             <Child onLoad={onLoad} />
           </Suspense>
-        ) : (
-          <NotFound onLoad={onLoad} />
         )}
       </div>
     )

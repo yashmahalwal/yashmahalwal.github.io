@@ -1,0 +1,154 @@
+:root {
+  --buttons-height: 25px;
+  --terminal-height: 380px;
+}
+.hero {
+  background: #8a2387; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f27121,
+    #e94057,
+    #8a2387
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  height: calc(var(--terminal-height) + 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.terminal {
+  height: var(--terminal-height);
+  overflow: hidden auto;
+  width: 600px;
+  max-width: 100%;
+  margin: 0 20px;
+  background: #292e39;
+  border-radius: 5px;
+  box-shadow: black 0 0 10px;
+  color: white;
+  *::selection {
+    background-color: white;
+    color: black;
+  }
+  code {
+    background-color: transparent;
+  }
+
+  .content {
+    padding: 10px 15px;
+
+    .green {
+      color: rgb(0, 180, 0);
+    }
+    .blue {
+      color: rgba(30, 143, 255, 0.685);
+    }
+
+    .figlet-logo {
+      text-align: center;
+      font-weight: bolder;
+    }
+
+    .tag-line {
+      text-align: center;
+      font-style: italic;
+      font-weight: bolder;
+      text-decoration: underline;
+    }
+
+    .commands {
+      margin-top: 1rem;
+      td {
+        font-family: "SFMono-Regular", Consolas, "Roboto Mono",
+          "Droid Sans Mono", "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .buttons {
+    height: var(--buttons-height);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .close,
+    .minimize,
+    .cascade {
+      width: calc(var(--buttons-height) - 10px);
+      height: calc(var(--buttons-height) - 10px);
+      margin-left: 10px;
+      border-radius: 50%;
+    }
+
+    .close {
+      background-color: #c14645;
+    }
+
+    .minimize {
+      background: #ffbd4c;
+    }
+
+    .cascade {
+      background: #00ca56;
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .terminal {
+    width: 100%;
+  }
+}
+
+@media all and (max-width: 650px) {
+  :root {
+    --buttons-height: 20px;
+    --terminal-height: 320px;
+  }
+  .commands {
+    display: none;
+  }
+  .figlet-logo {
+    margin-top: 2rem;
+    font-size: 0.55rem;
+  }
+}
+
+@media all and (max-width: 400px) {
+  :root {
+    --terminal-height: 250px;
+  }
+  .figlet-logo {
+    font-size: 0.4rem;
+  }
+}
+
+.introduction,
+.data-analysis,
+.flow-testing {
+  padding: 72px 36px 50px;
+}
+
+.flow-testing {
+  background-color: #ececec;
+}
+
+.flow-testing,
+.data-analysis {
+  h4 {
+    margin-bottom: 2rem;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .introduction,
+  .flow-testing {
+    padding: 36px;
+  }
+}

@@ -23,6 +23,7 @@
 
 .moreButtonHolder {
   height: 2rem;
+  margin-top: 0.5rem;
 }
 
 // More button styling
@@ -128,6 +129,9 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  &:focus {
+    outline: none;
+  }
 }
 
 // The simple background card
@@ -213,7 +217,7 @@
     &:hover,
     &:focus {
       &::after {
-        opacity: 0;
+        display: none;
       }
     }
     &:hover {

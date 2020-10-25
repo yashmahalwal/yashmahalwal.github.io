@@ -1,6 +1,10 @@
 :root {
   --buttons-height: 25px;
-  --terminal-height: 380px;
+}
+.figlet-logo {
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: bolder;
 }
 .hero {
   background: #8a2387; /* fallback for old browsers */
@@ -16,17 +20,13 @@
     #e94057,
     #8a2387
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  height: calc(var(--terminal-height) + 100px);
+  padding: 50px 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .terminal {
-  height: var(--terminal-height);
-  overflow: hidden auto;
-  width: 600px;
   max-width: 100%;
   margin: 0 20px;
   background: #292e39;
@@ -42,18 +42,13 @@
   }
 
   .content {
-    padding: 10px 15px;
+    padding: 10px 20px;
 
     .green {
       color: rgb(0, 180, 0);
     }
     .blue {
       color: rgba(30, 143, 255, 0.685);
-    }
-
-    .figlet-logo {
-      text-align: center;
-      font-weight: bolder;
     }
 
     .tag-line {
@@ -101,18 +96,15 @@
 }
 
 @media all and (max-width: 768px) {
-  .terminal {
-    width: 100%;
-  }
-}
-
-@media all and (max-width: 650px) {
   :root {
     --buttons-height: 20px;
-    --terminal-height: 320px;
   }
   .commands {
     display: none;
+  }
+
+  .terminal {
+    padding-bottom: 3rem;
   }
   .figlet-logo {
     margin-top: 2rem;

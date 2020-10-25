@@ -51,11 +51,21 @@ const Hero: React.FC = () => {
           <code>
             <b className={classes.green}>terminal@machine</b>:
             <b className={classes.blue}>~$</b>&nbsp;nirikshak
-            <Opacity duration={opacityDuration} visible={enter[0]}>
+            <Opacity
+              unmountOnExit={false}
+              mountOnEnter={false}
+              duration={opacityDuration}
+              visible={enter[0]}
+            >
               <pre className={classes.figletLogo}>{logo}</pre>
               <p className={classes.tagLine}>Test your REST APIs with ease</p>
             </Opacity>
-            <Opacity duration={opacityDuration} visible={enter[1]}>
+            <Opacity
+              unmountOnExit={false}
+              mountOnEnter={false}
+              duration={opacityDuration}
+              visible={enter[1]}
+            >
               <table className={classes.commands}>
                 <tbody>
                   <tr>

@@ -286,7 +286,7 @@ const Projects: React.FunctionComponent = () => {
   // Loading state
   const [loading, setLoading] = useState(false)
   // Current project
-  const [current, setCurrent] = useState<ProjectNames>("Nirikshak")
+  const [current, setCurrent] = useState<ProjectNames>("Megatreopuz")
   // Reference to card section
   const cardRef = useRef<HTMLDivElement>(null)
   // Reference to description section

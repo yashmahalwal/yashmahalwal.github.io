@@ -212,11 +212,13 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
                 </Opacity>
                 {/* Know more button: Expands the current project */}
                 <Opacity
+                  unmountOnExit={false}
+                  mountOnEnter={false}
                   duration={opacityDuration}
                   visible={enter && !showLoading && !expandedState}
                 >
                   <button
-                    disabled={loading}
+                    disabled={!enter || loading || expandedState}
                     aria-controls="project-details"
                     aria-expanded={expanded}
                     onClick={expandCard}

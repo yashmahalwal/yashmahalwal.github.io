@@ -5,10 +5,19 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
+  background-image: linear-gradient(#1b8b6f, #50b175);
+  color: white;
+}
+
+.heading {
+  text-align: center;
+  font-size: 3rem;
+  font-family: "dancing script", cursive;
+  margin-bottom: 1.5rem;
 }
 
 .content {
-  margin-left: 150px;
+  text-align: center;
 }
 
 @media all and (max-width: 600px) {

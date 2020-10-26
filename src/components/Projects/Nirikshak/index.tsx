@@ -129,8 +129,10 @@ const DataAnalysis: React.FC = () => {
         <br />
         <p>
           If the test cases are more than two hundred, it also performs five
-          dimensional clustering on the logs. This causes similar errors to
-          group up. User can then identify & mitigate them accordingly.
+          dimensional density based clustering on the logs. The clustering
+          process is also influcenced by REST semantics. This causes similar
+          errors to group up. User can then identify & mitigate them
+          accordingly.
         </p>
       </div>
     </section>
@@ -158,13 +160,6 @@ const FlowTesting: React.FC = () => {
           sequences of possible actions. Using these sequences, hundred of test
           cases are generated on runtime. Nirikshak then invokes Jest to run
           those cases.
-        </p>
-        <br />
-        <p>
-          After tests are run, Nirikshak takes the log and analyses it. It then
-          generates a hierarchical bar graph of all the errors. It also performs
-          a density based clustring to group similar errors. Nirikshak provides
-          you with concise but powerful data visualisation.
         </p>
       </div>
     </section>

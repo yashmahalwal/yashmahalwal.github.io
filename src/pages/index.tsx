@@ -4,6 +4,7 @@ import "../components/layout.css"
 import "../components/overrides.css"
 import Projects from "../components/Projects"
 import { Helmet } from "react-helmet"
+import Contact from "../components/Contact"
 
 export type ProjectNames = "Megatreopuz" | "Nirikshak"
 
@@ -14,16 +15,10 @@ const Index: React.FC<PageProps> = () => {
         <Helmet>
           <title>Yash Mahalwal - Web Development Solutions</title>
         </Helmet>
+        <h1 className="hidden">Yash Mahalwal - Web Development Solutions</h1>
         <div style={{ height: "100vh" }}></div>
         <Projects />
-        <h1 className="hidden">Yash Mahalwal - Web Development Solutions</h1>
-        <div
-          style={{
-            height: "200vh",
-            position: "relative",
-            background: "#ececec",
-          }}
-        ></div>
+        <Contact />
       </main>
     </>
   )

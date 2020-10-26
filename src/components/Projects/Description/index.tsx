@@ -28,12 +28,14 @@ const PlaceHolder: React.FC = () => null
 const ProjectDescription = React.forwardRef<HTMLDivElement, ProjectDescProps>(
   ({ onLoad, visible, current }, outerRef) => {
     const ref = outerRef as RefObject<HTMLDivElement>
-    const extraProps: React.HTMLAttributes<HTMLDivElement> = {}
-    if (!visible) extraProps["aria-hidden"] = true
-
     const Child = React.useMemo(() => Router.get(current), [current])
     return (
-      <div role="region" id="project-details" ref={ref} className={clsx(!visible && "hidden")} {...extraProps}>
+      <div
+        role="region"
+        id="project-details"
+        ref={ref}
+        className={clsx(!visible && "hidden")}
+      >
         {Child && (
           <Suspense fallback={<PlaceHolder />}>
             <Child onLoad={onLoad} />

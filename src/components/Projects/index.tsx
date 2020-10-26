@@ -27,6 +27,8 @@ interface CardProps {
   expandCard: () => void
 }
 
+let observer: IntersectionObserver
+
 const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
   (
     { current: globalCurrent, updateState, expanded, expandCard, loading },
@@ -44,11 +46,51 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
     const cardRef = useRef<HTMLDivElement>(null)
     // Delayed loading indicator: Better UX
     const [showLoading, setShowLoading] = useState(loading)
-    const timer = useRef<number>()
+    // Loading indicator delay timer
+    const timer = useRef<number>(-1)
+    // Cards closed. Flip and open when in view
+    useEffect(() => {
+      // When the section mounts, set up an initial intersection observer
+      if (articleRef.current === null) return
+
+      // Cleanup - Remove listener and observer
+      function cleanup() {
+        articleRef.current?.removeEventListener("focus", listener)
+        observer?.disconnect()
+      }
+      // Listener - when section is in view
+      function listener() {
+        // Only do it once. Then cleanup.
+        setEnter(true)
+        cleanup()
+      }
+
+      // Look for focus: By keyboard oe nav or other means w/o scroll
+      articleRef.current.addEventListener("focus", listener, { capture: true })
+      // Look for scroll into view
+
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry && entry.isIntersecting) {
+            listener()
+          }
+        },
+        {
+          threshold: 0.8,
+        }
+      )
+
+      observer.observe(articleRef.current)
+
+      return cleanup
+    }, [articleRef.current])
+
     useEffectExceptMount(() => {
       if (loading) {
-        timer.current = window.setTimeout(() => setShowLoading(true), 2000)
+        // Delay loading indicator
+        timer.current = window.setTimeout(() => setShowLoading(true), 1500)
       } else {
+        // If loading is over before delay, don't show the indicator
         clearTimeout(timer.current)
         setShowLoading(false)
       }
@@ -56,32 +98,6 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
 
     // Opacity transition duration
     const opacityDuration = expandedState ? 300 : 100
-
-    // Cards closed. Flip and open when in view
-    useEffect(() => {
-      // When the section mounts, set up an initial intersection observer
-      if (articleRef.current !== null) {
-        const observer = new IntersectionObserver(
-          entries => {
-            if (entries[0].isIntersecting) {
-              setEnter(true)
-              // Only one time action
-              observer.unobserve(articleRef.current!)
-            }
-          },
-          {
-            threshold: 0.8,
-          }
-        )
-        observer.observe(articleRef.current)
-
-        return () => {
-          // When unmounts, remove the observer
-          // Multiple unobserve calls are not an error
-          articleRef.current && observer?.unobserve(articleRef.current)
-        }
-      }
-    }, [articleRef.current])
 
     // Card flip on changing the current project
     useEffectExceptMount(() => {
@@ -102,6 +118,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
       } else setCurrent(globalCurrent)
     }, [globalCurrent])
 
+    // Delay expanded state for some components. Allow for animations to finish
     useEffectExceptMount(() => {
       if (expanded) setExpandedState(true)
       else setTimeout(() => setExpandedState(false), 1200)
@@ -134,6 +151,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
         id="project-cards"
         className={classes.exhibition}
       >
+        {/* Announce the Project */}
         <div className="hidden" aria-live="polite" aria-atomic>
           {title}: Project {slideNumber} of {projects.length}
         </div>
@@ -165,6 +183,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
               expanded && classes.expandedCard
             )}
           >
+            {/* Presever the dimenesions of the content on expansion */}
             <div
               ref={cardRef}
               tabIndex={-1}
@@ -235,7 +254,7 @@ const Buttons: React.FunctionComponent<ButtonsProps> = ({
         {projects.map(p => (
           <li className={clsx(classes.projectBadge)} key={p.name}>
             <button
-              disabled={!!disabled || current == p.name}
+              disabled={disabled ?? current == p.name}
               onClick={() => updateState(p.name)}
             >
               <img src={p.logo} alt={p.alt + " logo"} />

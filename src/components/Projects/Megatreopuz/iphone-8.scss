@@ -1,0 +1,195 @@
+// iPhone 8
+$device-silver: #e2e3e4;
+$device-silver-dark: darken($device-silver, 10%);
+$device-silver-panel: #fff;
+$device-gold: #f7e8dd;
+$device-gold-dark: darken($device-gold, 20%);
+$device-gold-panel: #fff;
+$device-spacegray: #9b9ba0;
+$device-spacegray-dark: darken($device-spacegray, 15%);
+$device-spacegray-panel: #222;
+
+.device-iphone-8 {
+  height: calc(0.8 * 609.7px);
+  width: calc(0.8 * 293.3px);
+  position: relative;
+  margin: 2rem auto;
+
+  img {
+    display: block;
+    width: 100%;
+    border: solid 1px lightgrey;
+  }
+
+  .device-frame {
+    background: $device-silver-panel;
+    border-radius: calc(0.8 * 47.6px);
+    box-shadow: inset 0 0 0 2px $device-silver-dark,
+      inset 0 0 0 7px $device-silver;
+    height: calc(0.8 * 609.7px);
+    padding: calc(0.8 * 71.4px) calc(0.8 * 15.4px);
+    width: calc(0.8 * 293.3px);
+  }
+
+  // 1334-by-750-pixel resolution
+  .device-content {
+    border: 2px solid #222;
+    border-radius: calc(0.8 * 4px);
+    height: calc(460.8 * 6.9px);
+    width: calc(260.8 * 2.5px);
+  }
+
+  .device-stripe {
+    &::after,
+    &::before {
+      border: solid rgba(#333, 0.15);
+      border-width: 0 7px;
+      content: "";
+      height: calc(0.8 * 4.2px);
+      left: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 9;
+    }
+    &::after {
+      top: calc(0.8 * 47.6px);
+    }
+    &::before {
+      bottom: calc(0.8 * 47.6px);
+    }
+  }
+
+  // Home button
+  .device-header {
+    border: 2px solid $device-silver-dark;
+    border-radius: 50%;
+    bottom: 12px;
+    height: 30px;
+    left: 50%;
+    margin-left: calc(0.8 * -20.3px);
+    position: absolute;
+    width: 30px;
+  }
+
+  .device-sensors {
+    background: #666;
+    border-radius: calc(0.8 * 2.1px);
+    height: calc(0.8 * 4.2px);
+    left: 50%;
+    margin-left: calc(0.8 * -26.6px);
+    position: absolute;
+    top: calc(0.8 * 36.4px);
+    width: calc(0.8 * 53.2px);
+
+    &::after,
+    &::before {
+      background: #666;
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+    }
+    &::after {
+      height: calc(0.8 * 7px);
+      left: 50%;
+      margin-left: calc(0.8 * -3.5px);
+      top: calc(0.8 * -17.5px);
+      width: calc(0.8 * 7px);
+    }
+    &::before {
+      height: calc(0.8 * 8.6px);
+      left: calc(0.8 * -29.4px);
+      margin-top: calc(0.8 * -4.26px);
+      top: 50%;
+      width: calc(0.8 * 8.6px);
+    }
+  }
+
+  .device-btns {
+    background: $device-silver-dark;
+    height: calc(0.8 * 21px);
+    left: calc(0.8 * -2.1px);
+    position: absolute;
+    top: calc(0.8 * 71.4px);
+    width: calc(0.8 * 2.1px);
+
+    &::after,
+    &::before {
+      background: $device-silver-dark;
+      content: "";
+      height: calc(0.8 * 39.2px);
+      left: 0;
+      position: absolute;
+      width: calc(0.8 * 2.1px);
+    }
+
+    &::after {
+      top: calc(0.8 * 43.4px);
+    }
+    &::before {
+      top: calc(0.8 * 92.4px);
+    }
+  }
+
+  .device-power {
+    background: $device-silver-dark;
+    height: calc(0.8 * 39.2px);
+    right: calc(0.8 * -1.4px);
+    position: absolute;
+    top: calc(0.8 * 112px);
+    width: calc(0.8 * 2.1px);
+  }
+
+  // Gold edition
+  &.device-gold {
+    .device-frame {
+      box-shadow: inset 0 0 0 2px $device-gold-dark,
+        inset 0 0 0 7px $device-gold;
+    }
+
+    .device-header {
+      border-color: $device-gold-dark;
+    }
+
+    .device-btns {
+      &,
+      &::after,
+      &::before {
+        background: $device-gold-dark;
+      }
+    }
+
+    .device-power {
+      background: $device-gold-dark;
+    }
+  }
+
+  // Space Gray edition
+  &.device-spacegray {
+    .device-frame {
+      background: $device-spacegray-panel;
+      box-shadow: inset 0 0 0 2px $device-spacegray-dark,
+        inset 0 0 0 7px $device-spacegray;
+    }
+
+    .device-stripe {
+      &::after,
+      &::before {
+        border-color: rgba(#ccc, 0.35);
+      }
+    }
+
+    .device-btns {
+      &,
+      &::after,
+      &::before {
+        background: $device-spacegray-dark;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 801px) {
+  .device-iphone-8 {
+    display: none;
+  }
+}

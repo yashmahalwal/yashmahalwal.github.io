@@ -2,6 +2,8 @@ import clsx from "clsx"
 import React, { RefObject, useEffect } from "react"
 import { ProjectProps } from "../Description"
 import classes from "./styles.module.scss"
+import "./macbook.scss"
+import "./iphone-8.scss"
 
 const Hero: React.FC = () => {
   return (
@@ -53,15 +55,31 @@ const Interface: React.FC = () => {
     <section className={clsx(classes.interface)}>
       <div className="container">
         <h4 className="text-center">User Interface</h4>
-        <div className={classes.device}>
-          <img
-            src="/megatreopuz-desktop.png"
-            alt="Megatreopuz desktop screenshot"
-          />
-          <img
-            src="/megatreopuz-tablet.png"
-            alt="Megatreopuz mobile screenshot"
-          />
+        <div className={clsx("device device-macbook device-spacegray")}>
+          <div className="device-frame">
+            <img
+              src="/megatreopuz-desktop.png"
+              alt="Megatreopuz desktop screenshot"
+            />
+          </div>
+          <div className="device-stripe"></div>
+          <div className="device-header"></div>
+          <div className="device-sensors"></div>
+          <div className="device-btns"></div>
+          <div className="device-power"></div>
+        </div>
+        <div className="device device-iphone-8 device-gold">
+          <div className="device-frame">
+            <img
+              src="/megatreopuz-tablet.png"
+              alt="Megatreopuz tablet screenshot"
+            />
+          </div>
+          <div className="device-stripe"></div>
+          <div className="device-header"></div>
+          <div className="device-sensors"></div>
+          <div className="device-btns"></div>
+          <div className="device-power"></div>
         </div>
         <p>
           User interface is powered by Material Design. That ensures a seamless,

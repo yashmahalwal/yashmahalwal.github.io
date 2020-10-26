@@ -1,4 +1,18 @@
 .section {
+  padding: 72px 36px;
   min-height: 100vh;
-  background-color: #636e72;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  margin-left: 150px;
+}
+
+@media all and (max-width: 600px) {
+  .section {
+    padding: 36px;
+  }
 }

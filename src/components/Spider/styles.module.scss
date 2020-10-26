@@ -17,7 +17,7 @@ $web-height: 80vh;
 }
 
 .spider {
-  position: fixed;
+  position: absolute;
   display: inline-block;
   top: 0;
   bottom: 0;
@@ -135,11 +135,5 @@ $web-height: 80vh;
   }
   100% {
     transform: translateX(0);
-  }
-}
-
-@media all and (max-width: 1024px) {
-  .spider {
-    display: none;
   }
 }

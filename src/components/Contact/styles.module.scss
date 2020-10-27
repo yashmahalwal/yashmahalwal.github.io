@@ -5,8 +5,9 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(#1b8b6f, #50b175);
-  color: white;
+  // background-image: linear-gradient(to bottom, #1b8b6f, #50b175);
+  // color: white;
+  // color: black;
 }
 
 .heading {
@@ -14,6 +15,26 @@
   font-size: 3rem;
   font-family: "dancing script", cursive;
   margin-bottom: 1.5rem;
+}
+
+.iconHolder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  .icon {
+    all: unset;
+    margin-right: 20px;
+    transition: opacity 200ms;
+    cursor: pointer;
+    color: inherit;
+    &:hover {
+      opacity: 0.6;
+    }
+    &:focus {
+      opacity: 0.4;
+    }
+  }
 }
 
 .content {

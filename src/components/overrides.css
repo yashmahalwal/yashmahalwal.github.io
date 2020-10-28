@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:wght@400&display=swap");
+
 h1,
 h2,
 h3,
@@ -7,8 +8,11 @@ h5 {
   margin-bottom: 10px;
 }
 
-* {
+html {
+  background-color: white;
+  color: black;
   font-family: "Nunito Sans", sans-serif;
+  line-height: 1.75rem;
 }
 
 body,
@@ -72,4 +76,14 @@ tr {
   border: none;
   margin: 0;
   padding: 0;
+}
+
+a {
+  color: inherit;
+  transition: opacity 200ms;
+}
+
+a:hover,
+a:active {
+  opacity: 0.6;
 }

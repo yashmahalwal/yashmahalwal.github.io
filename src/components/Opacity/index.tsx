@@ -24,7 +24,10 @@ interface Props {
 const Opacity: React.FC<Props & Partial<TransitionProps>> = ({
   visible,
   children,
-  duration,
+  duration = 300,
+  appear = true,
+  mountOnEnter = true,
+  unmountOnExit = true,
   ...props
 }) => {
   return (
@@ -42,12 +45,5 @@ const Opacity: React.FC<Props & Partial<TransitionProps>> = ({
     </Transition>
   )
 }
-
-Opacity.defaultProps = {
-  appear: true,
-  mountOnEnter: true,
-  unmountOnExit: true,
-  duration: 300,
-} as Partial<TransitionProps & Props>
 
 export default Opacity

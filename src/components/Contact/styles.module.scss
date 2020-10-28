@@ -5,9 +5,9 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  // background-image: linear-gradient(to bottom, #1b8b6f, #50b175);
+  background-color: #ececec4d;
+  // background-image: linear-gradient(to top, #1b8b6f, #50b175);
   // color: white;
-  // color: black;
 }
 
 .heading {
@@ -17,23 +17,19 @@
   margin-bottom: 1.5rem;
 }
 
+@media all and (max-width: 600px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+}
+
 .iconHolder {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  .icon {
-    all: unset;
+  .icon:not(:last-child) {
     margin-right: 20px;
-    transition: opacity 200ms;
-    cursor: pointer;
-    color: inherit;
-    &:hover {
-      opacity: 0.6;
-    }
-    &:focus {
-      opacity: 0.4;
-    }
   }
 }
 

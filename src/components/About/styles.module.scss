@@ -1,0 +1,47 @@
+.section {
+  padding: 72px 36px;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: #ececec4d;
+}
+.me {
+  margin-bottom: 1rem;
+  img {
+    box-sizing: content-box;
+    height: 150px;
+    border-radius: 50%;
+    display: block;
+    transition: border 500ms;
+  }
+}
+
+.intro {
+  font-size: 1.2rem;
+}
+
+.what {
+  margin-top: 2rem;
+}
+
+.resumeLink {
+  color: black;
+  font-weight: bold;
+}
+
+.heading {
+  text-align: center;
+  font-size: 3rem;
+  font-family: "dancing script", cursive;
+  margin-bottom: 1.5rem;
+}
+
+@media all and (max-width: 600px) {
+  .section {
+    padding: 36px;
+  }
+
+  .heading {
+    font-size: 2.5rem;
+  }
+}

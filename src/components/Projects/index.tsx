@@ -3,10 +3,10 @@ import classes from "./styles.module.scss"
 import clsx from "clsx"
 import { ProjectNames } from "../../pages"
 import closeClasses from "./close.module.scss"
-import { useEffectExceptMount } from "../utils/useEffectExceptMount"
 import { checkIfElementOnTop } from "../utils/checkTop"
 import Opacity from "../Opacity"
 import ProjectDescription from "./Description"
+import useEffectExceptMount from "use-effect-except-mount"
 
 const projects: { name: ProjectNames; alt: string; logo: string }[] = [
   { name: "Megatreopuz", logo: "/megatreopuz-logo.png", alt: "Megatreopuz" },

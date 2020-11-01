@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
   return (
     <footer className={classes.section}>
       <div className="container">
-        <h2 className={classes.heading}>I'd love to hear from you!</h2>
+        <h2 className={classes.heading}>I'd love to hear from you</h2>
         <p className={classes.content}>
           If you want a powerful, elegant and cutting edge modern web
           application - I'm your guy. My driving principle is quality and I have

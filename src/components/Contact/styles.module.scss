@@ -28,8 +28,16 @@
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  .icon:not(:last-child) {
-    margin-right: 20px;
+  .icon {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .icon:first-child {
+    padding-left: 0;
+  }
+  .icon:last-of-type {
+    padding-right: 0;
   }
 }
 

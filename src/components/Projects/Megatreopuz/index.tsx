@@ -34,11 +34,12 @@ const Introduction: React.FC = () => {
     <section className={clsx(classes.introduction, "container")}>
       <h4 className="hidden">Introduction</h4>
       <p>
-        Megatreopuz is an annual online cryptic hunt conducted by ISTE MANIT. It
-        is a battle of wits in the form of cunning puzzles, coded messages, and
-        mind-boggling questions. Participants from around the globe rack their
-        brains for solutions for over seven days with increasing difficulty with
-        every level.
+        Megatreopuz is an annual online cryptic hunt conducted by Indian Society
+        for Technical Education, Maulana Azad National Insitute of Technology.
+        It is a battle of wits in the form of cunning puzzles, coded messages,
+        and mind-boggling questions. Participants from around the globe rack
+        their brains for solutions for over seven days with increasing
+        difficulty with every level.
       </p>
       <br />
       <p>
@@ -54,7 +55,7 @@ const Interface: React.FC = () => {
   return (
     <section className={clsx(classes.interface)}>
       <div className="container">
-        <h4 className="text-center">User Interface</h4>
+        <h4 className="hidden">User Interface</h4>
         <div className={clsx("device device-macbook device-spacegray")}>
           <div className="device-frame">
             <img
@@ -82,9 +83,10 @@ const Interface: React.FC = () => {
           <div className="device-power"></div>
         </div>
         <p>
-          User interface is powered by Material Design. That ensures a seamless,
-          intuitive and responsive user experience. Platform is written using
-          React with Relay and Next.js is used for server side rendering.
+          Its user interface is powered by Material Design. That ensures a
+          seamless, intuitive and responsive user experience. Platform is
+          written using React with Relay and Next.js is used for server side
+          rendering.
         </p>
         <br />
         <p>
@@ -100,17 +102,17 @@ const Interface: React.FC = () => {
 const Architecture: React.FC = () => {
   return (
     <section className={clsx(classes.architecture, "container")}>
-      <h4 className="text-center">Architecture</h4>
+      <h4 className="hidden">Architecture</h4>
+      <figure>
+        <img src="/architecture.png" alt="Megatreopuz architecture" />
+        <figcaption>Megatreopuz Architecture</figcaption>
+      </figure>
+      <br />
       <p>
         Megatreopuz has a microservices based architecture under the hood. This
         allows for scaling upwards as well downwards. Fast and effecient
         technology more than makes up for the latency due to coupling.
       </p>
-      <br />
-      <figure>
-        <img src="/architecture.png" alt="Megatreopuz architecture" />
-        <figcaption>Megatreopuz Architecture</figcaption>
-      </figure>
       <br />
       <p>
         The entrance to architecture is provided by a GraphQL gateway. Auth

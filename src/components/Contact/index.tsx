@@ -7,6 +7,7 @@ import {
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
 import React, { AnchorHTMLAttributes } from "react"
 import classes from "./styles.module.scss"
+import clsx from "clsx"
 
 const IconButton: React.FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({
   children,
@@ -47,6 +48,12 @@ const Contact: React.FC = () => {
             <FontAwesomeIcon size="lg" icon={faMediumM} />
             <span className="hidden">Medium</span>
           </IconButton>
+          <p className={clsx("text-center", classes.credit)}>
+            Made with ❤️ by{" "}
+            <a target="_blank" href="https://yashmahalwal.github.io">
+              Yash
+            </a>
+          </p>
         </div>
       </div>
     </footer>

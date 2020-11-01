@@ -37,6 +37,18 @@
   text-align: center;
 }
 
+.credit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.8rem;
+  a {
+    font-weight: bolder;
+  }
+}
+
 @media all and (max-width: 600px) {
   .section {
     padding: 36px;

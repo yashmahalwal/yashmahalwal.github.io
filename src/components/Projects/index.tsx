@@ -256,7 +256,7 @@ const Buttons: React.FunctionComponent<ButtonsProps> = ({
         {projects.map(p => (
           <li className={clsx(classes.projectBadge)} key={p.name}>
             <button
-              disabled={disabled ?? current == p.name}
+              disabled={!!disabled || current === p.name}
               onClick={() => updateState(p.name)}
             >
               <img src={p.logo} alt={p.alt + " logo"} />

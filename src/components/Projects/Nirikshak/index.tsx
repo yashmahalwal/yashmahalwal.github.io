@@ -117,7 +117,7 @@ const DataAnalysis: React.FC = () => {
   return (
     <section className={clsx(classes.dataAnalysis)}>
       <div className="container">
-        <h4 className="text-center">Data analysis</h4>
+        <h4 className="hidden">Data analysis</h4>
         <p>
           Nirikshak analyses test log to generate a report. It provides you with
           a ratio of failed tests to passed tests. It also groups the errors in
@@ -143,7 +143,7 @@ const FlowTesting: React.FC = () => {
   return (
     <section className={classes.flowTesting}>
       <div className="container">
-        <h4 className="text-center">Flow of testing</h4>
+        <h4 className="hidden">Flow of testing</h4>
         <p>
           Nirikshak has a very straighforward yet powerful testing flow. You
           only need to provide a basic description of your application and it

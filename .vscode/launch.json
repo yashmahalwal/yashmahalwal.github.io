@@ -10,6 +10,13 @@
       "name": "Launch Chrome against localhost",
       "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach to gatsby server",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ]
 }

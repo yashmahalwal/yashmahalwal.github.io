@@ -1,9 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFacebookF, faLinkedinIn } from "@fortawesome/free-brands-svg-icons"
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
-import React, { AnchorHTMLAttributes } from "react"
+import React from "react"
 import classes from "./styles.module.scss"
-import clsx from "clsx"
 
 const About: React.FC = () => {
   return (

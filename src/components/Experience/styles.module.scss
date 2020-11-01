@@ -1,0 +1,93 @@
+$card-width: 300px;
+$card-color: #646a70;
+
+.section {
+  min-height: 100vh;
+  background: #ececec4d;
+  ol {
+    list-style-type: none;
+  }
+}
+
+.holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  li {
+    padding: 3rem 0;
+    position: relative;
+
+    .card {
+      line-height: 1.25rem;
+      position: relative;
+      width: $card-width;
+      text-align: center;
+      padding: 10px;
+      background-color: $card-color;
+      color: white;
+      border-radius: 10px;
+
+      h3 {
+        font-size: 1rem;
+      }
+      p {
+        font-size: 0.8rem;
+      }
+
+      &::before {
+        content: "";
+        border: 10px transparent solid;
+        position: absolute;
+        top: 50%;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% - 5px);
+      width: 5px;
+      content: "";
+      background-color: $card-color;
+    }
+
+    &:nth-child(2n + 1) {
+      .card {
+        right: $card-width / 2 + 30px;
+        &::before {
+          border-left-color: $card-color;
+          right: -20px;
+        }
+      }
+    }
+
+    &:nth-child(2n) {
+      .card {
+        left: $card-width / 2 + 30px;
+        &::before {
+          border-right-color: $card-color;
+          left: -20px;
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .section {
+    .holder {
+      li {
+        .card {
+          right: 0;
+          left: 0;
+          z-index: 10;
+          &::before {
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}

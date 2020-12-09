@@ -1,13 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
 
+$list-height: 70px;
+
 .project-section {
   position: relative;
 }
 
 // The container section
 .card-holder {
-  height: calc(100vh);
-  position: relative;
+  min-height: calc(100vh - #{$list-height} + 20px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,7 +118,7 @@
 
   transition: width 400ms 300ms ease-in-out, height 400ms 800ms ease-in-out;
   &.expanded-card {
-    height: 100vh;
+    height: calc(100vh + 20px + #{$list-height});
     width: 100%;
   }
 }
@@ -170,7 +171,7 @@
 
 // The icon button list
 .project-list-wrapper {
-  position: absolute;
+  // position: absolute;
   bottom: 10px;
   left: 0;
   right: 0;
@@ -185,7 +186,7 @@
   width: 50vw;
   min-width: 500px;
   margin: auto;
-  height: 70px;
+  height: $list-height;
 
   .project-badge button {
     all: unset;

@@ -9,24 +9,24 @@ const list = [
       "Started school at Maulana Azad National Institute of Technology",
   },
   {
-    title: "July 2017",
-    description:
-      "Started school at Maulana Azad National Institute of Technology",
+    title: "May 2019",
+    description: "Product development internship at Appointy IT Pvt Ltd",
   },
   {
-    title: "July 2017",
-    description:
-      "Started school at Maulana Azad National Institute of Technology",
+    title: "April 2020",
+    description: "Completed internship at Appointy IT Pvt Ltd",
   },
   {
-    title: "July 2017",
-    description:
-      "Started school at Maulana Azad National Institute of Technology",
+    title: "January 2021",
+    description: "Start as a CFR intern at American Express",
   },
   {
-    title: "July 2017",
-    description:
-      "Started school at Maulana Azad National Institute of Technology",
+    title: "July 2021",
+    description: "Complete internship at American Express",
+  },
+  {
+    title: "July 2021",
+    description: "Graduate from Maulana Azad National Institute of Technology",
   },
 ]
 

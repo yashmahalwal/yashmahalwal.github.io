@@ -11,28 +11,30 @@ const About: React.FC = () => {
         <h2 className={classes.heading}>Who am I?</h2>
         <p>
           <strong>
-            Hi there! My name is Yash Mahalwal. I am a full stack web developer
-            living in India.
+            Hi there! My name is Yash Mahalwal. I am a computer science
+            undergrad living in India.
           </strong>{" "}
-          I have a passion for bringing ideas to life and web is my canvas. My
-          driving principle is quality and I have a no compromise attitude
-          towards it.
+          I'm passionate about bringing ideas to life. My driving principle is
+          quality and I have a no compromise attitude towards it. I have worked
+          with full stack web technologies for three years and will be working
+          with big data analytics in the coming months.
         </p>
         <br />
         <p>
-          I am an computer science undergraduate at Maulana Azad National
-          Insitute of Technology, Bhopal. My 2.5+ years of experience with
-          modern technologies helps me create elegant, scalable, intuitive and
-          accessible applications. My broad technical skillset allows me to work
-          with teams of various sizes to deliver high quality software. I love
-          challanges and believe in simple & innovative solutions.
+          I'm in the final year of my bachelor's at Maulana Azad National
+          Insitute of Technology, Bhopal. My experience with modern technologies
+          helps me create elegant, scalable, intuitive and accessible
+          applications and my broad technical skillset allows me to work with teams
+          of various sizes to deliver high quality software. I love challanges
+          and believe in simple & innovative solutions.
         </p>
         <br />
         My belief is that little things go a long way and that reflects in every
         aspect of my work. I trust that imparting knowledge is an essential way
-        of enriching the community. That is why I actively write techincal blogs
-        and articles. You can find out more about my education, experience and
-        skills in my{" "}
+        of enriching the community, which is why I actively write techincal
+        blogs and articles. When I'm not working, you will find me taking long
+        walks or reading up on the latest cool tech. You can find out more about
+        my education, experience and skills in my{" "}
         <a href="/Resume.pdf" className={classes.resumeLink} download>
           resume
         </a>

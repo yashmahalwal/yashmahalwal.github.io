@@ -7,10 +7,13 @@ import { Helmet } from "react-helmet"
 import Contact from "../components/Contact"
 import About from "../components/About"
 import Experience from "../components/Experience"
+import Hero from "../components/Hero"
+import Opacity from "../components/Opacity"
 
 export type ProjectNames = "Megatreopuz" | "Nirikshak"
 
 const Index: React.FC<PageProps> = () => {
+  const [isLoading, setLoading] = React.useState(true)
   return (
     <>
       <main>
@@ -18,11 +21,15 @@ const Index: React.FC<PageProps> = () => {
           <title>Yash Mahalwal - Web Development Solutions</title>
         </Helmet>
         <h1 className="hidden">Yash Mahalwal - Web Development Solutions</h1>
-        <div style={{ height: "100vh" }}></div>
-        <About />
-        <Experience />
-        <Projects />
-        <Contact />
+        <Hero onLoad={() => setLoading(false)} />
+        {!isLoading && (
+          <>
+            <About />
+            <Experience />
+            <Projects />
+            <Contact />
+          </>
+        )}
       </main>
     </>
   )

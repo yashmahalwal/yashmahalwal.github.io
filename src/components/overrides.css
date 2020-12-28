@@ -13,6 +13,7 @@ html {
   color: black;
   font-family: "Nunito Sans", sans-serif;
   line-height: 1.75rem;
+  overflow-y: scroll;
 }
 
 body,

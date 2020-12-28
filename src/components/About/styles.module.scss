@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 .me {
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
   img {
     box-sizing: content-box;
     height: 150px;
@@ -29,19 +29,8 @@
   font-weight: bold;
 }
 
-.heading {
-  text-align: center;
-  font-size: 3rem;
-  font-family: "dancing script", cursive;
-  margin-bottom: 1.5rem;
-}
-
 @media all and (max-width: 600px) {
   .section {
     padding: 36px;
-  }
-
-  .heading {
-    font-size: 2.5rem;
   }
 }

@@ -8,7 +8,7 @@ import Contact from "../components/Contact"
 import About from "../components/About"
 import Experience from "../components/Experience"
 import Hero from "../components/Hero"
-import Opacity from "../components/Opacity"
+import clsx from "clsx"
 
 export type ProjectNames = "Megatreopuz" | "Nirikshak"
 
@@ -22,14 +22,12 @@ const Index: React.FC<PageProps> = () => {
         </Helmet>
         <h1 className="hidden">Yash Mahalwal</h1>
         <Hero onLoad={() => setLoading(false)} />
-        {!isLoading && (
-          <>
-            <About />
-            <Experience />
-            <Projects />
-            <Contact />
-          </>
-        )}
+        <div className={clsx(isLoading && "hidden-all")}>
+          <About />
+          <Experience />
+          <Projects />
+          <Contact />
+        </div>
       </main>
     </>
   )

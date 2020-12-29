@@ -1,28 +1,28 @@
 import clsx from "clsx"
 import React, { useState } from "react"
 import Cat from "../Cat"
+import { isOnTablet } from "../utils/isOnDevice"
 import classes from "./styles.module.scss"
 
 interface Props {
   onLoad: () => void
 }
 const Hero: React.FC<Props> = ({ onLoad }) => {
-  const [showNav, setShowNav] = useState(false)
+  const [showDetails, setshowDetials] = useState(false)
 
   return (
     <section className={classes.section}>
-      <h2 className={classes.heading}>Yash Mahalwal</h2>
+      <h2 className={"hidden"} aria-live="polite">
+        {showDetails ? "Personal Portfolio" : "Loading"}
+      </h2>
       <Cat
-        showName={showNav}
+        showName={showDetails}
         onLoad={() => {
-          setTimeout(
-            () => setShowNav(true),
-            window.matchMedia("(max-width: 768px) ").matches ? 2000 : 4200
-          )
+          setshowDetials(true)
           onLoad()
         }}
       />
-      <ul className={clsx(classes.nav, showNav && classes.visible)}>
+      <ul className={clsx(classes.nav, showDetails && classes.visible)}>
         <li>
           <a href="#">About</a>
         </li>

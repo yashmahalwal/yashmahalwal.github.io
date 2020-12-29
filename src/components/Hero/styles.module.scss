@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+@import "../../helpers.scss";
 .section {
   height: 100vh;
   display: flex;
@@ -8,7 +8,6 @@
   position: relative;
 }
 
-.heading,
 .nav {
   all: unset;
   opacity: 0;
@@ -25,11 +24,6 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.heading {
-  top: 20px;
-  display: none;
-}
-
 .nav {
   font-size: 0.68rem;
   bottom: 15px;
@@ -40,5 +34,11 @@
   li:not(:last-child)::after {
     content: " / ";
     padding: 0 12px 0 9px;
+  }
+}
+
+@media all and (max-width: $tablet) {
+  .nav {
+    display: none;
   }
 }

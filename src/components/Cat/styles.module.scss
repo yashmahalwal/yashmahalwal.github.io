@@ -1,7 +1,12 @@
+@import "../../helpers.scss";
 .svg {
+  transition: transform 300ms;
   height: calc(100% - 100px);
   transform: rotate(-10deg);
-  transition: transform 300ms;
+
+  &.visible {
+    transform: rotateZ(0deg);
+  }
 
   .catPaths {
     path {
@@ -19,5 +24,12 @@
 
   &.visible {
     opacity: 1;
+  }
+}
+
+@media all and (max-width: $tablet) {
+  .svg {
+    transform: rotateZ(0);
+    height: 100%;
   }
 }

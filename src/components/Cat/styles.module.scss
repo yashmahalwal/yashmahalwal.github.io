@@ -3,10 +3,21 @@
   transform: rotate(-10deg);
   transition: transform 300ms;
 
-  path {
-    transform: rotateZ(-20deg);
-    transform-origin: center;
-    opacity: 0;
-    transition: transform 100ms, fill 200ms, opacity 100ms, stroke 200ms;
+  .catPaths {
+    path {
+      transform: rotateZ(-20deg);
+      transform-origin: center;
+      opacity: 0;
+      transition: transform 100ms, fill 200ms, opacity 100ms, stroke 200ms;
+    }
+  }
+}
+
+.name {
+  transition: opacity 500ms;
+  opacity: 0;
+
+  &.visible {
+    opacity: 1;
   }
 }

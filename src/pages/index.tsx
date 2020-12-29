@@ -18,9 +18,9 @@ const Index: React.FC<PageProps> = () => {
     <>
       <main>
         <Helmet>
-          <title>Yash Mahalwal - Web Development Solutions</title>
+          <title>Yash Mahalwal</title>
         </Helmet>
-        <h1 className="hidden">Yash Mahalwal - Web Development Solutions</h1>
+        <h1 className="hidden">Yash Mahalwal</h1>
         <Hero onLoad={() => setLoading(false)} />
         {!isLoading && (
           <>

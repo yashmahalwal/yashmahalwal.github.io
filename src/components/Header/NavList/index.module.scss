@@ -40,3 +40,19 @@
     }
   }
 }
+
+@media all and (max-width: $tablet) {
+  .list {
+    li {
+      display: block;
+      &::after,
+      &::before {
+        display: none !important;
+      }
+
+      &.active {
+        color: rgb(25, 111, 163);
+      }
+    }
+  }
+}

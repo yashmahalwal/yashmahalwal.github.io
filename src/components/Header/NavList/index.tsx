@@ -18,11 +18,6 @@ const NavList: React.FC<NavProps> = ({ list }) => {
       const observer = new IntersectionObserver(
         entries => {
           // If multiple elements have come into the view, choose the last one
-          console.log(
-            entries[0].isIntersecting,
-            entries[0].intersectionRatio,
-            el.ref
-          )
 
           if (entries[0].isIntersecting) {
             setActiveIndex(index)

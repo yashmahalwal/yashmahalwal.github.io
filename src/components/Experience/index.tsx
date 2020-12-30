@@ -48,9 +48,9 @@ const list = [
   },
 ]
 
-const Experience: React.FC = () => {
+const Experience = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <section className={classes.section}>
+    <section tabIndex={-1} className={classes.section} ref={ref}>
       <h2 className="hidden-all">My Journey and Experiences</h2>
       <div className={"container"}>
         <ol className={classes.holder}>
@@ -67,6 +67,8 @@ const Experience: React.FC = () => {
       </div>
     </section>
   )
-}
+})
+
+Experience.displayName = "Experience"
 
 export default Experience

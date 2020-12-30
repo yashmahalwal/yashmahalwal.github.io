@@ -1,17 +1,18 @@
 import clsx from "clsx"
 import React, { useState } from "react"
 import Cat from "../Cat"
-import { isOnTablet } from "../utils/isOnDevice"
+import NavList, { NavProps } from "../Header/NavList"
+import { isOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 
 interface Props {
   onLoad: () => void
 }
-const Hero: React.FC<Props> = ({ onLoad }) => {
+const Hero = React.forwardRef<HTMLDivElement, Props>(({ onLoad }, ref) => {
   const [showDetails, setshowDetials] = useState(false)
 
   return (
-    <section className={classes.section}>
+    <section className={classes.section} ref={ref}>
       <h2 className={"hidden"} aria-live="polite">
         {showDetails ? "Personal Portfolio" : "Loading"}
       </h2>
@@ -22,22 +23,8 @@ const Hero: React.FC<Props> = ({ onLoad }) => {
           onLoad()
         }}
       />
-      <ul className={clsx(classes.nav, showDetails && classes.visible)}>
-        <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">My Journey</a>
-        </li>
-        <li>
-          <a href="#">Work</a>
-        </li>
-        <li>
-          <a href="#">Contact Details</a>
-        </li>
-      </ul>
     </section>
   )
-}
+})
 
 export default Hero

@@ -299,7 +299,7 @@ const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
   )
 }
 
-const Projects: React.FunctionComponent = () => {
+const Projects = React.forwardRef<HTMLDivElement>((_, ref) => {
   // Is the project card in fullscreen
   const [expanded, setExpanded] = useState(false)
   // Render details
@@ -336,7 +336,7 @@ const Projects: React.FunctionComponent = () => {
   }
 
   return (
-    <section className={classes.projectSection}>
+    <section tabIndex={-1} className={classes.projectSection} ref={ref}>
       <h2 className="hidden">Work</h2>
 
       <ProjectCards
@@ -384,6 +384,7 @@ const Projects: React.FunctionComponent = () => {
       )}
     </section>
   )
-}
+})
 
+Projects.displayName = "Projects"
 export default Projects

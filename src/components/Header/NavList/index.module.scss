@@ -1,0 +1,42 @@
+@import "../../../helpers.scss";
+.list {
+  all: unset;
+  font-size: 0.68rem;
+  list-style-type: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+
+  li:not(:last-child)::after {
+    content: " / ";
+    padding: 0 12px 0 9px;
+  }
+
+  li {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: calc(9px * 2 + 0.68rem);
+      background: #000;
+      opacity: 0;
+      height: 0.25rem;
+      transition: opacity 200ms;
+    }
+
+    &:last-child {
+      &::before {
+        right: 0;
+      }
+    }
+    &.active:before {
+      opacity: 1;
+    }
+  }
+}

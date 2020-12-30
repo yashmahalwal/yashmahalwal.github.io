@@ -17,24 +17,12 @@
     opacity: 1;
   }
 
-  text-transform: uppercase;
   position: absolute;
   text-align: center;
-  font-weight: bold;
-  font-family: "Montserrat", sans-serif;
 }
 
 .nav {
-  font-size: 0.68rem;
   bottom: 15px;
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-
-  li:not(:last-child)::after {
-    content: " / ";
-    padding: 0 12px 0 9px;
-  }
 }
 
 @media all and (max-width: $tablet) {

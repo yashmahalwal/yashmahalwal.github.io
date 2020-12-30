@@ -1,9 +1,9 @@
 import React from "react"
 import classes from "./styles.module.scss"
 
-const About: React.FC = () => {
+const About = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <section className={classes.section}>
+    <section tabIndex={-1} className={classes.section} ref={ref}>
       <figure className={classes.me}>
         <img src="/me.jpg" alt="Yash Mahalwal" />
       </figure>
@@ -44,6 +44,7 @@ const About: React.FC = () => {
       </div>
     </section>
   )
-}
+})
 
+About.displayName = "About"
 export default About

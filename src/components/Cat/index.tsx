@@ -7,7 +7,7 @@ import {
   easeInOutCubic,
   easeInOutCubicIndex,
 } from "../SVGMorphing/transitionFunctions"
-import { isOnTablet } from "../utils/isOnDevice"
+import { isOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 const totalPaths = 30
 const loadingGrey = "#3b3b3d"
@@ -43,8 +43,11 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
       }
       copyImg.src = images[i].src
     }
+
+    if (!images.length) setLoadingRatio(1)
   }, [])
 
+  // Convert the logo to cat when done
   useEffectExceptMount(() => {
     // When loading done
     const paths = pathRefs.current
@@ -145,6 +148,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     mutex: false,
   })
 
+  // Trigger loading progess whenever loading ratio goes up
   useEffectExceptMount(() => {
     // Remember run to completion concurrency
 

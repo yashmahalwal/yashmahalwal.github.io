@@ -1,0 +1,29 @@
+@import "../../helpers.scss";
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.header {
+  position: fixed;
+  opacity: 0;
+  top: 10px;
+  left: 20px;
+  right: 0;
+  z-index: 5000;
+  animation: fadeIn 500ms 500ms forwards;
+}
+
+@media all and (max-width: $tablet) {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -20,9 +20,9 @@ const IconButton: React.FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({
   )
 }
 
-const Contact: React.FC = () => {
+const Contact = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <footer className={classes.section}>
+    <footer tabIndex={-1} className={classes.section} ref={ref}>
       <div className="container">
         <h2 className={classes.heading}>I'd love to hear from you</h2>
         <p className={classes.content}>
@@ -58,6 +58,8 @@ const Contact: React.FC = () => {
       </div>
     </footer>
   )
-}
+})
+
+Contact.displayName = "Contact"
 
 export default Contact

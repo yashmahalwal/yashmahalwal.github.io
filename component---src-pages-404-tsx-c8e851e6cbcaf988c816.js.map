@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/pages/404.tsx"],"names":["Page"],"mappings":"6FAAA,gCAMeA,UAJQ,WACrB,OAAO","file":"component---src-pages-404-tsx-c8e851e6cbcaf988c816.js","sourcesContent":["import React from \"react\"\n\nconst Page: React.FC = () => {\n  return <>404: The page you are looking for doesn't exist</>\n}\n\nexport default Page\n"],"sourceRoot":""}

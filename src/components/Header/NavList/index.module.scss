@@ -44,6 +44,8 @@
 @media all and (max-width: $tablet) {
   .list {
     li {
+      font-size: 1rem;
+      margin-bottom: 20px;
       display: block;
       &::after,
       &::before {

@@ -35,7 +35,7 @@ const Header: React.FC<Props> = props => {
         </svg>
       </button>
       <nav className={clsx(menuOpen && classes.open)}>
-        <NavList {...props} />
+        <NavList {...props} closeMenu={() => setMenuOpen(false)} />
       </nav>
     </header>
   )

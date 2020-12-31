@@ -8,9 +8,11 @@ export interface NavProps {
     title: React.ReactNode
     ref: HTMLDivElement | null
   }[]
+
+  closeMenu: () => void
 }
 
-const NavList: React.FC<NavProps> = ({ list }) => {
+const NavList: React.FC<NavProps> = ({ list, closeMenu }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   React.useEffect(() => {
@@ -48,7 +50,7 @@ const NavList: React.FC<NavProps> = ({ list }) => {
               href="#"
               onClick={e => {
                 e.preventDefault()
-
+                closeMenu()
                 el.ref?.scrollIntoView({
                   behavior: "smooth",
                 })

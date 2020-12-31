@@ -1,46 +1,49 @@
-import React from "react"
-import { Transition } from "react-transition-group"
-import { TransitionProps } from "react-transition-group/Transition"
-
-const defaultStyle = (duration: number) => ({
-  transition: `opacity ${duration}ms ease-in-out`,
-  opacity: 0,
-})
-
-const transitionStyles: Record<string, Record<"opacity", number>> = {
-  entering: { opacity: 0 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 },
-}
+import React, { useEffect } from "react"
+import { useState } from "react"
+import useEffectExceptMount from "use-effect-except-mount"
 
 interface Props {
   visible: boolean
   duration?: number
+  useDisplayNone?: boolean
 }
 
-const Opacity: React.FC<Props & Partial<TransitionProps>> = ({
-  visible,
-  children,
+// Wraps everything in a div
+const Opacity: React.FC<Props> = ({
   duration = 300,
-  appear = true,
-  mountOnEnter = true,
-  unmountOnExit = true,
-  ...props
+  visible,
+  useDisplayNone = false,
+  children,
 }) => {
+  const [opacity, setOpacity] = useState<0 | 1>(0)
+  const [display, setDisplay] = useState("none")
+
+  useEffect(() => {
+    if (!useDisplayNone) {
+      setOpacity(visible ? 1 : 0)
+      setDisplay("block")
+      return
+    }
+
+    if (visible) {
+      setDisplay("block")
+      setTimeout(() => setOpacity(1), 10)
+    } else {
+      setOpacity(0)
+      setTimeout(() => setDisplay("none"), duration)
+    }
+  }, [visible])
+
   return (
-    <Transition in={visible} timeout={duration!} {...props}>
-      {state => (
-        <div
-          style={{
-            ...defaultStyle(duration),
-            ...transitionStyles[state],
-          }}
-        >
-          {children}
-        </div>
-      )}
-    </Transition>
+    <div
+      style={{
+        display,
+        transition: `Opacity ${duration}ms`,
+        opacity,
+      }}
+    >
+      {children}
+    </div>
   )
 }
 

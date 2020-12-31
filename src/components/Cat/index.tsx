@@ -7,7 +7,7 @@ import {
   easeInOutCubic,
   easeInOutCubicIndex,
 } from "../SVGMorphing/transitionFunctions"
-import { isOnTablet } from "../utils/envrionmentCheck"
+import { useIsOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 const totalPaths = 30
 const loadingGrey = "#3b3b3d"
@@ -24,6 +24,7 @@ interface Props {
 
 const Cat: React.FC<Props> = ({ onLoad, showName }) => {
   const [tilesLoaded, setTilesLoaded] = React.useState(false)
+  const isOnTablet = useIsOnTablet()
   const [loadingRatio, setLoadingRatio] = React.useState(0)
   const [svgRotated, setSvgRotated] = React.useState(true)
   const pathRefs = React.useRef<SVGPathElement[]>([])
@@ -137,7 +138,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
       }, 20)
     }
 
-    if (isOnTablet()) startCat()
+    if (isOnTablet) startCat()
     else zoom(0)
   }, [tilesLoaded])
 

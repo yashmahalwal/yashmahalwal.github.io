@@ -50,12 +50,12 @@ const NavList: React.FC<NavProps> = ({ list, closeMenu }) => {
               href="#"
               onClick={e => {
                 e.preventDefault()
-                closeMenu()
                 el.ref?.scrollIntoView({
                   behavior: "smooth",
                 })
 
                 checkIfElementOnTop(el.ref, () => {
+                  closeMenu()
                   el.ref?.focus()
                 })
               }}

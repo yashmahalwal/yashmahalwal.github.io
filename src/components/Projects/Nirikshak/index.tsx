@@ -5,7 +5,7 @@ import classes from "./styles.module.scss"
 import figlet from "figlet"
 //@ts-ignore
 import standard from "figlet/importable-fonts/Standard"
-import Opacity from "../../Opacity"
+import Opacity from "../../OpacityTransition"
 import { checkIfElementOnTop } from "../../utils/checkTop"
 //@ts-ignore
 figlet.parseFont("Standard", standard)

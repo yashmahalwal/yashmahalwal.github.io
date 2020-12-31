@@ -2,7 +2,7 @@ import clsx from "clsx"
 import React, { useState } from "react"
 import Cat from "../Cat"
 import NavList, { NavProps } from "../Header/NavList"
-import { isOnTablet } from "../utils/envrionmentCheck"
+import { useIsOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 
 interface Props {

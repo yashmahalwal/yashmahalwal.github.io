@@ -88,13 +88,10 @@
       right: 0;
       bottom: 0;
       background: rgba(255, 255, 255, 0.9);
-      display: none;
 
-      &.open {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 }

@@ -1,8 +1,20 @@
-export function isOnTablet() {
-  return (
+import React from "react"
+import { useEffect } from "react"
+
+export function useIsOnTablet() {
+  const checkValue = () =>
     typeof window !== "undefined" &&
     window.matchMedia("(max-width: 768px)").matches
-  )
+
+  const [isOnTablet, setIsOnTablet] = React.useState(checkValue)
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", () => setIsOnTablet(checkValue()))
+    }
+  }, [])
+
+  return isOnTablet
 }
 
 export function prefersReducedMotion() {

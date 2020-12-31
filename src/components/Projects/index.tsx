@@ -4,7 +4,7 @@ import clsx from "clsx"
 import { ProjectNames } from "../../pages"
 import closeClasses from "./close.module.scss"
 import { checkIfElementOnTop } from "../utils/checkTop"
-import Opacity from "../Opacity"
+import Opacity from "../OpacityTransition"
 import ProjectDescription from "./Description"
 import useEffectExceptMount from "use-effect-except-mount"
 

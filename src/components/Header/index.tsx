@@ -1,5 +1,7 @@
 import clsx from "clsx"
 import React, { useEffect, useState } from "react"
+import Opacity from "../Opacity"
+import { useIsOnTablet } from "../utils/envrionmentCheck"
 import NavList, { NavProps } from "./NavList"
 import classes from "./style.module.scss"
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 
 const Header: React.FC<Props> = props => {
   const [menuOpen, setMenuOpen] = React.useState(false)
+  const isOnTablet = useIsOnTablet()
 
   return (
     <header className={classes.header}>
@@ -34,9 +37,11 @@ const Header: React.FC<Props> = props => {
           />
         </svg>
       </button>
-      <nav className={clsx(menuOpen && classes.open)}>
-        <NavList {...props} closeMenu={() => setMenuOpen(false)} />
-      </nav>
+      <Opacity visible={!isOnTablet || menuOpen} useDisplayNone>
+        <nav>
+          <NavList {...props} closeMenu={() => setMenuOpen(false)} />
+        </nav>
+      </Opacity>
     </header>
   )
 }

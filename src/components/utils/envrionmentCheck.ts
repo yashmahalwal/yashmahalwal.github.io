@@ -1,11 +1,11 @@
 import React from "react"
 import { useEffect } from "react"
 
-export function useIsOnTablet() {
-  const checkValue = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(max-width: 768px)").matches
+const checkValue = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 768px)").matches
 
+export function useIsOnTablet() {
   const [isOnTablet, setIsOnTablet] = React.useState(checkValue)
 
   useEffect(() => {

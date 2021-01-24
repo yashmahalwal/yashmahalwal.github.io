@@ -16,7 +16,7 @@
   bottom: 72px;
   top: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 7000;
   opacity: 0;
   animation: enterButton 500ms 1200ms forwards;
   &.exit {
@@ -37,9 +37,9 @@
 }
 
 .button {
-    background-color: unset;
-    border: unset;
-    color: unset;
+  background-color: unset;
+  border: unset;
+  color: unset;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,4 +1,17 @@
 @import "../../helpers.scss";
+
+@keyframes fillTile {
+  100% {
+    stroke: #ae0520;
+    fill: #ae0520;
+  }
+}
+@keyframes animateTile {
+  to {
+    opacity: 1;
+    transform: rotateZ(0deg);
+  }
+}
 .svg {
   transition: transform 300ms;
   height: calc(100% - 100px);
@@ -13,7 +26,10 @@
       transform: rotateZ(-20deg);
       transform-origin: center;
       opacity: 0;
-      transition: transform 100ms, fill 200ms, opacity 100ms, stroke 200ms;
+
+      &.ready {
+        animation: animateTile 60ms forwards, fillTile 200ms;
+      }
     }
   }
 }

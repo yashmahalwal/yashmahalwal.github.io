@@ -54,6 +54,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     // When loading done
 
     const catMap = new Map()
+    const catTimeout = 300
     function makeCat(count: number) {
       if (count === paths.length) return onLoad()
 
@@ -75,7 +76,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             ),
             Date.now(),
             catMap,
-            500,
+            catTimeout,
             easeInOutCubic
           )
         } else {
@@ -86,11 +87,11 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
               catD,
               Date.now(),
               catMap,
-              500,
+              catTimeout,
               easeInOutCubic
             )
         }
-        makeCat(count + 1)
+        setTimeout(() => makeCat(count + 1), 10)
       })
     }
 
@@ -109,7 +110,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             equivalentD,
             Date.now(),
             scatterMap,
-            2000,
+            1000,
             easeInOutCubic
           )
         })
@@ -123,39 +124,21 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
       const equivalentColor = paths[count].current!.getAttribute(
         "data-zoomed-color"
       )
-      setTimeout(() => {
-        if (equivalentD && equivalentColor) {
-          requestAnimationFrame(() =>
-            convert(
-              paths[count].current!,
-              equivalentD,
-              Date.now(),
-              zoomMap,
-              150
-            )
-          )
-          requestAnimationFrame(() => {
-            paths[count].current!.style.stroke = paths[
-              count
-            ].current!.style.fill = equivalentColor
-            paths[count].current!.style.strokeLinejoin = "miter"
-          })
+      if (equivalentD && equivalentColor) {
+        requestAnimationFrame(() => {
+          paths[count].current!.style.stroke = paths[
+            count
+          ].current!.style.fill = equivalentColor
+          paths[count].current!.style.strokeLinejoin = "miter"
+          convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 20)
 
-          setTimeout(
-            () =>
-              requestAnimationFrame(() => {
-                scatter(count)
-                if (count === paths.length - 1)
-                  setTimeout(() => {
-                    startCat()
-                  }, 2000)
-              }),
-            easeInOutCubicIndex(count, paths.length) * 20
-          )
-        }
+          setTimeout(() => requestAnimationFrame(() => scatter(count)), 10)
 
-        zoom(count + 1)
-      }, 20)
+          if (count === paths.length - 1) setTimeout(() => startCat(), 1000)
+        })
+      }
+
+      setTimeout(() => zoom(count + 1), 5)
     }
 
     if (isOnTablet) startCat()

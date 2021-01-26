@@ -1,8 +1,5 @@
-import clsx from "clsx"
 import React, { useState } from "react"
 import Cat from "../Cat"
-import NavList, { NavProps } from "../Header/NavList"
-import { useIsOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 
 interface Props {
@@ -13,8 +10,9 @@ const Hero = React.forwardRef<HTMLDivElement, Props>(({ onLoad }, ref) => {
 
   return (
     <section className={classes.section} ref={ref}>
+      <h1 className="hidden">Yash Mahalwal.</h1>
       <h2 className={"hidden"} aria-live="polite">
-        {showDetails ? "Personal Portfolio" : "Loading"}
+        {showDetails ? "Personal Portfolio" : "Loading"}.
       </h2>
       <Cat
         showName={showDetails}

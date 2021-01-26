@@ -40,9 +40,8 @@ const Index: React.FC<PageProps> = () => {
     <>
       <main>
         <Helmet>
-          <title>Yash Mahalwal</title>
+          <title>Yash Mahalwal - Portfolio</title>
         </Helmet>
-        <h1 className="hidden">Yash Mahalwal</h1>
         <Hero onLoad={() => setLoading(false)} ref={heroRef} />
 
         <div className={clsx(isLoading && "hidden-all")}>

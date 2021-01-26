@@ -5,7 +5,7 @@ import classes from "./styles.module.scss"
 import figlet from "figlet"
 //@ts-ignore
 import standard from "figlet/importable-fonts/Standard"
-import Opacity from "../../OpacityTransition"
+import Opacity from "../../Opacity"
 import { checkIfElementOnTop } from "../../utils/checkTop"
 //@ts-ignore
 figlet.parseFont("Standard", standard)
@@ -51,21 +51,11 @@ const Hero: React.FC = () => {
           <code>
             <b className={classes.green}>terminal@machine</b>:
             <b className={classes.blue}>~$</b>&nbsp;nirikshak
-            <Opacity
-              unmountOnExit={false}
-              mountOnEnter={false}
-              duration={opacityDuration}
-              visible={enter[0]}
-            >
+            <Opacity duration={opacityDuration} visible={enter[0]}>
               <pre className={classes.figletLogo}>{logo}</pre>
               <p className={classes.tagLine}>Test your REST APIs with ease</p>
             </Opacity>
-            <Opacity
-              unmountOnExit={false}
-              mountOnEnter={false}
-              duration={opacityDuration}
-              visible={enter[1]}
-            >
+            <Opacity duration={opacityDuration} visible={enter[1]}>
               <table className={classes.commands}>
                 <tbody>
                   <tr>

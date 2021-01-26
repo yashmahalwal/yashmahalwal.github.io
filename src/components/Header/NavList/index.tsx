@@ -61,6 +61,7 @@ const NavList: React.FC<NavProps> = ({ list, closeMenu }) => {
               }}
             >
               {el.title}
+              <span className="hidden">.</span>
             </a>
           </li>
         )

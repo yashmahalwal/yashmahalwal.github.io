@@ -24,7 +24,9 @@ const Contact = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <footer tabIndex={-1} className={classes.section} ref={ref}>
       <div className="container">
-        <h2 className={classes.heading}>I'd love to hear from you</h2>
+        <h2 className={classes.heading}>
+          I'd love to hear from you<span className="hidden">.</span>
+        </h2>
         <p className={classes.content}>
           If you want a powerful, elegant and cutting edge modern web
           application - I'm your guy. My driving principle is quality and I have
@@ -34,24 +36,24 @@ const Contact = React.forwardRef<HTMLDivElement>((_, ref) => {
         <div className={classes.iconHolder}>
           <IconButton href="https://www.linkedin.com/in/yashmahalwal/">
             <FontAwesomeIcon size="lg" icon={faLinkedinIn} />
-            <span className="hidden">LinkedIn</span>
+            <span className="hidden">LinkedIn,</span>
           </IconButton>
           <IconButton href="https://www.facebook.com/yashmahalwal/">
             <FontAwesomeIcon size="lg" icon={faFacebookF} />
-            <span className="hidden">Facebook</span>
+            <span className="hidden">Facebook,</span>
           </IconButton>
           <IconButton href="mailto:yashmahalwal@gmail.com">
             <FontAwesomeIcon size="lg" icon={faEnvelope} />
-            <span className="hidden">Email</span>
+            <span className="hidden">Email,</span>
           </IconButton>
           <IconButton href="https://medium.com/@yashmahalwal">
             <FontAwesomeIcon size="lg" icon={faMediumM} />
-            <span className="hidden">Medium</span>
+            <span className="hidden">Medium.</span>
           </IconButton>
           <p className={clsx("text-center", classes.credit)}>
             Made with ❤️ by{" "}
             <a target="_blank" href="https://yashmahalwal.github.io">
-              Yash
+              Yash.
             </a>
           </p>
         </div>

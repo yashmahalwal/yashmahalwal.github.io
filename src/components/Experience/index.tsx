@@ -51,15 +51,21 @@ const list = [
 const Experience = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <section tabIndex={-1} className={classes.section} ref={ref}>
-      <h2 className="hidden-all">My Journey and Experiences</h2>
+      <h2 className="hidden">My Journey and Experiences.</h2>
       <div className={"container"}>
         <ol className={classes.holder}>
           {list.map((e, i) => (
             <li key={i}>
               <div className={classes.card}>
                 <FontAwesomeIcon size="2x" icon={e.icon} />
-                <h3>{e.title}</h3>
-                <p>{e.description}</p>
+                <h3>
+                  {e.title}
+                  <span className="hidden">.</span>
+                </h3>
+                <p>
+                  {e.description}
+                  <span className="hidden">.</span>
+                </p>
               </div>
             </li>
           ))}

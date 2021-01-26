@@ -183,6 +183,8 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
 
   return (
     <svg
+      role="img"
+      aria-label="Logo."
       ref={svgRef}
       className={clsx(classes.svg, !svgRotated && classes.visible)}
       viewBox="0 0 338.66668 270.93333"

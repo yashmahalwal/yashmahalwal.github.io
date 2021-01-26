@@ -1,5 +1,6 @@
 import clsx from "clsx"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import useEffectExceptMount from "use-effect-except-mount"
 import Opacity from "../Opacity"
 import { useIsOnTablet } from "../utils/envrionmentCheck"
 import NavList, { NavProps } from "./NavList"
@@ -11,10 +12,28 @@ interface Props {
 const Header: React.FC<Props> = props => {
   const [menuOpen, setMenuOpen] = React.useState(false)
   const isOnTablet = useIsOnTablet()
+  const menuOpenResult = !isOnTablet || menuOpen
+
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        setMenuOpen(false)
+        buttonRef.current?.focus()
+      }
+    })
+  }, [])
+
+  const navRef = useRef<HTMLDivElement>(null)
 
   return (
     <header className={classes.header}>
       <button
+        ref={buttonRef}
+        aria-controls="nav-menu"
+        aria-expanded={menuOpenResult}
+        aria-label="Toggle Menu"
         onClick={() => setMenuOpen(m => !m)}
         className={clsx(
           classes.control,
@@ -37,8 +56,8 @@ const Header: React.FC<Props> = props => {
           />
         </svg>
       </button>
-      <Opacity visible={!isOnTablet || menuOpen} useDisplayNone>
-        <nav>
+      <Opacity visible={menuOpenResult} useDisplayNone>
+        <nav id="nav-menu">
           <NavList {...props} closeMenu={() => setMenuOpen(false)} />
         </nav>
       </Opacity>

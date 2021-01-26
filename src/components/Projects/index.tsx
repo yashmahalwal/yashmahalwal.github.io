@@ -4,9 +4,9 @@ import clsx from "clsx"
 import { ProjectNames } from "../../pages"
 import closeClasses from "./close.module.scss"
 import { checkIfElementOnTop } from "../utils/checkTop"
-import Opacity from "../OpacityTransition"
 import ProjectDescription from "./Description"
 import useEffectExceptMount from "use-effect-except-mount"
+import Opacity from "../Opacity"
 
 const projects: { name: ProjectNames; alt: string; logo: string }[] = [
   { name: "Megatreopuz", logo: "/megatreopuz-logo.png", alt: "Megatreopuz" },
@@ -104,16 +104,18 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
       if (enter) {
         setEnter(false)
         // Ensure that the paint has completed
-        requestAnimationFrame(() =>
-          // Timeout to ensure that the exit animation has been completed
-          setTimeout(() => {
-            setEnter(true)
-            setCurrent(globalCurrent)
-            cardRef.current?.focus({ preventScroll: true })
-            // 300ms is enough to push to next cycle
-            // To let the previous CSS animations complete
-            // Check SASS : 200ms animations + 100ms delay
-          }, 300)
+        setTimeout(
+          () =>
+            // Timeout to ensure that the exit animation has been completed
+            requestAnimationFrame(() => {
+              setEnter(true)
+              setCurrent(globalCurrent)
+              cardRef.current?.focus({ preventScroll: true })
+              // 300ms is enough to push to next cycle
+              // To let the previous CSS animations complete
+              // Check SASS : 200ms animations + 100ms delay
+            }),
+          300
         )
       } else setCurrent(globalCurrent)
     }, [globalCurrent])
@@ -153,7 +155,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
       >
         {/* Announce the Project */}
         <div className="hidden" aria-live="polite" aria-atomic>
-          {title}: Project {slideNumber} of {projects.length}
+          Project {slideNumber} of {projects.length}.
         </div>
         <div className={classes.cardHolder}>
           {/* The simple background */}
@@ -190,15 +192,16 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
               className={clsx(classes.innerCard, classes.defaultDimension)}
             >
               {/* Title */}
-              <Opacity
-                unmountOnExit={false}
-                mountOnEnter={false}
-                duration={opacityDuration}
-                visible={enter}
-              >
-                <h3 className={clsx(classes.title)}>{title}</h3>
+              <Opacity duration={opacityDuration} visible={enter}>
+                <h3 className={clsx(classes.title)}>
+                  {title}
+                  <span className="hidden">.</span>
+                </h3>
                 {/* Subtitle */}
-                <p className={clsx(classes.subtitle)}>{subtitle}</p>
+                <p className={clsx(classes.subtitle)}>
+                  {subtitle}
+                  <span className="hidden">.</span>
+                </p>
               </Opacity>
               <div className={classes.moreButtonHolder} aria-live="polite">
                 {/* Loading indicator */}
@@ -207,13 +210,11 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
                     role="progressbar"
                     className={clsx(classes.loader, projectTheme)}
                   >
-                    <span className="hidden">Loading</span>
+                    <span className="hidden">Loading.</span>
                   </div>
                 </Opacity>
                 {/* Know more button: Expands the current project */}
                 <Opacity
-                  unmountOnExit={false}
-                  mountOnEnter={false}
                   duration={opacityDuration}
                   visible={enter && !showLoading && !expandedState}
                 >
@@ -224,7 +225,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
                     onClick={expandCard}
                     className={clsx(classes.moreButton, projectTheme)}
                   >
-                    Know More
+                    Know More<span className="hidden">.</span>
                   </button>
                 </Opacity>
               </div>
@@ -260,7 +261,6 @@ const Buttons: React.FunctionComponent<ButtonsProps> = ({
               onClick={() => updateState(p.name)}
             >
               <img src={p.logo} alt={p.alt + " logo"} />
-              <span className="hidden">{p.name}</span>
             </button>
           </li>
         ))}
@@ -278,7 +278,7 @@ const Close: React.FunctionComponent<CloseProps> = ({ onClick, visible }) => {
   return (
     <div className={clsx(closeClasses.holder)}>
       <div className={closeClasses.wrapper}>
-        <Opacity visible={visible}>
+        <Opacity visible={visible} useDisplayNone>
           <button
             aria-controls="project-details"
             aria-expanded={visible}
@@ -337,7 +337,7 @@ const Projects = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <section tabIndex={-1} className={classes.projectSection} ref={ref}>
-      <h2 className="hidden">Work</h2>
+      <h2 className="hidden">Work and Projects.</h2>
 
       <ProjectCards
         ref={cardRef}

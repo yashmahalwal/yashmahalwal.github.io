@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faFacebookF,
+  faGithub,
   faLinkedinIn,
   faMediumM,
 } from "@fortawesome/free-brands-svg-icons"
@@ -49,6 +50,10 @@ const Contact = React.forwardRef<HTMLDivElement>((_, ref) => {
           <IconButton href="https://medium.com/@yashmahalwal">
             <FontAwesomeIcon size="lg" icon={faMediumM} />
             <span className="hidden">Medium.</span>
+          </IconButton>
+          <IconButton href="https://github.com/yashmahalwal">
+            <FontAwesomeIcon size="lg" icon={faGithub} />
+            <span className="hidden">GitHub.</span>
           </IconButton>
           <p className={clsx("text-center", classes.credit)}>
             Made with ❤️ by{" "}

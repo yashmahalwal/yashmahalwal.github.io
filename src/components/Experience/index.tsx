@@ -34,7 +34,7 @@ const list = [
   {
     icon: faBriefcase,
     title: "January 2021",
-    description: "Start as a CFR intern at American Express",
+    description: "Start as a analyst intern at American Express",
   },
   {
     icon: faCheck,

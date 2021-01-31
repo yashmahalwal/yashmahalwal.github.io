@@ -194,6 +194,7 @@ $list-height: 70px;
 
     &:disabled {
       cursor: not-allowed;
+      filter: grayscale(100%);
     }
 
     &:hover:not(:disabled) {

@@ -235,7 +235,7 @@ const ProjectCards = React.forwardRef<HTMLDivElement, CardProps>(
         {/* Controls */}
         <Opacity duration={opacityDuration} visible={!expandedState}>
           <Buttons
-            disabled={loading}
+            disabled={loading || expanded}
             updateState={updateState}
             current={current}
           />

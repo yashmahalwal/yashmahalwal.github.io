@@ -13,8 +13,7 @@ export interface NavProps {
 }
 
 const NavList: React.FC<NavProps> = ({ list, closeMenu }) => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
-
+  const [activeIndex, setActiveIndex] = useState<number>()
   React.useEffect(() => {
     const observerList = list.map((el, index) => {
       const observer = new IntersectionObserver(

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import useEffectExceptMount from "use-effect-except-mount"
 
 interface Props {
   visible: boolean

@@ -1,6 +1,5 @@
 import clsx from "clsx"
 import React, { useEffect, useRef, useState } from "react"
-import useEffectExceptMount from "use-effect-except-mount"
 import Opacity from "../Opacity"
 import { useIsOnTablet } from "../utils/envrionmentCheck"
 import NavList, { NavProps } from "./NavList"
@@ -24,8 +23,6 @@ const Header: React.FC<Props> = props => {
       }
     })
   }, [])
-
-  const navRef = useRef<HTMLDivElement>(null)
 
   return (
     <header className={classes.header}>
@@ -58,7 +55,10 @@ const Header: React.FC<Props> = props => {
       </button>
       <Opacity visible={menuOpenResult} useDisplayNone>
         <nav id="nav-menu">
-          <NavList {...props} closeMenu={() => setMenuOpen(false)} />
+          <NavList
+            {...props}
+            closeMenu={() => setMenuOpen(false)}
+          />
         </nav>
       </Opacity>
     </header>

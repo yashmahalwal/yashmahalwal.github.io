@@ -34,11 +34,11 @@ const list = [
   {
     icon: faBriefcase,
     title: "January 2021",
-    description: "Start as a analyst intern at American Express",
+    description: "Started as a analyst intern at American Express",
   },
   {
     icon: faCheck,
-    title: "July 2021",
+    title: "June 2021",
     description: "Complete internship at American Express",
   },
   {

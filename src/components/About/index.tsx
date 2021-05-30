@@ -14,10 +14,10 @@ const About = React.forwardRef<HTMLDivElement>((_, ref) => {
             Hi there! My name is Yash Mahalwal. I'm a computer science undergrad
             living in India.
           </strong>{" "}
-          My passion is bringing ideas to life and driving principle is quality.
-          I have a no compromise attitude towards it. I have more than three
-          years of hand on experience with modern fullstack development and I am
-          always looking for exciting opportunities.
+          My passion is bringing ideas to life and driving principle is quality
+          and I have a no compromise attitude towards it. I have more than three
+          years of hand on experience with full stack modern web development and
+          I am always looking for exciting opportunities.
         </p>
         <br />
         <p>

@@ -1,19 +1,10 @@
 @import "../../helpers.scss";
 
-@keyframes fillTile {
-  100% {
-    stroke: #ae0520;
-    fill: #ae0520;
-  }
-}
-@keyframes animateTile {
-  to {
-    opacity: 1;
-    transform: rotateZ(0deg);
-  }
-}
+$during-loading-color: #ae0520;
+$on-loaded-color: #3b3b3d;
+
 .svg {
-  transition: transform 300ms;
+  transition: transform 500ms;
   height: calc(100% - 100px);
   transform: rotate(-10deg);
 
@@ -23,12 +14,18 @@
 
   .catPaths {
     path {
-      transform: rotateZ(-20deg);
+      fill: $during-loading-color;
+      stroke: $during-loading-color;
+      // transform: rotateZ(-5deg);
       transform-origin: center;
       opacity: 0;
+      transition-property: stroke, fill;
+      transition-delay: 30ms;
 
       &.ready {
-        animation: animateTile 60ms forwards, fillTile 200ms;
+        opacity: 1;
+        stroke: $on-loaded-color;
+        fill: $on-loaded-color;
       }
     }
   }

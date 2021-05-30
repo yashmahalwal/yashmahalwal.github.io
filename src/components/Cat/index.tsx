@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { RefObject, useEffect, useRef } from "react"
+import React, { RefObject, useEffect, useMemo, useRef } from "react"
 import useEffectExceptMount from "use-effect-except-mount"
 import { convert } from "../SVGMorphing/convert"
 import { convertToCircle } from "../SVGMorphing/convertToCircle"
@@ -10,10 +10,7 @@ import {
 import { useIsOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
 const totalPaths = 30
-const loadingGrey = "#3b3b3d"
 const defaultStyle = {
-  fill: loadingGrey,
-  stroke: loadingGrey,
   strokeWidth: 3.402,
 }
 
@@ -25,14 +22,36 @@ interface Props {
 const Cat: React.FC<Props> = ({ onLoad, showName }) => {
   const [tilesLoaded, setTilesLoaded] = React.useState(false)
   const isOnTablet = useIsOnTablet()
-  const [loadingRatio, setLoadingRatio] = React.useState(0)
+  const readyTilesUpto = useRef(-1)
+  const [shownTilesUpto, setShownTilesUpto] = React.useState(-1)
   const [svgRotated, setSvgRotated] = React.useState(true)
   const { current: paths } = React.useRef<RefObject<SVGPathElement>[]>(
     new Array(totalPaths)
   )
   const svgRef = React.useRef<SVGSVGElement>(null)
+  const isTileLoading = useRef(false)
 
   for (let i = 0; i < paths.length; i++) paths[i] = useRef<SVGPathElement>(null)
+
+  function triggerLoad() {
+    // Load tiles upto ready tiles.
+    if (shownTilesUpto == readyTilesUpto.current) {
+      isTileLoading.current = false
+      return
+    }
+
+    isTileLoading.current = true
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        setShownTilesUpto(t => t + 1)
+      })
+    }, 30)
+  }
+
+  // Whenever a tile is shown, trigger a load
+  useEffectExceptMount(() => {
+    requestAnimationFrame(triggerLoad)
+  }, [shownTilesUpto])
 
   // Check the loading percentage
   useEffect(() => {
@@ -41,12 +60,17 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     for (let i = 0; i < images.length; i++) {
       const copyImg = new Image()
       copyImg.onload = copyImg.onerror = () => {
-        setLoadingRatio(++count / images.length)
+        readyTilesUpto.current = (++count / images.length) * totalPaths
+        if (!isTileLoading.current) triggerLoad()
+        copyImg.remove()
       }
       copyImg.src = images[i].src
     }
 
-    if (!images.length) setLoadingRatio(1)
+    if (!images.length) {
+      readyTilesUpto.current = totalPaths
+      if (!isTileLoading.current) triggerLoad()
+    }
   }, [])
 
   // Convert the logo to cat when done
@@ -54,9 +78,10 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     // When loading done
 
     const catMap = new Map()
-    const catTimeout = 300
+    const catTimeout = 250
+    const halfOfPaths = Math.round(totalPaths / 2)
     function makeCat(count: number) {
-      if (count === paths.length) return onLoad()
+      if (count >= paths.length) return onLoad()
 
       const color = paths[count].current!.getAttribute("data-cat-color")
 
@@ -91,13 +116,16 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
               easeInOutCubic
             )
         }
-        setTimeout(() => makeCat(count + 1), 10)
+        setTimeout(
+          () => makeCat(count + 1),
+          halfOfPaths - Math.abs(halfOfPaths - count)
+        )
       })
     }
 
     function startCat() {
       setSvgRotated(false)
-      setTimeout(() => makeCat(0), 500)
+      setTimeout(() => makeCat(0), isOnTablet ? 0 : 500)
     }
 
     const scatterMap = new Map()
@@ -110,7 +138,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             equivalentD,
             Date.now(),
             scatterMap,
-            1000,
+            700,
             easeInOutCubic
           )
         })
@@ -130,56 +158,23 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             count
           ].current!.style.fill = equivalentColor
           paths[count].current!.style.strokeLinejoin = "miter"
-          convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 20)
-
-          setTimeout(() => requestAnimationFrame(() => scatter(count)), 10)
-
+          convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 5)
+          setTimeout(() => requestAnimationFrame(() => scatter(count)), 5)
           if (count === paths.length - 1) setTimeout(() => startCat(), 1000)
         })
       }
 
-      setTimeout(() => zoom(count + 1), 5)
+      setTimeout(() => zoom(count + 1), 20)
     }
 
-    if (isOnTablet) startCat()
-    else zoom(0)
-  }, [tilesLoaded])
-
-  const [loadedTile, setLoadedTile] = React.useState<boolean[]>(() =>
-    new Array(paths.length).fill(false)
-  )
-  const [readyTile, setReadyTile] = React.useState<boolean[]>(() =>
-    new Array(paths.length).fill(false)
-  )
-
-  useEffectExceptMount(() => {
-    const loadTilesUpto = Math.floor(loadingRatio * paths.length)
-
-    setReadyTile(t => {
-      const arr = [...t]
-
-      for (let i = 0; i < loadTilesUpto; i++) arr[i] = true
-      return arr
-    })
-  }, [loadingRatio])
-
-  for (let i = 0; i < paths.length; i++) {
-    const deps = i == 0 ? [readyTile[i]] : [readyTile[i], loadedTile[i - 1]]
-
-    useEffectExceptMount(() => {
-      if (!deps.every(v => v)) return
-
-      setTimeout(() => {
-        setLoadedTile(t => {
-          const arr = [...t]
-          arr[i] = true
-          return arr
-        })
-
-        if (i === paths.length - 1) setTimeout(() => setTilesLoaded(true), 200)
-      }, 60 + Math.random() * 120)
-    }, deps)
-  }
+    setTimeout(
+      () => {
+        if (isOnTablet) startCat()
+        else zoom(0)
+      },
+      isOnTablet ? 50 : 500
+    )
+  }, [shownTilesUpto === totalPaths])
 
   return (
     <svg
@@ -203,7 +198,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-color="#6bcef9"
           data-zoomed-d="m 185.25257,62.333716 -15.10875,-1.6611 v 72.746774 l 15.10875,-71.085674"
           data-zoomed-color="#8f8f8f"
-          className={clsx(loadedTile[0] && classes.ready)}
+          className={clsx(shownTilesUpto >= 0 && classes.ready)}
           ref={paths[0]}
           id="path1157"
           data-scattered-d="m 64.620836,46.82471 -7.55437,-0.83055 v 36.37339 l 7.55437,-35.54284"
@@ -215,7 +210,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-color="#196fa3"
           data-zoomed-d="m 200.26757,67.226416 -14.4375,-4.7667 -15.12375,71.156924 29.56125,-66.390224"
           data-zoomed-color="#828282"
-          className={clsx(loadedTile[1] && classes.ready)}
+          className={clsx(shownTilesUpto >= 1 && classes.ready)}
           ref={paths[1]}
           id="path1155"
           data-scattered-d="m 45.638103,143.27976 -7.21875,-2.38335 -7.56188,35.57846 14.78063,-33.19511"
@@ -227,7 +222,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-color="#6bcef9"
           data-zoomed-d="m 213.93932,75.134641 -13.13025,-7.66395 -29.595,66.468449 42.72525,-58.804499"
           data-zoomed-color="#7f7f7f"
-          className={clsx(loadedTile[2] && classes.ready)}
+          className={clsx(shownTilesUpto >= 2 && classes.ready)}
           ref={paths[2]}
           id="path1153"
           data-scattered-d="m 189.50915,15.114487 -6.56512,-3.83197 -14.7975,33.234222 21.36263,-29.402252"
@@ -239,7 +234,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-color="#196fa3"
           data-zoomed-color="#777777"
           data-zoomed-d="m 225.66332,85.711441 -11.247,-10.22625 -42.7635,58.861199 54.0105,-48.634949"
-          className={clsx(loadedTile[3] && classes.ready)}
+          className={clsx(shownTilesUpto >= 3 && classes.ready)}
           ref={paths[3]}
           id="path1151"
           data-scattered-d="M 221.50285,26.107229 215.87934,20.994105 194.4976,50.424712 221.50285,26.107229"
@@ -249,7 +244,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 187.524,56.9984 H 140.099 L 114.047,74.032 v 21.7935 l 36.988,24.3735 z"
           data-cat-color="#2ec7ff"
-          className={clsx(loadedTile[4] && classes.ready)}
+          className={clsx(shownTilesUpto >= 4 && classes.ready)}
           ref={paths[4]}
           data-zoomed-color="#737373"
           data-zoomed-d="m 234.93707,98.496316 -8.877,-12.34305 -54.07575,48.687374 62.95275,-36.344324"
@@ -261,7 +256,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="m 187.524,56.9984 -36.489,63.2006 6.349,4.183 h 25.299 L 220.259,95.8255 V 74.032 L 191.702,56.9984 Z"
           data-cat-color="#2ec7ff"
-          className={clsx(loadedTile[5] && classes.ready)}
+          className={clsx(shownTilesUpto >= 5 && classes.ready)}
           ref={paths[5]}
           data-zoomed-color="#6f6f6f"
           data-zoomed-d="m 241.34507,112.92714 -6.11475,-13.918499 -63.01125,36.377999 69.126,-22.4595"
@@ -273,7 +268,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="m 168.275,101.206 -13.771,-10.0148 -11.022,10.0198 14.779,11.273 10.014,-5.758 z"
           data-cat-color="#2eb5ff"
-          className={clsx(loadedTile[6] && classes.ready)}
+          className={clsx(shownTilesUpto >= 6 && classes.ready)}
           ref={paths[6]}
           id="path1145"
           data-scattered-d="m 322.95646,59.739838 -1.54574,-7.442632 -34.59675,11.239877 36.14249,-3.797245"
@@ -287,7 +282,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-d="m 168.275,101.206 v 5.52 l 0.006,-0.004 10.02,5.762 12.55,-9.82 -9.042,-11.4728 -13.528,10.0198 z"
           data-zoomed-color="#626262"
           data-zoomed-d="m 244.60232,144.16989 0.423,-7.96125 -0.3495,-7.2435 -72.36075,7.60575 72.28725,7.599"
-          className={clsx(loadedTile[7] && classes.ready)}
+          className={clsx(shownTilesUpto >= 7 && classes.ready)}
           ref={paths[7]}
           id="path1143"
           data-scattered-d="m 56.816678,246.2533 0.2115,-3.98062 -0.17474,-3.62175 -36.18038,3.80287 36.14362,3.7995"
@@ -297,7 +292,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 154.63,91.3164 150.546,83.05 h -13.727 l -3.357,5.5109 6.964,7.2645 9.569,0.1253 z"
           data-cat-color="#ffffff"
-          className={clsx(loadedTile[8] && classes.ready)}
+          className={clsx(shownTilesUpto >= 8 && classes.ready)}
           ref={paths[8]}
           id="path1141"
           data-scattered-d="m 178.08331,239.35667 1.61587,-7.42687 -36.17924,-3.80288 34.56337,11.22975"
@@ -311,7 +306,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-d="m 185.566,95.8254 -3.608,-4.4088 3.307,-8.1162 h 12.099 l 4.309,5.3858 -6.639,7.1392 z"
           data-zoomed-color="#575757"
           data-zoomed-d="m 234.86957,174.03189 6.252,-13.8555 -69.189,-22.482 62.937,36.3375"
-          className={clsx(loadedTile[9] && classes.ready)}
+          className={clsx(shownTilesUpto >= 9 && classes.ready)}
           ref={paths[9]}
           id="path1139"
           data-scattered-d="m 320.3322,201.35095 3.126,-6.92775 -34.5945,-11.241 31.4685,18.16875"
@@ -326,7 +321,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-radius="6.146875266"
           data-zoomed-color="#525252"
           data-zoomed-d="m 225.57632,186.80139 8.9955,-12.255 -63.00375,-36.375 54.00825,48.63"
-          className={clsx(loadedTile[10] && classes.ready)}
+          className={clsx(shownTilesUpto >= 10 && classes.ready)}
           ref={paths[10]}
           id="path1137"
           data-scattered-d="m 256.99227,254.64557 4.49775,-6.1275 -31.50188,-18.1875 27.00413,24.315"
@@ -339,7 +334,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-y="85.989586725"
           data-cat-radius="1.2"
           data-cat-color="#ffffff"
-          className={clsx(loadedTile[11] && classes.ready)}
+          className={clsx(shownTilesUpto >= 11 && classes.ready)}
           ref={paths[11]}
           id="path1135"
           data-scattered-d="m 217.58733,257.06187 5.673,-5.05838 -27.03225,-24.33975 21.35925,29.39813"
@@ -354,7 +349,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-x="191.03711170069"
           data-cat-y="89.378899358"
           data-cat-radius="6.146875266"
-          className={clsx(loadedTile[12] && classes.ready)}
+          className={clsx(shownTilesUpto >= 12 && classes.ready)}
           ref={paths[12]}
           data-zoomed-color="#464646"
           data-zoomed-d="m 200.15132,205.24314 13.2015,-7.54125 -42.768,-58.8615 29.5665,66.40275"
@@ -371,7 +366,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-radius="1.2"
           data-zoomed-d="m 185.12732,210.10914 14.4825,-4.629 -29.5935,-66.465 15.111,71.094"
           data-zoomed-color="#434343"
-          className={clsx(loadedTile[13] && classes.ready)}
+          className={clsx(shownTilesUpto >= 13 && classes.ready)}
           ref={paths[13]}
           id="path1131"
           data-scattered-d="m 28.42728,47.855854 7.241258,-2.31451 -14.796758,-33.232495 7.5555,35.546995"
@@ -381,7 +376,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="m 160.891,95.8254 h 14.78 l -7.265,5.7616 z"
           data-cat-color="#196fa3"
-          className={clsx(loadedTile[14] && classes.ready)}
+          className={clsx(shownTilesUpto >= 14 && classes.ready)}
           ref={paths[14]}
           id="path1129"
           data-scattered-d="m 61.252535,206.68241 h 0.0322 l 7.53075,-0.7575 -7.563,-35.5815 v 36.339"
@@ -393,7 +388,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="m 143.482,101.211 14.779,11.147 10.02,-5.586 10.02,5.586 12.525,-9.869 7.515,9.869 -15.781,12.15 h -25.551 l -22.295,-14.931 z"
           data-cat-color="#46d3f9"
-          className={clsx(loadedTile[15] && classes.ready)}
+          className={clsx(shownTilesUpto >= 15 && classes.ready)}
           ref={paths[15]}
           id="path1127"
           data-scattered-d="m 99.40212,102.08064 7.55437,0.83026 V 66.540404 l -7.55437,35.540246"
@@ -405,7 +400,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 157.26 125.037 L 145.364 143.251 L 193.323 145.95 L 182.41 125.037 L 157.26 125.037 Z"
           data-cat-color="#5cd3ff"
-          className={clsx(loadedTile[16] && classes.ready)}
+          className={clsx(shownTilesUpto >= 16 && classes.ready)}
           ref={paths[16]}
           id="path1125"
           data-scattered-d="m 89.611168,42.073489 7.21762,2.38389 L 104.39104,8.8769988 89.611168,42.073489"
@@ -419,7 +414,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           data-cat-color="#196fa3"
           data-zoomed-color="#353535"
           data-zoomed-d="m 125.03507,197.28114 13.128,7.66425 29.5905,-66.45825 -42.7185,58.794"
-          className={clsx(loadedTile[17] && classes.ready)}
+          className={clsx(shownTilesUpto >= 17 && classes.ready)}
           ref={paths[17]}
           id="path1123"
           data-scattered-d="m 290.19896,37.708027 6.564,3.83213 14.79525,-33.2291295 -21.35925,29.3969995"
@@ -429,7 +424,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-color="#196fa3"
           data-cat-d="M 169.181 127.638 L 180.931 127.638 L 183.812 126.888 L 182.635 124.657 L 172.223 124.595 L 169.181 127.638 Z "
-          className={clsx(loadedTile[18] && classes.ready)}
+          className={clsx(shownTilesUpto >= 18 && classes.ready)}
           ref={paths[18]}
           id="path1121"
           data-scattered-d="m 302.51066,152.22727 5.62507,5.11312 21.38138,-29.43037 -27.00645,24.31725"
@@ -441,7 +436,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 193.352 146.004 L 145.331 143.302 L 142.306 147.934 L 169.21 173.084 L 194.359 147.934 L 193.352 146.004 Z"
           data-cat-color="#5cd3ff"
-          className={clsx(loadedTile[19] && classes.ready)}
+          className={clsx(shownTilesUpto >= 19 && classes.ready)}
           ref={paths[19]}
           id="path1119"
           data-scattered-d="m 266.0604,224.52205 4.43861,6.17137 27.03656,-24.34313 -31.47517,18.17176"
@@ -451,7 +446,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           d="m 130.70176,158.55795 c 1.50283,2.60772 3.26563,5.05892 5.26055,7.31385 l 32.04353,-28.85083 z"
         />
         <path
-          className={clsx(loadedTile[20] && classes.ready)}
+          className={clsx(shownTilesUpto >= 20 && classes.ready)}
           ref={paths[20]}
           data-cat-d="M 143.231 201.16 L 132.164 222.114 C 136.842 223.367 150.72 227.086 152.073 227.448 L 143.231 201.16 Z"
           data-cat-color="#299acc"
@@ -465,7 +460,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 152.073 227.448 C 150.72 227.086 136.842 223.367 132.164 222.114 L 124.444 236.73 L 129.716 245.737 L 155.867 238.73 L 152.073 227.448 Z"
           data-cat-color="#299acc"
-          className={clsx(loadedTile[21] && classes.ready)}
+          className={clsx(shownTilesUpto >= 21 && classes.ready)}
           ref={paths[21]}
           id="path1115"
           data-scattered-d="m 268.96179,124.71505 1.54556,7.44263 34.59671,-11.241 -36.14227,3.79837"
@@ -477,7 +472,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 155.867 238.73 L 129.716 245.737 L 136.468 257.271 L 162.019 257.021 L 155.867 238.73 Z"
           data-cat-color="#299acc"
-          className={clsx(loadedTile[22] && classes.ready)}
+          className={clsx(shownTilesUpto >= 22 && classes.ready)}
           ref={paths[22]}
           id="path1113"
           data-scattered-d="m 248.00085,19.577959 -0.2103,3.97875 0.17463,3.6225 36.1791,-3.80287 -36.14343,-3.79838"
@@ -490,7 +485,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="m 201.898,213.434 22.845,-10.019 -18.06,19.063 z"
           data-cat-color="#5cd3ff"
-          className={clsx(loadedTile[23] && classes.ready)}
+          className={clsx(shownTilesUpto >= 23 && classes.ready)}
           ref={paths[23]}
           id="path1111"
           data-scattered-d="m 132.1109,245.67819 -1.61498,7.42761 36.17925,3.80175 -34.56427,-11.22936"
@@ -502,7 +497,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 177.694 248.882 L 174.669 257.147 L 199.218 257.147 L 205.164 248.882 L 177.694 248.882 Z"
           data-cat-color="#299acc"
-          className={clsx(loadedTile[24] && classes.ready)}
+          className={clsx(shownTilesUpto >= 24 && classes.ready)}
           ref={paths[24]}
           id="path1109"
           data-scattered-d="m 73.758976,138.90135 -3.12472,6.92913 34.603424,11.24437 -31.478704,-18.1735"
@@ -514,7 +509,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 201.59 213.115 L 184.55 230.155 L 177.694 248.882 L 205.164 248.882 L 213.996 236.606 L 201.59 213.115 Z"
           data-cat-color="#299acc"
-          className={clsx(loadedTile[25] && classes.ready)}
+          className={clsx(shownTilesUpto >= 25 && classes.ready)}
           ref={paths[25]}
           id="path1107"
           data-scattered-d="m 263.68561,77.295696 -4.49683,6.12754 31.50237,18.188364 -27.00555,-24.315904"
@@ -526,7 +521,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 201.59 213.115 L 195.21 201.035 L 184.55 230.155 L 201.59 213.115 Z"
           data-cat-color="#299acc"
-          className={clsx(loadedTile[26] && classes.ready)}
+          className={clsx(shownTilesUpto >= 26 && classes.ready)}
           ref={paths[26]}
           id="path1105"
           data-scattered-d="m 16.607056,187.48138 -5.67323,5.05995 27.03323,24.3405 -21.36,-29.40046"
@@ -538,7 +533,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 142.104 147.428 L 130.081 161.706 L 144.379 204.264 L 199.531 189.486 L 209.739 161.706 L 194.459 147.428 L 169.158 172.979 L 142.104 147.428 Z"
           data-cat-color="#2eb5ff"
-          className={clsx(loadedTile[27] && classes.ready)}
+          className={clsx(shownTilesUpto >= 27 && classes.ready)}
           ref={paths[27]}
           id="path1103"
           data-scattered-d="m 305.78846,78.0434 -6.60187,3.77021 21.38737,29.43735 -14.7855,-33.20756"
@@ -550,7 +545,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-color="#2eb5ff"
           data-cat-d="M 199.509 189.547 L 144.396 204.314 L 155.714 238.005 L 188.7 218.96 L 199.509 189.547 Z"
-          className={clsx(loadedTile[28] && classes.ready)}
+          className={clsx(shownTilesUpto >= 28 && classes.ready)}
           ref={paths[28]}
           id="path1101"
           data-scattered-d="m 137.65622,13.668145 -7.24087,2.3151 14.79525,33.232078 -7.55438,-35.547168"
@@ -562,7 +557,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         <path
           data-cat-d="M 188.672 219.036 L 155.731 238.055 L 162.145 257.147 L 174.669 257.147 L 188.672 219.036 Z"
           data-cat-color="#2eb5ff"
-          className={clsx(loadedTile[29] && classes.ready)}
+          className={clsx(shownTilesUpto >= 29 && classes.ready)}
           ref={paths[29]}
           id="path1099"
           data-scattered-d="m 102.06773,218.30585 h -0.0315 l -7.531885,0.75881 7.563385,35.58177 v -36.34058"

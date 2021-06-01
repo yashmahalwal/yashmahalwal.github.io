@@ -78,10 +78,10 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     // When loading done
 
     const catMap = new Map()
-    const catTimeout = 250
+    const catTimeout = 350
     const halfOfPaths = Math.round(totalPaths / 2)
     function makeCat(count: number) {
-      if (count >= paths.length) return onLoad()
+      if (count >= paths.length) return setTimeout(() => onLoad(), 200)
 
       const color = paths[count].current!.getAttribute("data-cat-color")
 
@@ -118,7 +118,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
         }
         setTimeout(
           () => makeCat(count + 1),
-          halfOfPaths - Math.abs(halfOfPaths - count)
+          halfOfPaths - Math.abs(halfOfPaths - count) + 10
         )
       })
     }

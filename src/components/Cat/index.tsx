@@ -81,7 +81,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     const catMap = new Map()
     const halfOfPaths = Math.round(totalPaths / 2)
     function makeCat(count: number) {
-      const catTimeout = 300
+      const catTimeout = 700
       if (count >= paths.length) return onLoad()
 
       const color = paths[count].current!.getAttribute("data-cat-color")
@@ -139,7 +139,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             equivalentD,
             Date.now(),
             scatterMap,
-            1200,
+            700,
             easeInOutCubic
           )
         })
@@ -160,7 +160,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
           ].current!.style.fill = equivalentColor
           paths[count].current!.style.strokeLinejoin = "miter"
           convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 20)
-          setTimeout(() => requestAnimationFrame(() => scatter(count)), 200)
+          setTimeout(() => requestAnimationFrame(() => scatter(count)), 50)
           if (count === paths.length - 1) setTimeout(() => startCat(), 2000)
         })
       }

@@ -6,6 +6,7 @@ import { convertToCircle } from "../SVGMorphing/convertToCircle"
 import {
   easeInOutCubic,
   easeInOutCubicIndex,
+  easeOutQuad,
 } from "../SVGMorphing/transitionFunctions"
 import { useIsOnTablet } from "../utils/envrionmentCheck"
 import classes from "./styles.module.scss"
@@ -78,10 +79,10 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
     // When loading done
 
     const catMap = new Map()
-    const catTimeout = 350
     const halfOfPaths = Math.round(totalPaths / 2)
     function makeCat(count: number) {
-      if (count >= paths.length) return setTimeout(() => onLoad(), 200)
+      const catTimeout = 300
+      if (count >= paths.length) return onLoad()
 
       const color = paths[count].current!.getAttribute("data-cat-color")
 
@@ -102,7 +103,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             Date.now(),
             catMap,
             catTimeout,
-            easeInOutCubic
+            easeOutQuad
           )
         } else {
           const catD = paths[count].current!.getAttribute("data-cat-d")
@@ -113,7 +114,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
               Date.now(),
               catMap,
               catTimeout,
-              easeInOutCubic
+              easeOutQuad
             )
         }
         setTimeout(
@@ -138,7 +139,7 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             equivalentD,
             Date.now(),
             scatterMap,
-            700,
+            1200,
             easeInOutCubic
           )
         })
@@ -158,9 +159,9 @@ const Cat: React.FC<Props> = ({ onLoad, showName }) => {
             count
           ].current!.style.fill = equivalentColor
           paths[count].current!.style.strokeLinejoin = "miter"
-          convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 5)
-          setTimeout(() => requestAnimationFrame(() => scatter(count)), 5)
-          if (count === paths.length - 1) setTimeout(() => startCat(), 1000)
+          convert(paths[count].current!, equivalentD, Date.now(), zoomMap, 20)
+          setTimeout(() => requestAnimationFrame(() => scatter(count)), 200)
+          if (count === paths.length - 1) setTimeout(() => startCat(), 2000)
         })
       }
 

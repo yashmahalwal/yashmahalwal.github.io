@@ -31,7 +31,14 @@
     top: 20px;
     left: 10px;
     z-index: 7000;
-    display: block;
+    display: flex;
+    align-items: center;
+
+    h5 {
+      margin: 0 0 0 10px;
+      font-style: italic;
+      font-weight: lighter;
+    }
   }
   .menu {
     background-color: transparent;

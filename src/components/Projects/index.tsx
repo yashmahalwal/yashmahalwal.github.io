@@ -336,7 +336,12 @@ const Projects = React.forwardRef<HTMLDivElement>((_, ref) => {
   }
 
   return (
-    <section tabIndex={-1} className={classes.projectSection} ref={ref}>
+    <section
+      id="work"
+      tabIndex={-1}
+      className={classes.projectSection}
+      ref={ref}
+    >
       <h2 className="hidden">Work and Projects.</h2>
 
       <ProjectCards

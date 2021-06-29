@@ -10,6 +10,7 @@ import Experience from "../components/Experience"
 import Hero from "../components/Hero"
 import clsx from "clsx"
 import Header from "../components/Header"
+import { useEffect } from "react"
 
 export type ProjectNames = "Megatreopuz" | "Nirikshak"
 
@@ -20,7 +21,16 @@ const Index: React.FC<PageProps> = () => {
   const experienceRef = React.useRef<HTMLDivElement>(null)
   const projectsRef = React.useRef<HTMLDivElement>(null)
   const contactRef = React.useRef<HTMLDivElement>(null)
-
+  useEffect(() => {
+    let { hash } = window.location
+    if (hash && !isLoading) {
+      setTimeout(() => {
+        document.getElementById(hash.substring(1))?.scrollIntoView({
+          behavior: "smooth",
+        })
+      }, 300)
+    }
+  }, [isLoading])
   const refList = React.useMemo(() => {
     return [
       { title: "Home", ref: heroRef.current },

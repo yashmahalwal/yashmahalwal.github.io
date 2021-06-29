@@ -50,7 +50,7 @@ const list = [
 
 const Experience = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <section tabIndex={-1} className={classes.section} ref={ref}>
+    <section id="experience" tabIndex={-1} className={classes.section} ref={ref}>
       <h2 className="hidden">My Journey and Experiences.</h2>
       <div className={"container"}>
         <ol className={classes.holder}>

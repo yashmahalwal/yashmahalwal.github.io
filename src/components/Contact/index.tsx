@@ -23,7 +23,7 @@ const IconButton: React.FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({
 
 const Contact = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <footer tabIndex={-1} className={classes.section} ref={ref}>
+    <footer id="contact" tabIndex={-1} className={classes.section} ref={ref}>
       <div className="container">
         <h2 className={classes.heading}>
           I'd love to hear from you<span className="hidden">.</span>

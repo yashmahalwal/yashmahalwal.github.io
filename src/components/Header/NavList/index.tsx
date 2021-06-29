@@ -9,11 +9,16 @@ export interface NavProps {
     ref: HTMLDivElement | null
   }[]
   activeIndex: number
-  setActiveIndex: (index: number)=>void
+  setActiveIndex: (index: number) => void
   closeMenu: () => void
 }
 
-const NavList: React.FC<NavProps> = ({ list, closeMenu,activeIndex, setActiveIndex }) => {
+const NavList: React.FC<NavProps> = ({
+  list,
+  closeMenu,
+  activeIndex,
+  setActiveIndex,
+}) => {
   React.useEffect(() => {
     const observerList = list.map((el, index) => {
       const observer = new IntersectionObserver(
@@ -40,13 +45,14 @@ const NavList: React.FC<NavProps> = ({ list, closeMenu,activeIndex, setActiveInd
   return (
     <ul className={classes.list}>
       {list.map((el, index) => {
+        const id = el.ref?.id ?? ""
         return (
           <li
             key={index}
             className={clsx(activeIndex === index && classes.active)}
           >
             <a
-              href="#"
+              href={`#${id}`}
               onClick={e => {
                 e.preventDefault()
                 el.ref?.scrollIntoView({
@@ -55,6 +61,7 @@ const NavList: React.FC<NavProps> = ({ list, closeMenu,activeIndex, setActiveInd
 
                 checkIfElementOnTop(el.ref, () => {
                   closeMenu()
+                  window.location.hash = id
                   el.ref?.focus()
                 })
               }}

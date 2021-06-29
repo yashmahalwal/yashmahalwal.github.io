@@ -3,7 +3,7 @@ import classes from "./styles.module.scss"
 
 const About = React.forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <section tabIndex={-1} className={classes.section} ref={ref}>
+    <section id="about" tabIndex={-1} className={classes.section} ref={ref}>
       <h2 className="hidden">Who am I?</h2>
       <figure className={classes.me}>
         <img src="/me.jpg" alt="My Image." />

@@ -23,12 +23,12 @@ const list = [
   },
   {
     icon: faBriefcase,
-    title: "May 2019",
+    title: "January 2019",
     description: "Product development internship at Appointy IT Pvt Ltd",
   },
   {
     icon: faCheck,
-    title: "April 2020",
+    title: "December 2020",
     description: "Completed internship at Appointy IT Pvt Ltd",
   },
   {
@@ -39,7 +39,7 @@ const list = [
   {
     icon: faCheck,
     title: "June 2021",
-    description: "Complete internship at American Express",
+    description: "Completed internship at American Express",
   },
   {
     icon: faGraduationCap,

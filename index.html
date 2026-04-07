@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yash Mahalwal — Senior Software Engineer</title>
+  <meta name="description" content="Senior Software Engineer building fast, scalable web and mobile products. React, Next.js, TypeScript, WebRTC, AWS. Pune, India — open to remote and Europe relocation.">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:title" content="Yash Mahalwal — Senior Software Engineer">
+  <meta property="og:description" content="Performance-focused frontend engineer. 5+ years shipping products for millions of users.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yashmahalwal.github.io/">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Yash Mahalwal",
+    "jobTitle": "Senior Software Engineer",
+    "email": "yashmahalwal@gmail.com",
+    "url": "https://yashmahalwal.github.io/",
+    "sameAs": [
+      "https://www.linkedin.com/in/yashmahalwal",
+      "https://github.com/yashmahalwal"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pune",
+      "addressCountry": "IN"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="Yash Mahalwal home">Yash Mahalwal</a>
+      <nav class="nav-primary" aria-label="Primary">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#publications">Writing</a></li>
+          <li><a href="#skills">Technologies</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap" id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <h1 id="hero-title">I build fast products at real-world scale.</h1>
+          <p class="lede">
+            Senior Software Engineer with 5+ years shipping high-performance web and mobile experiences for millions of users.
+            Strong in React, Next.js, and TypeScript — with backend depth across AWS, GraphQL, and event-driven systems.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="assets/resume/yash-mahalwal-resume-apr-2026.pdf" download>Download résumé (PDF)</a>
+            <a class="btn secondary" href="mailto:yashmahalwal@gmail.com">Email me</a>
+          </div>
+          <div class="meta-row">
+            <span>Pune, India</span>
+            <span>Open to remote · Relocation (Europe)</span>
+            <a href="tel:+919521751778">+91 952 175 1778</a>
+          </div>
+        </div>
+        <figure class="portrait">
+          <img
+            src="assets/profile/profile.svg"
+            width="640"
+            height="640"
+            alt="Portrait of Yash Mahalwal"
+            decoding="async"
+            fetchpriority="low">
+        </figure>
+      </section>
+
+      <section id="about" class="section" tabindex="-1" aria-labelledby="about-title">
+        <h2 id="about-title">About</h2>
+        <p class="section-intro">
+          I care about outcomes users feel: latency, reliability, and clarity. Most recently I have focused on streaming and real-time systems,
+          migrating critical flows to SSR and React Server Components, and building automation-heavy distributed workflows on AWS.
+        </p>
+        <div class="grid-impacts" role="list">
+          <article class="impact" role="listitem">
+            <strong>80%+</strong>
+            <span>Latency reduction on a core payment flow (12–17s → under 3s) via event-driven processing and idempotent APIs.</span>
+          </article>
+          <article class="impact" role="listitem">
+            <strong>10M+</strong>
+            <span>Live viewers supported by re-architecting real-time interaction for large events (SFU + HLS, avoiding N² event patterns).</span>
+          </article>
+          <article class="impact" role="listitem">
+            <strong>&lt;1.5s</strong>
+            <span>LCP improvement story: from ~8s to under 1.5s using Next.js SSR/RSC, streaming, caching, and eliminating client waterfalls.</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="experience" class="section" tabindex="-1" aria-labelledby="experience-title">
+        <h2 id="experience-title">Experience</h2>
+        <p class="section-intro">Selected roles with emphasis on systems, performance, and product impact.</p>
+        <div class="timeline">
+          <article class="role">
+            <header>
+              <h3>Senior Software Engineer — GrowthDay</h3>
+              <time datetime="2023-12">Dec 2023 — Present</time>
+            </header>
+            <ul>
+              <li>Redesigned payments from synchronous processing to an event-driven pipeline with queued execution and idempotent endpoints.</li>
+              <li>Scaled interactive real-time participation from hundreds to 100K+ and supported up to 10M viewers for major live events.</li>
+              <li>Led web performance work: SSR/RSC migration, streaming, caching, and static generation to cut LCP dramatically.</li>
+              <li>Ran growth engineering loops: experimentation, behavioral analytics, and mentoring on data-driven product development.</li>
+              <li>Built high-throughput distributed workflows (Lambda, AppSync, DynamoDB, Step Functions, SQS) with robust retries.</li>
+              <li>Shipped cross-platform product work in Kotlin Compose and SwiftUI.</li>
+            </ul>
+          </article>
+          <article class="role">
+            <header>
+              <h3>Frontend Developer — GrowthDay</h3>
+              <time datetime="2021-07">Jul 2021 — Dec 2023</time>
+            </header>
+            <ul>
+              <li>Built a real-time discussion platform with WebSockets and WebRTC (peer-to-peer) across web and mobile.</li>
+              <li>Improved OTT playback with adaptive streaming, smarter buffering, and a persistent mini player.</li>
+              <li>Created a shared cross-platform module with CI-driven sync to unify logic, tests, and types.</li>
+              <li>Refactored hot paths to reduce bundle size, network usage, and rendering cost under traffic spikes.</li>
+            </ul>
+          </article>
+          <article class="role">
+            <header>
+              <h3>Product Analyst Intern — American Express</h3>
+              <time datetime="2021-01">Jan 2021 — Jun 2021</time>
+            </header>
+            <ul>
+              <li>Built error handling and management for ML model deployments; reduced unhandled failures substantially.</li>
+              <li>Enabled safer model rollouts through internal deployment pipelines.</li>
+              <li>Worked on distributed training approaches using Scala and Hadoop.</li>
+            </ul>
+          </article>
+          <article class="role">
+            <header>
+              <h3>Product Developer Intern — Appointy Software Inc</h3>
+              <time datetime="2019-05">May 2019 — Apr 2020</time>
+            </header>
+            <ul>
+              <li>Designed scalable routing with nested layouts and dynamic routing for a large frontend codebase.</li>
+              <li>Built a recurrence rule engine for scheduling and a drag-and-drop form builder for business onboarding.</li>
+              <li>Implemented SSR with GraphQL to improve SEO and organic traffic.</li>
+              <li>Integrated with Golang gRPC microservices via GraphQL APIs.</li>
+            </ul>
+          </article>
+        </div>
+        <p class="section-intro edu-note">
+          <strong>Education:</strong> B.Tech Computer Science, Maulana Azad National Institute of Technology (NIT Bhopal), CGPA 8.93/10 — Jul 2017 to Jul 2021.
+        </p>
+      </section>
+
+      <section id="projects" class="section" tabindex="-1" aria-labelledby="projects-title">
+        <h2 id="projects-title">Projects</h2>
+        <p class="section-intro">Text-first case studies. Replace placeholder links with live demos and repositories when ready.</p>
+        <div class="projects">
+          <article class="project">
+            <h3>Fark.ai</h3>
+            <p>
+              An agentic GitHub workflow that analyzes backend pull requests for breaking API changes and cross-checks impact against frontend codebases —
+              tightening feedback loops and reducing integration risk.
+            </p>
+            <div class="links">
+              <a href="https://github.com/yashmahalwal">GitHub profile (link repo when public)</a>
+            </div>
+          </article>
+          <article class="project">
+            <h3>Parcel Plugin: Add Source</h3>
+            <p>
+              A Parcel transformer that attaches source code to assets — useful for documentation pipelines and developer tooling.
+            </p>
+            <div class="links">
+              <a href="https://github.com/yashmahalwal">GitHub profile (link package when public)</a>
+            </div>
+          </article>
+          <article class="project">
+            <h3>React Synced State</h3>
+            <p>
+              A React hook to control and synchronize state across React and React Native apps — reducing duplicated state logic in cross-platform products.
+            </p>
+            <div class="links">
+              <a href="https://github.com/yashmahalwal">GitHub profile (link repo when public)</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="publications" class="section" tabindex="-1" aria-labelledby="publications-title">
+        <h2 id="publications-title">Writing</h2>
+        <p class="section-intro">Technical articles and explorations. Add canonical links when you publish or host them.</p>
+        <ul class="pubs">
+          <li><strong>Optimising React Apps</strong> — React performance tradeoffs and mitigations. <em class="tbd">Canonical URL TBD.</em></li>
+          <li><strong>Sharing code between projects</strong> — strategies for multi-repo reuse. <em class="tbd">Canonical URL TBD.</em></li>
+          <li><strong>The Heisenberg Manoeuvre</strong> — dependency-chain risks in npm ecosystems. <em class="tbd">Canonical URL TBD.</em></li>
+          <li><strong>Relay modern: SSR and Next.js</strong> — patterns for Relay with server rendering. <em class="tbd">Canonical URL TBD.</em></li>
+        </ul>
+      </section>
+
+      <section id="skills" class="section" tabindex="-1" aria-labelledby="skills-title">
+        <h2 id="skills-title">Technologies</h2>
+        <p class="section-intro">Representative stack — grouped for scanning, not buzzword density.</p>
+        <div class="tech-grid">
+          <div class="tech">
+            <h3>Frontend &amp; mobile</h3>
+            <p>TypeScript, React, React Native, Next.js, RSC, WebRTC, Kotlin Compose, SwiftUI, Storybook, Webpack, Vite, MUI, Chakra, Ant Design, Tailwind CSS.</p>
+          </div>
+          <div class="tech">
+            <h3>Backend &amp; cloud</h3>
+            <p>Node.js, GraphQL, REST, WebSockets, AWS (Cognito, DynamoDB, AppSync, S3, EventBridge, Lambda, CDK), Golang, Python, MySQL, gRPC, Docker, Kubernetes.</p>
+          </div>
+          <div class="tech">
+            <h3>Quality &amp; performance</h3>
+            <p>Jest, Cypress, Playwright, Vitest, A/B testing, Lighthouse, Web Vitals, profiling, and production incident-driven tuning.</p>
+          </div>
+          <div class="tech">
+            <h3>AI &amp; tooling</h3>
+            <p>LLM agents, OpenAI SDK, Vercel AI SDK, workflow automation, and AI-assisted development workflows.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section" tabindex="-1" aria-labelledby="contact-title">
+        <h2 id="contact-title">Contact</h2>
+        <div class="contact-card">
+          <p class="section-intro" style="margin:0">
+            If you want a fast, elegant, and maintainable product surface — or a partner for performance and platform work — reach out.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:yashmahalwal@gmail.com">yashmahalwal@gmail.com</a>
+            <a href="https://www.linkedin.com/in/yashmahalwal">LinkedIn</a>
+            <a href="https://github.com/yashmahalwal">GitHub</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>© 2026 Yash Mahalwal. Built as static HTML for speed and accessibility.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,27 +1,22 @@
-# yashmahalwal.github.io
+# yashmahalwal.github.io (portfolio-v2)
 
-Static portfolio (v2) on branch `portfolio-v2`: plain HTML, CSS, and a small progressive-enhancement script.
+Node-based cinematic portfolio with static-first rendering and minimal JS.
 
-## Local preview
-
-From the repo root:
+## Run
 
 ```bash
-python3 -m http.server 8080
+npm install
+npm run dev
 ```
 
-Open `http://localhost:8080/`.
+## Build
 
-## Replace dummy assets
+```bash
+npm run build
+npm run preview
+```
 
-- Photo: swap `assets/profile/profile.svg` for your real image (AVIF/WebP/JPEG recommended). Update `index.html` if you use `<picture>` with multiple sources.
-- Résumé: replace `assets/resume/yash-mahalwal-resume-apr-2026.pdf` with your latest PDF.
+## Assets to replace
 
-## Deploy (GitHub Pages)
-
-Push branch `portfolio-v2` and open a PR to `master`, or set Pages to this branch in repo settings. User Pages typically serves from the default branch root.
-
-## Docs
-
-- [PERFORMANCE.md](PERFORMANCE.md)
-- [ACCESSIBILITY.md](ACCESSIBILITY.md)
+- `assets/profile/profile.svg` with real profile image(s)
+- `assets/resume/yash-mahalwal-resume-apr-2026.pdf` with latest resume

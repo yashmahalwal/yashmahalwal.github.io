@@ -1,0 +1,62 @@
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Root ── */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+/* ── Body ── */
+body {
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  font: 400 1rem/1.7 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.2rem, 5.2vw, var(--h1-size-max)); line-height: 1.04; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.5rem); }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+/* ── Text ── */
+p   { line-height: 1.7; }
+a   { color: inherit; text-decoration: none; }
+b, strong { font-weight: 600; }
+
+/* ── Media ── */
+img, video, svg { display: block; max-width: 100%; }
+
+/* ── Interactive ── */
+button { font: inherit; cursor: pointer; border: none; background: none; }
+
+/* ── Lists ── */
+ul, ol { list-style: none; }
+
+/* ── Shared typography classes ── */
+.section-heading {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}

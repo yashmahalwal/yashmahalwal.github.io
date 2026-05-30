@@ -1,0 +1,622 @@
+/* ── Experience: alternating columns, centered spine ── */
+/* Timeline segment: --wk-seg-* from JS (height = active milestone below dot, incl. pane). */
+
+.work-section {
+  background: var(--bg);
+}
+
+.work-content {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--section-pad) var(--container-pad);
+}
+
+.roadmap {
+  --wk-dot:        7px;
+  --wk-spine-gap:  0.75rem;
+  --wk-block:      44rem;
+  --wk-col-gap:    0.85rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  --wk-seg-t:      0px;
+  --wk-seg-h:      0px;
+  --wk-seg-alpha:  0;
+}
+
+.roadmap::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--line);
+  z-index: 0;
+}
+
+.roadmap::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: var(--wk-seg-t);
+  height: var(--wk-seg-h);
+  width: 2px;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--accent) 88%, transparent);
+  opacity: var(--wk-seg-alpha);
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity 0.28s ease,
+    top 0.45s cubic-bezier(0.33, 1, 0.52, 1),
+    height 0.38s cubic-bezier(0.33, 1, 0.52, 1);
+}
+
+/* [ L | spine | R ] — copy alternates sides; --wk-block caps line length toward spine */
+.milestone {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--wk-dot) minmax(0, 1fr);
+  grid-template-rows: auto 0fr;
+  column-gap: var(--wk-col-gap);
+  row-gap: 0;
+  align-items: start;
+  padding: 1.25rem 0;
+  transition: grid-template-rows 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.milestone[aria-expanded="true"] {
+  grid-template-rows: auto 1fr;
+}
+
+.hit {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+button.hit-expand {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  width: max-content;
+  max-width: 100%;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+
+button.hit-expand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.hit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--wk-dot) minmax(0, 1fr);
+  grid-auto-rows: auto;
+  column-gap: var(--wk-col-gap);
+  align-items: start;
+  padding-bottom: 0.5rem;
+}
+
+/* Odd → left column: align copy to outer (heading) edge, gutter only toward spine */
+.milestone:nth-child(odd) .hit-co {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.milestone:nth-child(odd) .hit-spine-date {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+}
+
+.milestone:nth-child(odd) .hit-role {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+}
+
+.milestone:nth-child(odd) .hit-node {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin-top: 0.26rem;
+}
+
+.milestone:nth-child(odd) .hit-hook {
+  grid-column: 1;
+  grid-row: 4;
+  justify-self: start;
+}
+
+.milestone:nth-child(odd) .hit-chips {
+  grid-column: 1;
+  grid-row: 5;
+  justify-self: start;
+}
+
+.milestone:nth-child(odd) .hit-cta {
+  grid-column: 1;
+  grid-row: 6;
+  justify-self: start;
+}
+
+/* Even → right column: full track width to parent edge; copy stays text-align: left */
+.milestone:nth-child(even) .hit-co {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(even) .hit-spine-date {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(even) .hit-role {
+  grid-column: 3;
+  grid-row: 3;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(even) .hit-node {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin-top: 0.26rem;
+}
+
+.milestone:nth-child(even) .hit-hook {
+  grid-column: 3;
+  grid-row: 4;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(even) .hit-chips {
+  grid-column: 3;
+  grid-row: 5;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(even) .hit-cta {
+  grid-column: 3;
+  grid-row: 6;
+  justify-self: stretch;
+}
+
+.milestone:nth-child(odd) .hit-co,
+.milestone:nth-child(odd) .hit-spine-date,
+.milestone:nth-child(odd) .hit-role,
+.milestone:nth-child(odd) .hit-hook,
+.milestone:nth-child(odd) .hit-chips,
+.milestone:nth-child(odd) .hit-cta {
+  box-sizing: border-box;
+  width: min(100%, var(--wk-block));
+  max-width: var(--wk-block);
+  min-width: 0;
+  padding-right: var(--wk-spine-gap);
+  padding-left: 0;
+  text-align: left;
+}
+
+.milestone:nth-child(even) .hit-co,
+.milestone:nth-child(even) .hit-spine-date,
+.milestone:nth-child(even) .hit-role,
+.milestone:nth-child(even) .hit-hook,
+.milestone:nth-child(even) .hit-chips,
+.milestone:nth-child(even) .hit-cta {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  padding-left: var(--wk-spine-gap);
+  padding-right: 0;
+  text-align: left;
+}
+
+/* Meta stack: eyebrow → date → headline — looser rhythm before body */
+.milestone .hit-spine-date {
+  margin-top: 0.5rem;
+}
+
+.milestone .hit-role {
+  margin-top: 0.6875rem;
+}
+
+.milestone .hit-hook {
+  margin-top: 0.8125rem;
+}
+
+.milestone .hit-chips {
+  margin-top: 0.5625rem;
+}
+
+.milestone .hit-cta {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+/* Date range — secondary to company cap, quieter than role */
+.hit-spine-date {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 0.765rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--muted) 82%, var(--text));
+}
+
+.hit-co {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0.65rem;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--muted) 38%, var(--text));
+  border-bottom: 1px solid var(--line);
+}
+
+/* Role — primary headline for the card */
+.hit-role {
+  font-size: clamp(1.1875rem, 2vw + 0.5rem, 1.4375rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  line-height: 1.22;
+}
+
+/* 3. SUMMARY — no CSS truncation; keep copy tight in HTML */
+.hit-hook {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+/* 4. CHIPS — flex row, same block width as siblings */
+.hit-chips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+}
+
+/* 4. CHIPS — same surface as hero code card / about stat cards (--panel + --line) */
+.hit-chip {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+/* View work / Hide — flex centers label + chevron on one axis (no translateY vs line box) */
+.hit-cta {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.38rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--muted) 62%, var(--text));
+}
+
+.hit-cta-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.hit-cta-icon {
+  flex-shrink: 0;
+  display: block;
+  width: 0.88em;
+  height: 0.88em;
+  align-self: center;
+  color: currentColor;
+  opacity: 0.92;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.milestone[aria-expanded="true"] .hit-cta-icon {
+  transform: rotate(180deg);
+}
+
+/* Dot — accent only for the milestone whose section is in view (scroll), not accordion */
+.hit-node {
+  position: relative;
+  z-index: 2;
+  width: var(--wk-dot);
+  height: var(--wk-dot);
+  border-radius: 50%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  justify-self: center;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--muted) 52%, var(--bg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line) 55%, transparent);
+  opacity: 0.92;
+  transform: scale(1);
+  transition:
+    background 0.38s cubic-bezier(0.33, 1, 0.52, 1),
+    opacity 0.28s ease,
+    transform 0.42s cubic-bezier(0.33, 1, 0.52, 1),
+    box-shadow 0.38s cubic-bezier(0.33, 1, 0.52, 1);
+}
+
+.milestone.is-line-active .hit-node {
+  background: color-mix(in srgb, var(--accent) 92%, transparent);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--accent) 85%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Pane — same side / width cap as copy block */
+.pane {
+  grid-row: 2;
+  overflow: hidden;
+  min-height: 0;
+  margin-top: 0.4375rem;
+  width: 100%;
+  max-width: var(--wk-block);
+}
+
+.milestone:nth-child(odd) .pane {
+  grid-column: 1;
+  justify-self: start;
+  padding-right: var(--wk-spine-gap);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.milestone:nth-child(even) .pane {
+  grid-column: 3;
+  justify-self: stretch;
+  width: 100%;
+  max-width: none;
+  padding-left: var(--wk-spine-gap);
+  padding-right: 0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.pane-inner {
+  opacity: 0;
+  padding-top: 0;
+  transition: opacity 0.3s ease;
+}
+
+.milestone[aria-expanded="true"] .pane-inner {
+  opacity: 1;
+}
+
+/* DETAILS — accent + list rhythm aligned to copy block */
+.pane-detail {
+  padding-top: 0.125rem;
+  padding-left: 0;
+  margin-left: 0;
+  border-left: none;
+}
+
+.pane-detail::before {
+  content: "";
+  display: block;
+  width: min(3.5rem, 100%);
+  height: 2px;
+  margin-bottom: 0.5rem;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--accent) 50%, var(--muted));
+}
+
+.pane-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.pane-list li {
+  padding: 0;
+  padding-left: 1.05rem;
+  position: relative;
+  font-size: 0.8125rem;
+  line-height: 1.48;
+  color: var(--text);
+}
+
+.pane-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 72%, var(--muted));
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .work-content {
+    padding: var(--section-pad-mobile) var(--container-pad-mobile);
+    max-width: 560px;
+  }
+
+  .roadmap {
+    --wk-col-gap: 1.05rem;
+    --wk-spine-gap: 0;
+    --wk-block: 100%;
+  }
+
+  .roadmap::before,
+  .roadmap::after {
+    left: calc(var(--wk-dot) / 2);
+    transform: translateX(-50%);
+  }
+
+  .milestone {
+    grid-template-columns: var(--wk-dot) minmax(0, 1fr);
+  }
+
+  .hit-grid {
+    grid-template-columns: var(--wk-dot) minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--wk-col-gap);
+  }
+
+  .milestone:nth-child(odd) .hit-node,
+  .milestone:nth-child(even) .hit-node {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin-top: 0.32rem;
+  }
+
+  .milestone:nth-child(odd) .hit-co,
+  .milestone:nth-child(even) .hit-co {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 0 !important;
+    padding-bottom: 0.9rem !important;
+  }
+
+  .milestone:nth-child(odd) .hit-spine-date,
+  .milestone:nth-child(even) .hit-spine-date {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: stretch;
+    max-width: none;
+    width: 100%;
+    min-width: 0;
+    margin: 0.5rem 0 0 !important;
+    padding: 0 !important;
+    text-align: left;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+
+  .milestone:nth-child(odd) .hit-role,
+  .milestone:nth-child(even) .hit-role {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: stretch;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    padding: 0 !important;
+    margin-top: 0.6875rem !important;
+  }
+
+  .milestone:nth-child(odd) .hit-hook,
+  .milestone:nth-child(even) .hit-hook {
+    grid-column: 2;
+    grid-row: 4;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    padding: 0 !important;
+  }
+
+  .milestone:nth-child(odd) .hit-chips,
+  .milestone:nth-child(even) .hit-chips {
+    grid-column: 2;
+    grid-row: 5;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    padding: 0 !important;
+  }
+
+  .milestone:nth-child(odd) .hit-cta,
+  .milestone:nth-child(even) .hit-cta {
+    grid-column: 2;
+    grid-row: 6;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    padding: 0 !important;
+  }
+
+  .milestone:nth-child(odd) .pane,
+  .milestone:nth-child(even) .pane {
+    grid-column: 2;
+    padding: 0;
+    max-width: none;
+    text-align: left;
+  }
+
+  .pane {
+    margin-top: 0.4375rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone {
+    transition: none !important;
+  }
+
+  .pane-inner {
+    transition: none !important;
+  }
+
+  .hit-cta-icon {
+    transition: none !important;
+  }
+
+  .hit-node {
+    transition: none !important;
+  }
+
+  .hit-chip {
+    transition: none !important;
+  }
+
+  .roadmap::after {
+    transition: none !important;
+  }
+
+  .milestone[aria-expanded="true"] .hit-cta-icon {
+    transform: rotate(180deg);
+  }
+}

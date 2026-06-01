@@ -54,6 +54,116 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 /* ── Lists ── */
 ul, ol { list-style: none; }
 
+/* ── Accessibility ── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 200;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 0.65rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+button.hit-expand:focus-visible {
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Project accordion (milestones styled in work.css) ── */
+.proj {
+  transition: grid-template-rows 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.proj[aria-expanded="true"] {
+  grid-template-rows: auto 1fr;
+}
+
+.proj .proj-pane {
+  overflow: clip;
+  min-height: 0;
+  margin-top: 0;
+  transition: margin-top 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.proj[aria-expanded="true"] .proj-pane {
+  margin-top: var(--accordion-pane-gap, 2.5rem);
+}
+
+.proj-pane .pane-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.proj.is-collapsed .proj-pane .pane-inner {
+  padding-top: 0;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj,
+  .proj .proj-pane {
+    transition: none !important;
+  }
+}
+
 /* ── Shared typography classes ── */
 .section-heading {
   font-size: clamp(1.8rem, 3vw, 2.4rem);

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
   // ── Theme ──
   var saved = localStorage.getItem("theme")
   var preferred = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var wrap = document.getElementById("hero-image-wrap")
   if (img && wrap) {
     var done = function () { wrap.classList.remove("is-loading") }
-    if (img.complete) { done() }
+    if (img.complete) done()
     else {
       img.addEventListener("load", done, { once: true })
       img.addEventListener("error", done, { once: true })
@@ -25,35 +27,112 @@ document.addEventListener("DOMContentLoaded", function () {
   // ── Stat cards entrance ──
   var cards = document.querySelector(".about-cards")
   if (cards) {
-    new IntersectionObserver(function (entries, observer) {
-      if (entries[0].isIntersecting) {
-        cards.classList.add("is-visible")
-        observer.disconnect()
-      }
-    }, { threshold: 0.2 }).observe(cards)
+    if (reduceMotion) {
+      cards.classList.add("is-visible")
+    } else {
+      new IntersectionObserver(function (entries, observer) {
+        if (entries[0].isIntersecting) {
+          cards.classList.add("is-visible")
+          observer.disconnect()
+        }
+      }, { threshold: 0.2 }).observe(cards)
+    }
   }
 
-  // ── Experience: timeline accent (fixed-length segment under active dot) + accordion ──
+  // ── Project accordion ──
+  function initAccordion(items, opts) {
+    function clearCollapseListener(item) {
+      if (item._collapseTransEl && item._collapseEnd) {
+        item._collapseTransEl.removeEventListener("transitionend", item._collapseEnd)
+      }
+      item._collapseTransEl = null
+      item._collapseEnd = null
+    }
+
+    function setExpanded(item, open) {
+      if (open) item.classList.remove("is-collapsed")
+      item.setAttribute("aria-expanded", open ? "true" : "false")
+      var btn = item.querySelector(".hit-expand")
+      var pane = item.querySelector(opts.pane)
+      var lab = item.querySelector(opts.label)
+      if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false")
+      if (pane) pane.setAttribute("aria-hidden", open ? "false" : "true")
+      if (lab) lab.textContent = open ? opts.shut : opts.open
+    }
+
+    function settleCollapsed(item) {
+      if (item.getAttribute("aria-expanded") === "true") return
+      item.classList.add("is-collapsed")
+    }
+
+    function markCollapsing(item) {
+      clearCollapseListener(item)
+      if (item._collapseTimer) {
+        clearTimeout(item._collapseTimer)
+        item._collapseTimer = null
+      }
+      if (reduceMotion) {
+        settleCollapsed(item)
+        return
+      }
+      var trans = item
+      var finished = false
+      function finish() {
+        if (finished) return
+        finished = true
+        if (item._collapseTimer) {
+          clearTimeout(item._collapseTimer)
+          item._collapseTimer = null
+        }
+        clearCollapseListener(item)
+        settleCollapsed(item)
+      }
+      function onEnd(e) {
+        if (e.target !== trans || e.propertyName !== "grid-template-rows") return
+        finish()
+      }
+      item._collapseTransEl = trans
+      item._collapseEnd = onEnd
+      trans.addEventListener("transitionend", onEnd)
+      item._collapseTimer = setTimeout(finish, 400)
+    }
+
+    function toggle(item) {
+      var open = item.getAttribute("aria-expanded") !== "true"
+      if (!open) markCollapsing(item)
+      setExpanded(item, open)
+    }
+
+    items.forEach(function (item) {
+      var btn = item.querySelector(".hit-expand")
+      if (btn) btn.addEventListener("click", function () { toggle(item) })
+      setExpanded(item, false)
+      item.classList.add("is-collapsed")
+    })
+  }
+
+  // ── Experience: timeline segment + milestone accordion ──
   var roadmap = document.querySelector(".roadmap")
   var milestones = document.querySelectorAll(".milestone")
+
+  function resetSegment() {
+    roadmap.style.setProperty("--wk-seg-alpha", "0")
+    roadmap.style.setProperty("--wk-seg-h", "0px")
+    roadmap.style.setProperty("--wk-seg-t", "0px")
+  }
 
   function updateRoadmapSegment() {
     if (!roadmap || !milestones.length) return
 
     var active = roadmap.querySelector(".milestone.is-line-active")
-
     if (!active) {
-      roadmap.style.setProperty("--wk-seg-alpha", "0")
-      roadmap.style.setProperty("--wk-seg-h", "0px")
-      roadmap.style.setProperty("--wk-seg-t", "0px")
+      resetSegment()
       return
     }
 
     var node = active.querySelector(".hit-node")
     if (!node) {
-      roadmap.style.setProperty("--wk-seg-alpha", "0")
-      roadmap.style.setProperty("--wk-seg-h", "0px")
-      roadmap.style.setProperty("--wk-seg-t", "0px")
+      resetSegment()
       return
     }
 
@@ -62,8 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var b = node.getBoundingClientRect()
     var cy = b.top + b.height / 2 - rBox.top
     var segTop = Math.max(0, cy)
-    var msBottom = msRect.bottom - rBox.top
-    var hUse = msBottom - segTop
+    var hUse = msRect.bottom - rBox.top - segTop
     if (!isFinite(hUse)) hUse = 6
     else hUse = Math.max(6, hUse)
     hUse = Math.min(hUse, Math.max(0, rBox.height - segTop))
@@ -94,56 +172,40 @@ document.addEventListener("DOMContentLoaded", function () {
       return Math.abs((rect.top + rect.bottom) / 2 - mid)
     }
 
-    function clearLineActive() {
-      milestones.forEach(function (m) {
-        m.classList.remove("is-line-active")
-      })
-    }
-
-    var best = null
-    var bestDist = Infinity
-
-    milestones.forEach(function (m) {
-      var rect = m.getBoundingClientRect()
-      if (rect.bottom < bandTop || rect.top > bandBot) return
-      var dist = distToMid(rect)
-      if (dist < bestDist) {
-        bestDist = dist
-        best = m
-      }
-    })
-
-    if (!best) {
-      bestDist = Infinity
+    function pickFrom(filter) {
+      var best = null
+      var bestDist = Infinity
       milestones.forEach(function (m) {
         var rect = m.getBoundingClientRect()
-        if (rect.bottom <= 0 || rect.top >= window.innerHeight) return
+        if (filter && !filter(rect)) return
         var dist = distToMid(rect)
         if (dist < bestDist) {
           bestDist = dist
           best = m
         }
       })
+      return best
+    }
+
+    var best = pickFrom(function (rect) {
+      return rect.bottom >= bandTop && rect.top <= bandBot
+    })
+
+    if (!best) {
+      best = pickFrom(function (rect) {
+        return rect.bottom > 0 && rect.top < window.innerHeight
+      })
     }
 
     if (!best && roadmap) {
       var rb = roadmap.getBoundingClientRect()
-      var roadmapOnScreen = rb.bottom > 0 && rb.top < window.innerHeight
-      if (roadmapOnScreen) {
-        bestDist = Infinity
-        milestones.forEach(function (m) {
-          var rect = m.getBoundingClientRect()
-          var dist = distToMid(rect)
-          if (dist < bestDist) {
-            bestDist = dist
-            best = m
-          }
-        })
+      if (rb.bottom > 0 && rb.top < window.innerHeight) {
+        best = pickFrom(null)
       }
     }
 
     if (!best) {
-      clearLineActive()
+      milestones.forEach(function (m) { m.classList.remove("is-line-active") })
       updateRoadmapSegment()
       return
     }
@@ -168,16 +230,12 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", scheduleLineUpdate)
 
   if (roadmap && typeof ResizeObserver !== "undefined") {
-    var ro = new ResizeObserver(function () {
-      scheduleSegmentGeometry()
-    })
-    ro.observe(roadmap)
+    new ResizeObserver(scheduleSegmentGeometry).observe(roadmap)
   }
 
   milestones.forEach(function (ms) {
     ms.addEventListener("transitionend", function (e) {
-      if (e.propertyName !== "grid-template-rows") return
-      updateRoadmapSegment()
+      if (e.propertyName === "grid-template-rows") scheduleSegmentGeometry()
     })
   })
   pickLineActiveMilestone()
@@ -208,13 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function toggleMilestone(ms) {
     var isOpen = ms.getAttribute("aria-expanded") === "true"
     if (isOpen) closeMilestone(ms)
-    else {
-      milestones.forEach(function (other) {
-        if (other !== ms) closeMilestone(other)
-      })
-      openMilestone(ms)
-    }
-    updateRoadmapSegment()
+    else openMilestone(ms)
     scheduleSegmentGeometry()
   }
 
@@ -225,55 +277,24 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleMilestone(ms)
       })
     }
-  })
-
-  milestones.forEach(function (ms) {
     closeMilestone(ms)
   })
 
-  // ── Projects: accordion ──
-  var projArticles = document.querySelectorAll(".proj")
-  var PROJ_OPEN = "Details"
-  var PROJ_SHUT = "Hide"
-
-  function closeProjArticle(article) {
-    article.setAttribute("aria-expanded", "false")
-    var btn = article.querySelector(".hit-expand")
-    var pane = article.querySelector(".proj-pane")
-    var lab = article.querySelector(".proj-expand-label")
-    if (btn) btn.setAttribute("aria-expanded", "false")
-    if (pane) pane.setAttribute("aria-hidden", "true")
-    if (lab) lab.textContent = PROJ_OPEN
-  }
-
-  function openProjArticle(article) {
-    article.setAttribute("aria-expanded", "true")
-    var btn = article.querySelector(".hit-expand")
-    var pane = article.querySelector(".proj-pane")
-    var lab = article.querySelector(".proj-expand-label")
-    if (btn) btn.setAttribute("aria-expanded", "true")
-    if (pane) pane.setAttribute("aria-hidden", "false")
-    if (lab) lab.textContent = PROJ_SHUT
-  }
-
-  function toggleProjArticle(article) {
-    var isOpen = article.getAttribute("aria-expanded") === "true"
-    if (isOpen) closeProjArticle(article)
-    else {
-      projArticles.forEach(function (other) {
-        if (other !== article) closeProjArticle(other)
-      })
-      openProjArticle(article)
-    }
-  }
-
-  projArticles.forEach(function (article) {
-    var btn = article.querySelector(".hit-expand")
-    if (btn) {
-      btn.addEventListener("click", function () {
-        toggleProjArticle(article)
-      })
-    }
-    closeProjArticle(article)
+  initAccordion(document.querySelectorAll(".proj"), {
+    open: "Details",
+    shut: "Hide",
+    label: ".proj-expand-label",
+    pane: ".proj-pane",
   })
+
+  // Move focus to in-page section targets after hash navigation
+  function focusHashTarget() {
+    var id = window.location.hash.slice(1)
+    if (!id) return
+    var target = document.getElementById(id)
+    if (target) target.focus({ preventScroll: false })
+  }
+
+  window.addEventListener("hashchange", focusHashTarget)
+  if (window.location.hash) focusHashTarget()
 })

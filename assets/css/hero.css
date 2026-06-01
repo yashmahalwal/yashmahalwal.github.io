@@ -27,8 +27,6 @@
   background-size: 168px 168px, 168px 168px, auto, auto;
 }
 
-
-
 /* Light mode accent radials */
 [data-theme="light"] .hero-shell {
   background:
@@ -167,7 +165,6 @@
   font: 500 0.86rem/1.76 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* Syntax token colours */
 .hero-codecard .kw  { color: #f9a8d4; }
 .hero-codecard .str { color: #93c5fd; }
 .hero-codecard .num { color: #86efac; }
@@ -226,6 +223,16 @@
   50%       { opacity: 0.3; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hero-image-wrap::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  .hero-image-wrap img {
+    transition: none;
+  }
+}
 
 /* ── Mobile (max-width: 900px) ── */
 @media (max-width: 900px) {

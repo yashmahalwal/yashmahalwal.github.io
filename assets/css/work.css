@@ -96,11 +96,6 @@ button.hit-expand {
   font-family: inherit;
 }
 
-button.hit-expand:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-}
-
 .hit-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--wk-dot) minmax(0, 1fr);
@@ -152,6 +147,10 @@ button.hit-expand:focus-visible {
   grid-column: 1;
   grid-row: 6;
   justify-self: start;
+  width: min(100%, var(--wk-block));
+  max-width: var(--wk-block);
+  padding-right: var(--wk-spine-gap);
+  padding-left: 0;
 }
 
 /* Even → right column: full track width to parent edge; copy stays text-align: left */
@@ -196,14 +195,17 @@ button.hit-expand:focus-visible {
   grid-column: 3;
   grid-row: 6;
   justify-self: stretch;
+  width: 100%;
+  max-width: none;
+  padding-left: var(--wk-spine-gap);
+  padding-right: 0;
 }
 
 .milestone:nth-child(odd) .hit-co,
 .milestone:nth-child(odd) .hit-spine-date,
 .milestone:nth-child(odd) .hit-role,
 .milestone:nth-child(odd) .hit-hook,
-.milestone:nth-child(odd) .hit-chips,
-.milestone:nth-child(odd) .hit-cta {
+.milestone:nth-child(odd) .hit-chips {
   box-sizing: border-box;
   width: min(100%, var(--wk-block));
   max-width: var(--wk-block);
@@ -217,8 +219,7 @@ button.hit-expand:focus-visible {
 .milestone:nth-child(even) .hit-spine-date,
 .milestone:nth-child(even) .hit-role,
 .milestone:nth-child(even) .hit-hook,
-.milestone:nth-child(even) .hit-chips,
-.milestone:nth-child(even) .hit-cta {
+.milestone:nth-child(even) .hit-chips {
   box-sizing: border-box;
   width: 100%;
   max-width: none;
@@ -354,6 +355,29 @@ button.hit-expand:focus-visible {
   transform: rotate(180deg);
 }
 
+/* View work / Hide — match project Details typography */
+.milestone .hit-expand.hit-cta {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--muted) 50%, var(--text));
+}
+
+.milestone .hit-expand.hit-cta:hover {
+  color: var(--accent);
+}
+
+.milestone .hit-expand .hit-cta-label {
+  display: inline-block;
+  line-height: 1;
+}
+
+.milestone .hit-expand .hit-cta-icon {
+  width: 0.72em;
+  height: 0.72em;
+  opacity: 0.88;
+}
+
 /* Dot — accent only for the milestone whose section is in view (scroll), not accordion */
 .hit-node {
   position: relative;
@@ -396,6 +420,16 @@ button.hit-expand:focus-visible {
   max-width: var(--wk-block);
 }
 
+.milestone .pane .pane-inner {
+  opacity: 0;
+  padding-top: 0;
+  transition: opacity 0.3s ease;
+}
+
+.milestone[aria-expanded="true"] .pane-inner {
+  opacity: 1;
+}
+
 .milestone:nth-child(odd) .pane {
   grid-column: 1;
   justify-self: start;
@@ -415,35 +449,15 @@ button.hit-expand:focus-visible {
   box-sizing: border-box;
 }
 
-.pane-inner {
-  opacity: 0;
+/* DETAILS — same type rhythm as .hit-hook */
+.milestone .pane-detail {
   padding-top: 0;
-  transition: opacity 0.3s ease;
-}
-
-.milestone[aria-expanded="true"] .pane-inner {
-  opacity: 1;
-}
-
-/* DETAILS — accent + list rhythm aligned to copy block */
-.pane-detail {
-  padding-top: 0.125rem;
   padding-left: 0;
   margin-left: 0;
   border-left: none;
 }
 
-.pane-detail::before {
-  content: "";
-  display: block;
-  width: min(3.5rem, 100%);
-  height: 2px;
-  margin-bottom: 0.5rem;
-  border-radius: 1px;
-  background: color-mix(in srgb, var(--accent) 50%, var(--muted));
-}
-
-.pane-list {
+.milestone .pane-list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -452,16 +466,17 @@ button.hit-expand:focus-visible {
   gap: 0.625rem;
 }
 
-.pane-list li {
+.milestone .pane-list li {
   padding: 0;
   padding-left: 1.05rem;
   position: relative;
-  font-size: 0.8125rem;
-  line-height: 1.48;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.55;
   color: var(--text);
 }
 
-.pane-list li::before {
+.milestone .pane-list li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -572,6 +587,7 @@ button.hit-expand:focus-visible {
   .milestone:nth-child(even) .hit-cta {
     grid-column: 2;
     grid-row: 6;
+    justify-self: start;
     width: auto;
     max-width: none;
     min-width: 0;
@@ -586,8 +602,8 @@ button.hit-expand:focus-visible {
     text-align: left;
   }
 
-  .pane {
-    margin-top: 0.4375rem;
+  .milestone .hit-expand.hit-cta {
+    font-size: 0.9rem;
   }
 }
 
@@ -596,7 +612,7 @@ button.hit-expand:focus-visible {
     transition: none !important;
   }
 
-  .pane-inner {
+  .milestone .pane .pane-inner {
     transition: none !important;
   }
 
@@ -608,15 +624,15 @@ button.hit-expand:focus-visible {
     transition: none !important;
   }
 
-  .hit-chip {
-    transition: none !important;
-  }
-
   .roadmap::after {
     transition: none !important;
   }
 
   .milestone[aria-expanded="true"] .hit-cta-icon {
     transform: rotate(180deg);
+  }
+
+  .milestone[aria-expanded="true"] .pane-inner {
+    opacity: 1;
   }
 }

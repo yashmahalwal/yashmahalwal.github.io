@@ -94,3 +94,11 @@
 
   .about-cards { width: 100%; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-stat {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -158,7 +158,7 @@
   padding: 0.22rem 0.75rem;
   text-align: right;
   font-size: 0.7rem;
-  color: color-mix(in srgb, var(--muted) 55%, transparent);
+  color: var(--muted);
   user-select: none;
   flex-shrink: 0;
 }

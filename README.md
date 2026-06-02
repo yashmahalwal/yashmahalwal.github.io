@@ -1,4 +1,4 @@
-# yashmahalwal.github.io
+# Portfolio website
 
 Personal portfolio — static-first, plain HTML/CSS with minimal progressive-enhancement JS.
 Deployed to GitHub Pages via Vite.

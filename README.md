@@ -51,7 +51,9 @@ assets/
     writing.css         # writing cards, CSS subgrid, artifact styles
     contact.css         # contact layout, availability card
     footer.css          # footer, Web Vitals metric display
-    noscript.css        # no-JS fallback: expands all content, fixes nav
+
+public/
+  noscript.css          # no-JS fallback (copied to dist/ untouched, never bundled)
   js/
     main.js             # progressive-enhancement script
   images/

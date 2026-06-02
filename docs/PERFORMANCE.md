@@ -33,7 +33,7 @@ Ten CSS files are loaded in `<head>` (theme → base → header → hero → abo
 writing → contact → footer). Each is small; Vite concatenates and minifies them into a single
 hashed bundle at build time.
 
-- A `<noscript>` stylesheet (`noscript.css`) is loaded only for users without JavaScript.
+- `public/noscript.css` is copied to `dist/` by Vite as-is (not bundled). Referenced with `vite-ignore` inside `<noscript>` so it is only fetched when JavaScript is disabled.
 - No unused CSS from frameworks — all rules are hand-written and scoped to actual markup.
 
 ## Build (Vite)

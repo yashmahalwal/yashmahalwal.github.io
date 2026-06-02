@@ -64,8 +64,8 @@ Targets **WCAG 2.2 Level AA** as a baseline.
 
 ## No-JS fallback (`noscript.css`)
 
-Loaded via `<noscript><link rel="stylesheet">` — a dedicated stylesheet that makes the page
-fully readable without JavaScript:
+Stored in `public/noscript.css` and referenced with `vite-ignore` so Vite copies it untouched
+and never bundles it into the main CSS. Loaded via `<noscript><link rel="stylesheet" href="/noscript.css" vite-ignore>` — only fetched by browsers with JavaScript disabled. All selectors are prefixed with `body` for higher specificity so they override the main stylesheet regardless of load order.
 
 - Header gets a permanent opaque background (the `is-scrolled` class never fires).
 - Hero profile image is forced visible (`opacity: 1`, loading pulse hidden).

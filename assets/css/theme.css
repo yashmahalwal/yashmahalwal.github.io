@@ -34,6 +34,11 @@
 
   --transition-fast: 120ms ease;
   --transition-base: 240ms ease;
+
+  /* Semantic status colours (used by perf rating indicators) */
+  --color-good: #4ade80;
+  --color-warn: #fb923c;
+  --color-poor: #f87171;
 }
 
 /* ── Light theme overrides ── */
@@ -46,16 +51,16 @@
   --accent:    #0369a1;
   --panel:     #f8fafc;
   --grid-line: rgba(15, 23, 42, 0.04);
+
+  --color-good: #16a34a;
+  --color-warn: #c2410c;
+  --color-poor: #dc2626;
 }
 
 /* ── Theme toggle ── */
 .theme-toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 100;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--line);
   background: var(--panel);
@@ -68,6 +73,7 @@
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {

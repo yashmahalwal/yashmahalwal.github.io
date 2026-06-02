@@ -1,15 +1,50 @@
 document.addEventListener("DOMContentLoaded", function () {
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
+  // ── Header: translucent bg on scroll ──
+  var siteHeader = document.getElementById("site-header")
+  if (siteHeader) {
+    var onHeaderScroll = function () {
+      siteHeader.classList.toggle("is-scrolled", window.scrollY > 60)
+    }
+    window.addEventListener("scroll", onHeaderScroll, { passive: true })
+    onHeaderScroll()
+  }
+
+  // ── Mobile menu ──
+  var menuBtn = document.getElementById("site-header-toggle")
+  var menuNav = document.getElementById("site-header-nav")
+  if (menuBtn && menuNav) {
+    function closeMenu() {
+      menuBtn.setAttribute("aria-expanded", "false")
+      menuBtn.setAttribute("aria-label", "Open menu")
+      menuNav.classList.remove("is-open")
+    }
+    function openMenu() {
+      menuBtn.setAttribute("aria-expanded", "true")
+      menuBtn.setAttribute("aria-label", "Close menu")
+      menuNav.classList.add("is-open")
+    }
+    menuBtn.addEventListener("click", function () {
+      if (menuBtn.getAttribute("aria-expanded") === "true") closeMenu()
+      else openMenu()
+    })
+    menuNav.querySelectorAll(".site-header-link, .site-header-nav-logo").forEach(function (link) {
+      link.addEventListener("click", closeMenu)
+    })
+  }
+
   // ── Theme ──
   var saved = localStorage.getItem("theme")
   var preferred = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
   document.documentElement.setAttribute("data-theme", saved || preferred)
 
-  document.querySelector(".theme-toggle").addEventListener("click", function () {
-    var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"
-    document.documentElement.setAttribute("data-theme", next)
-    localStorage.setItem("theme", next)
+  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"
+      document.documentElement.setAttribute("data-theme", next)
+      localStorage.setItem("theme", next)
+    })
   })
 
   // ── Profile image loading ──
@@ -25,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ── Stat cards entrance ──
-  var cards = document.querySelector(".about-cards")
+  var cards = document.querySelector(".about-band")
   if (cards) {
     if (reduceMotion) {
       cards.classList.add("is-visible")
@@ -56,7 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
       var pane = item.querySelector(opts.pane)
       var lab = item.querySelector(opts.label)
       if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false")
-      if (pane) pane.setAttribute("aria-hidden", open ? "false" : "true")
+      if (pane) {
+        pane.setAttribute("aria-hidden", open ? "false" : "true")
+        pane.inert = !open
+      }
       if (lab) lab.textContent = open ? opts.shut : opts.open
     }
 
@@ -249,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var pane = ms.querySelector(".pane")
     var lab = ms.querySelector(".hit-cta-label")
     if (btn) btn.setAttribute("aria-expanded", "false")
-    if (pane) pane.setAttribute("aria-hidden", "true")
+    if (pane) { pane.setAttribute("aria-hidden", "true"); pane.inert = true }
     if (lab) lab.textContent = OPEN_CTA
   }
 
@@ -259,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var pane = ms.querySelector(".pane")
     var lab = ms.querySelector(".hit-cta-label")
     if (btn) btn.setAttribute("aria-expanded", "true")
-    if (pane) pane.setAttribute("aria-hidden", "false")
+    if (pane) { pane.setAttribute("aria-hidden", "false"); pane.inert = false }
     if (lab) lab.textContent = SHUT_CTA
   }
 
@@ -297,4 +335,152 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("hashchange", focusHashTarget)
   if (window.location.hash) focusHashTarget()
+
+  // ── Web Vitals observers — buffered:true catches entries before registration ──
+  // Must use { type } not { entryTypes } for buffered to work (MDN spec)
+  var lcpMs = null
+  var fcpMs = null
+  var clsScore = 0
+  var lcpObserver = null
+
+  if (typeof PerformanceObserver !== "undefined") {
+    try {
+      lcpObserver = new PerformanceObserver(function (list) {
+        var entries = list.getEntries()
+        if (entries.length) lcpMs = entries[entries.length - 1].startTime
+      })
+      lcpObserver.observe({ type: "largest-contentful-paint", buffered: true })
+    } catch (_) {}
+
+    try {
+      new PerformanceObserver(function (list) {
+        list.getEntries().forEach(function (entry) {
+          if (entry.name === "first-contentful-paint" && fcpMs === null) {
+            fcpMs = entry.startTime
+          }
+        })
+      }).observe({ type: "paint", buffered: true })
+    } catch (_) {}
+
+    try {
+      new PerformanceObserver(function (list) {
+        list.getEntries().forEach(function (entry) {
+          if (!entry.hadRecentInput) clsScore += entry.value
+        })
+      }).observe({ type: "layout-shift", buffered: true })
+    } catch (_) {}
+  }
+
+  // ── Footer: Web Vitals + resource stats ──
+  function initFooterPerf() {
+    var root = document.getElementById("footer-perf")
+    if (!root || !window.performance) return
+
+    function formatMs(ms) {
+      if (!isFinite(ms) || ms <= 0) return null
+      return Math.round(ms) + "\u00a0ms"
+    }
+
+    function formatBytes(bytes) {
+      if (!isFinite(bytes) || bytes <= 0) return null
+      if (bytes < 1024) return bytes + "\u00a0B"
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + "\u00a0KB"
+      return (bytes / (1024 * 1024)).toFixed(2) + "\u00a0MB"
+    }
+
+    // good ≤ good-threshold, warn ≤ warn-threshold, else poor
+    var THRESHOLDS = {
+      lcp:  { good: 2500, warn: 4000 },
+      fcp:  { good: 1800, warn: 3000 },
+      ttfb: { good: 800,  warn: 1800 },
+    }
+
+    function setMetric(key, value) {
+      var cell = root.querySelector('[data-perf="' + key + '"]')
+      if (cell) cell.textContent = value || "—"
+    }
+
+    function setRatedMetric(key, rawMs, formatted) {
+      setMetric(key, formatted)
+      var cell = root.querySelector('[data-perf="' + key + '"]')
+      var item = cell && cell.closest(".site-footer-perf-metric")
+      if (item && formatted && THRESHOLDS[key]) {
+        var t = THRESHOLDS[key]
+        item.setAttribute("data-rating", rawMs <= t.good ? "good" : rawMs <= t.warn ? "warn" : "poor")
+      }
+    }
+
+    function readMetrics() {
+      var nav = performance.getEntriesByType("navigation")[0]
+      if (!nav) return
+
+      // TTFB: nav start → first byte (includes DNS, TCP, TLS — matches web-vitals library)
+      var ttfbMs = nav.responseStart - nav.startTime
+      setRatedMetric("ttfb", ttfbMs, formatMs(ttfbMs))
+
+      // LCP — observer value, then takeRecords() flush, then getEntriesByType fallback
+      var lcpWrap = root.querySelector('[data-perf-wrap="lcp"]')
+      if (lcpWrap) {
+        if (lcpObserver) {
+          var pending = lcpObserver.takeRecords()
+          if (pending.length) lcpMs = pending[pending.length - 1].startTime
+        }
+        if (lcpMs === null) {
+          var lcpBuf = performance.getEntriesByType("largest-contentful-paint")
+          if (lcpBuf.length) lcpMs = lcpBuf[lcpBuf.length - 1].startTime
+        }
+        if (lcpMs !== null) {
+          var lcpFmt = formatMs(lcpMs)
+          if (lcpFmt) { setRatedMetric("lcp", lcpMs, lcpFmt); lcpWrap.hidden = false }
+        }
+      }
+
+      // FCP — observer value, then getEntriesByType fallback
+      var fcpWrap = root.querySelector('[data-perf-wrap="fcp"]')
+      if (fcpWrap) {
+        if (fcpMs === null) {
+          var paintBuf = performance.getEntriesByType("paint")
+          for (var pi = 0; pi < paintBuf.length; pi++) {
+            if (paintBuf[pi].name === "first-contentful-paint") { fcpMs = paintBuf[pi].startTime; break }
+          }
+        }
+        if (fcpMs !== null) {
+          var fcpFmt = formatMs(fcpMs)
+          if (fcpFmt) { setRatedMetric("fcp", fcpMs, fcpFmt); fcpWrap.hidden = false }
+        }
+      }
+
+      // CLS — accumulated by observer
+      var clsWrap = root.querySelector('[data-perf-wrap="cls"]')
+      if (clsWrap) {
+        var clsCell = root.querySelector('[data-perf="cls"]')
+        var clsItem = clsCell && clsCell.closest(".site-footer-perf-metric")
+        if (clsCell) clsCell.textContent = clsScore.toFixed(3)
+        if (clsItem) {
+          clsItem.setAttribute("data-rating", clsScore <= 0.1 ? "good" : clsScore <= 0.25 ? "warn" : "poor")
+        }
+        clsWrap.hidden = false
+      }
+
+      // Transfer + requests — informational only, no rating
+      var resources = performance.getEntriesByType("resource")
+      var transfer = nav.transferSize || 0
+      resources.forEach(function (r) { if (r.transferSize) transfer += r.transferSize })
+      setMetric("transfer", formatBytes(transfer))
+      setMetric("requests", String(resources.length + 1))
+
+      root.hidden = false
+    }
+
+    function render() {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(readMetrics)
+      })
+    }
+
+    if (document.readyState === "complete") render()
+    else window.addEventListener("load", render, { once: true })
+  }
+
+  initFooterPerf()
 })

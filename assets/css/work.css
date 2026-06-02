@@ -276,9 +276,10 @@ button.hit-expand {
   border-bottom: 1px solid var(--line);
 }
 
-/* Role — primary headline for the card */
+/* Role — h3 under Experience; sized below .section-heading */
 .hit-role {
-  font-size: clamp(1.1875rem, 2vw + 0.5rem, 1.4375rem);
+  margin: 0;
+  font-size: clamp(1.1875rem, 1.75vw + 0.35rem, 1.4375rem);
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.025em;

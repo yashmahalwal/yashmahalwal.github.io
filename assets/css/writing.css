@@ -1,0 +1,531 @@
+/* ============================================================
+   WRITING
+   ============================================================ */
+
+.writing-section {
+  background: var(--bg);
+}
+
+.writing-content {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--section-pad) var(--container-pad) 2rem;
+}
+
+
+/* ── 2 × 2 grid ── */
+/*
+  Each card spans 2 explicit rows (art + body).
+  subgrid lets the parent equalise art heights and body heights
+  independently across both cards in a row.
+*/
+.write-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto auto);
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+
+/* ── Card ── */
+.write-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--panel);
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+
+/* Artifact sits at the top of the card */
+.write-card-art {
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Text body sits below the artifact */
+.write-card-body {
+  padding: 1.25rem 1.35rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── Meta row ── */
+.write-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+/* proj-type is reused for the lane label — reset its bottom margin inside flex row */
+.write-meta .proj-type { margin-bottom: 0; }
+
+.write-sep { color: var(--line); user-select: none; }
+.write-readtime {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--muted) 82%, var(--text));
+}
+
+/* ── Title: reuse hit-role from work.css, just fix margin in card context ── */
+.write-card-body .hit-role {
+  margin: 0 0 0.65rem;
+}
+
+/* ── Hook: reuse proj-hook from projects.css, make it flex-grow to push CTA down ── */
+.write-card-body .proj-hook {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* ── Links ── */
+.write-links {
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+.write-read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  transition: opacity var(--transition-fast);
+}
+
+.write-read-link:hover { opacity: 0.75; }
+
+.write-read-link svg {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.write-read-link:hover svg { transform: translate(1px, -1px); }
+
+
+/* ============================================================
+   SHARED ARTIFACT BASE
+   (no border/radius — card provides those)
+   ============================================================ */
+
+.write-card-art > * {
+  width: 100%;
+  font-size: 0.75rem;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Shared header bar across all artifacts */
+.art-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  background: color-mix(in srgb, var(--bg) 55%, var(--panel));
+  border-bottom: 1px solid var(--line);
+  min-height: 2.25rem;
+}
+
+.art-head-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.art-head-sublabel {
+  margin-left: auto;
+  font-size: 0.625rem;
+  color: color-mix(in srgb, var(--muted) 60%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   ARTIFACT 1 — React Profiler
+   ============================================================ */
+
+.art-profiler {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.art-profiler-body {
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.art-profiler-row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr 3rem;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.art-profiler-stage {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.art-profiler-track {
+  background: color-mix(in srgb, var(--line) 65%, transparent);
+  border-radius: 2px;
+  height: 7px;
+  overflow: hidden;
+}
+
+.art-profiler-bar {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.art-profiler-bar--92 { background: #f87171; }
+.art-profiler-bar--56 { background: #fb923c; }
+.art-profiler-bar--38 { background: #fbbf24; }
+.art-profiler-bar--14 { background: #4ade80; }
+.art-profiler-bar--5  { background: #4ade80; opacity: 0.5; }
+
+[data-theme="light"] .art-profiler-bar--92 { background: #dc2626; }
+[data-theme="light"] .art-profiler-bar--56 { background: #ea580c; }
+[data-theme="light"] .art-profiler-bar--38 { background: #d97706; }
+[data-theme="light"] .art-profiler-bar--14 { background: #16a34a; }
+[data-theme="light"] .art-profiler-bar--5  { background: #16a34a; opacity: 0.5; }
+
+.art-profiler-pct {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-align: right;
+  color: var(--muted);
+}
+
+
+/* ============================================================
+   ARTIFACT 2 — Heisenberg Console
+   ============================================================ */
+
+.art-console {
+  display: flex;
+  flex-direction: column;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.art-console-panels {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+.art-console-sep {
+  background: var(--line);
+}
+
+.art-console-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.art-console-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  background: color-mix(in srgb, var(--bg) 55%, var(--panel));
+  border-bottom: 1px solid var(--line);
+}
+
+.art-console-status {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.4rem;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.art-console-status--live {
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  color: #4ade80;
+}
+
+.art-console-status--paused {
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+  color: var(--muted);
+}
+
+[data-theme="light"] .art-console-status--live {
+  background: rgba(21, 128, 61, 0.07);
+  border-color: rgba(21, 128, 61, 0.22);
+  color: #15803d;
+}
+
+.art-console-endpoint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.art-console-body {
+  padding: 0.75rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.art-console-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.art-console-ts {
+  font-size: 0.6rem;
+  color: color-mix(in srgb, var(--muted) 45%, transparent);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.art-console-key {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.art-console-silent {
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--muted) 50%, transparent);
+}
+
+
+/* ============================================================
+   ARTIFACT 3 — Code Sharing Matrix
+   ============================================================ */
+
+.art-matrix-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.art-matrix {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.art-matrix thead tr {
+  background: color-mix(in srgb, var(--bg) 55%, var(--panel));
+  border-bottom: 1px solid var(--line);
+}
+
+.art-matrix th {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.575rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.art-matrix th:not(:first-child) {
+  text-align: center;
+}
+
+.art-matrix tbody tr {
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 50%, transparent);
+}
+
+.art-matrix tbody tr:last-child {
+  border-bottom: none;
+}
+
+.art-matrix td {
+  padding: 0.55rem 0.9rem;
+}
+
+.art-matrix-name {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.art-matrix-cell {
+  text-align: center;
+}
+
+.art-matrix-dots {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-matrix-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.art-matrix-dot--on  { background: var(--accent); opacity: 0.9; }
+.art-matrix-dot--off {
+  background: color-mix(in srgb, var(--muted) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+}
+
+/* ============================================================
+   ARTIFACT 4 — SSR Network Waterfall
+   ============================================================ */
+
+.art-waterfall {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.art-waterfall-body {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.art-waterfall-row {
+  display: grid;
+  grid-template-columns: 10rem 1fr 5.25rem;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.art-wf-name {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.art-waterfall-row--highlight .art-wf-name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.art-wf-track {
+  position: relative;
+  height: 7px;
+  background: color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.art-wf-bar {
+  position: absolute;
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent) 45%, var(--panel));
+}
+
+.art-waterfall-row--highlight .art-wf-bar {
+  background: var(--accent);
+}
+
+.art-wf-status {
+  font-size: 0.575rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.art-wf-status--ok { color: #4ade80; }
+[data-theme="light"] .art-wf-status--ok { color: #15803d; }
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .writing-content {
+    width: 100%;
+    max-width: none;
+    padding: var(--section-pad-mobile) var(--container-pad-mobile) 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .write-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    row-gap: 1.25rem;
+    column-gap: 0;
+  }
+
+  .write-card {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+  }
+
+  .art-profiler-row {
+    grid-template-columns: 5.75rem 1fr 2.75rem;
+    gap: 0.45rem;
+  }
+
+  .art-console-panels {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .art-console-sep {
+    width: auto;
+    height: 1px;
+    grid-column: 1;
+  }
+
+  .art-waterfall-row {
+    grid-template-columns: 7.5rem 1fr 4.5rem;
+    gap: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .write-read-link svg {
+    transition: none;
+  }
+}

@@ -5,6 +5,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Root ── */
@@ -86,7 +87,8 @@ ul, ol { list-style: none; }
   outline: none;
 }
 
-:focus-visible {
+/* tabindex="-1" elements are focused programmatically (hash nav etc.) — no ring */
+:focus-visible:not([tabindex="-1"]) {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
@@ -165,8 +167,11 @@ button.hit-expand:focus-visible {
 }
 
 /* ── Shared typography classes ── */
+/* Main section titles (h2) — always larger than in-section h3 titles */
 .section-heading {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: clamp(2rem, 3.5vw, 2.65rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   color: var(--accent);
   margin-bottom: 1.5rem;
 }

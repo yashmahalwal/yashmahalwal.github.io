@@ -42,10 +42,10 @@
 
 .proj-title {
   margin: 0 0 1rem;
-  font-size: clamp(1.65rem, 2.8vw + 0.5rem, 2.25rem);
+  font-size: clamp(1.25rem, 1.6vw + 0.35rem, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
   color: var(--text);
 }
 
@@ -296,6 +296,10 @@
   color: var(--accent);
 }
 
+.proj-repo-link:focus-visible {
+  outline-offset: -2px;
+}
+
 .proj-repo-link-icon {
   flex-shrink: 0;
   color: var(--text);
@@ -476,24 +480,78 @@
 }
 
 .parcel-docs-sample-page {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  width: 100%;
   border: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: color-mix(in srgb, var(--bg) 35%, var(--panel));
 }
 
-.parcel-docs-sample-demo {
+.parcel-docs-sample-pane-label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.parcel-docs-sample-demo,
+.parcel-docs-sample-source {
   display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+}
+
+.parcel-docs-sample-demo {
+  min-width: 6.75rem;
+  padding-inline: 0.9rem;
+  border-right: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+  background: color-mix(in srgb, var(--accent) 4%, var(--panel));
+}
+
+.parcel-docs-sample-live-stage {
+  display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   min-height: 2.75rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+  padding: 0.2rem 0.1rem;
 }
 
-.parcel-docs-sample-page .parcel-docs-sample-code {
+.parcel-docs-sample-source {
+  flex: 1;
+  justify-content: flex-start;
+  container-type: inline-size;
+  background: color-mix(in srgb, var(--bg) 20%, transparent);
+}
+
+.parcel-docs-sample-source .parcel-docs-sample-code {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   border: none;
   border-radius: 0;
   background: transparent;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.parcel-docs-sample-code--hook {
+  font: 500 0.6875rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.parcel-docs-sample-code--hook code {
+  display: block;
+  width: 100%;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .parcel-docs-sample-author {
@@ -987,9 +1045,18 @@
   }
 
   .synced-ticket-track--order {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 2px;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+
+  .synced-ticket-pri,
+  .synced-ticket-order {
+    display: none;
+  }
+
+  .synced-ticket-chevron {
+    display: none;
   }
 
   .proj-layout {
@@ -1025,6 +1092,28 @@
   .synced-compare,
   .parcel-docs-sample {
     width: 100%;
+  }
+
+  .parcel-docs-sample-page {
+    grid-template-columns: 1fr;
+  }
+
+  .parcel-docs-sample-demo {
+    border-right: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+  }
+
+  .parcel-docs-sample-demo {
+    min-width: 0;
+    padding-inline: 0.75rem;
+  }
+
+  .parcel-docs-sample-live-stage {
+    min-height: 2.5rem;
+  }
+
+  .parcel-docs-sample-code--hook code {
+    overflow-wrap: anywhere;
   }
 
   .proj-repo-link {

@@ -1,0 +1,89 @@
+/* ── About section ── */
+
+.about-content {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--section-pad) var(--container-pad);
+}
+
+/* ── Lead paragraph ── */
+.about-lead {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.75;
+  margin-bottom: 1.75rem;
+}
+
+/* ── Metrics band ── */
+.about-band {
+  display: flex;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.75rem;
+}
+
+.about-band-stat {
+  flex: 1;
+  padding: 1.25rem 1.75rem;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.about-band-stat:last-child { border-right: none; }
+
+.about-band.is-visible .about-band-stat { opacity: 1; transform: none; }
+.about-band.is-visible .about-band-stat:nth-child(1) { transition-delay: 0ms; }
+.about-band.is-visible .about-band-stat:nth-child(2) { transition-delay: 60ms; }
+.about-band.is-visible .about-band-stat:nth-child(3) { transition-delay: 120ms; }
+.about-band.is-visible .about-band-stat:nth-child(4) { transition-delay: 180ms; }
+
+.stat-value {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .about-content {
+    padding: var(--section-pad-mobile) var(--container-pad-mobile);
+  }
+
+  .about-lead {
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .about-band { flex-wrap: wrap; }
+
+  .about-band-stat {
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .about-band-stat:nth-child(2) { border-right: none; }
+  .about-band-stat:nth-child(1),
+  .about-band-stat:nth-child(2) { border-bottom: 1px solid var(--line); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-band-stat {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

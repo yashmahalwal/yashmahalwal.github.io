@@ -1,0 +1,84 @@
+/* ── Contact section ── */
+
+.contact-content {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--section-pad) var(--container-pad) 2rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+/* ── Left: existing body ── */
+.contact-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-body > p {
+  margin: 0 0 1.1rem;
+}
+
+.contact-body > p:last-of-type {
+  margin-bottom: 1.15rem;
+}
+
+/* ── Right: availability card ── */
+.contact-avail-card {
+  flex-shrink: 0;
+  width: 280px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.contact-avail-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-good);
+}
+
+.contact-avail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-good);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-good) 18%, transparent);
+}
+
+.contact-avail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .contact-content {
+    padding: var(--section-pad-mobile) var(--container-pad-mobile) 1.5rem;
+  }
+
+  .contact-row {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+
+  .contact-avail-card { width: 100%; }
+}

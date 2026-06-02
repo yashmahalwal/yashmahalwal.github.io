@@ -1,0 +1,177 @@
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Root ── */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+/* ── Body ── */
+body {
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  font: 400 1rem/1.7 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.2rem, 5.2vw, var(--h1-size-max)); line-height: 1.04; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.5rem); }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+/* ── Text ── */
+p   { line-height: 1.7; }
+a   { color: inherit; text-decoration: none; }
+b, strong { font-weight: 600; }
+
+/* ── Media ── */
+img, video, svg { display: block; max-width: 100%; }
+
+/* ── Interactive ── */
+button { font: inherit; cursor: pointer; border: none; background: none; }
+
+/* ── Lists ── */
+ul, ol { list-style: none; }
+
+/* ── Accessibility ── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 200;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 0.65rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+:focus {
+  outline: none;
+}
+
+/* tabindex="-1" elements are focused programmatically (hash nav etc.) — no ring */
+:focus-visible:not([tabindex="-1"]) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+button.hit-expand:focus-visible {
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Project accordion (milestones styled in work.css) ── */
+.proj {
+  transition: grid-template-rows 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.proj[data-expanded="true"] {
+  grid-template-rows: auto 1fr;
+}
+
+.proj .proj-pane {
+  overflow: clip;
+  min-height: 0;
+  margin-top: 0;
+  transition: margin-top 0.36s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.proj[data-expanded="true"] .proj-pane {
+  margin-top: var(--accordion-pane-gap, 2.5rem);
+}
+
+.proj-pane .pane-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.proj.is-collapsed .proj-pane .pane-inner {
+  padding-top: 0;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj,
+  .proj .proj-pane {
+    transition: none !important;
+  }
+}
+
+/* ── Shared typography classes ── */
+/* Main section titles (h2) — always larger than in-section h3 titles */
+.section-heading {
+  font-size: clamp(2rem, 3.5vw, 2.65rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}

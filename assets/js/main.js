@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
               break
             }
           }
-        }
+      }
         if (fcpMs !== null) {
           var fcpFmt = formatMs(fcpMs)
           if (fcpFmt) {

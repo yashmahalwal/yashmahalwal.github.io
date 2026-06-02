@@ -23,7 +23,6 @@
 .site-header.is-scrolled {
   background: color-mix(in srgb, var(--bg) 80%, transparent);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border-bottom-color: color-mix(in srgb, var(--line) 50%, transparent);
 }
 
@@ -152,7 +151,6 @@
     background: transparent;
     border-bottom-color: transparent;
     backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     pointer-events: none;
   }
 

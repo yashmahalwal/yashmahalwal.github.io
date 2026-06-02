@@ -1,0 +1,64 @@
+/* Styles applied only when JavaScript is disabled.
+   All selectors are prefixed with `body` for higher specificity
+   so they win over the main stylesheet regardless of load order. */
+
+body .site-header {
+  background: var(--bg);
+  border-bottom-color: var(--line);
+}
+
+body #hero-image-wrap::before { display: none; }
+body #hero-image-wrap img { opacity: 1; }
+
+body .about-band-stat { opacity: 1; transform: none; }
+
+body .milestone { grid-template-rows: auto 1fr; }
+body .milestone .pane .pane-inner { opacity: 1; }
+
+body .proj { grid-template-rows: auto 1fr; }
+body .proj .proj-pane { margin-top: 2.5rem; overflow: visible; }
+
+body button.hit-expand,
+body .proj-expand,
+body .theme-toggle { display: none; }
+
+@media (max-width: 900px) {
+  body .site-header,
+  body .site-header.is-scrolled {
+    background: var(--bg);
+    border-bottom-color: var(--line);
+    pointer-events: auto;
+  }
+  body .site-header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.75rem var(--container-pad-mobile);
+    max-width: var(--container-max);
+    margin: 0 auto;
+  }
+  body .site-header-logo { display: block; }
+  body .site-header-toggle { display: none; }
+  body .site-header-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.25rem 1rem;
+    flex: 1;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    background: transparent;
+    padding: 0;
+    z-index: auto;
+  }
+  body .site-header-nav-logo,
+  body .site-header-nav-toggle { display: none; }
+  body .site-header-link {
+    font-size: 0.875rem;
+    opacity: 1;
+    transform: none;
+  }
+}

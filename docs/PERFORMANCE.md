@@ -39,9 +39,8 @@ hashed bundle at build time.
 ## Build (Vite)
 
 - `vite build` outputs to `dist/`:
-  - `index.html` — inlined CSS references rewritten to hashed filenames.
-  - `404.html` — processed as a second Rollup entry; asset paths rewritten consistently.
-  - `assets/` — hashed CSS bundle, hashed JS bundle, hashed image.
+  - `index.html` — CSS and JS references rewritten to hashed filenames.
+  - `assets/` — single hashed CSS bundle, single hashed JS bundle, hashed image.
 - Long-term caching: hashed filenames enable aggressive `Cache-Control: immutable` headers.
 - Profile image is copied as a hashed asset; referenced via the Vite asset pipeline.
 

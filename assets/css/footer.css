@@ -1,10 +1,7 @@
-/* ============================================================
-   SITE FOOTER
-   ============================================================ */
+/* ── Site footer ── */
 
 .site-footer {
   border-top: 1px solid var(--line);
-  background: var(--bg);
 }
 
 .site-footer-inner {

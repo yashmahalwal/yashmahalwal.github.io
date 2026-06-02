@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  var reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches
 
   // ── Header: translucent bg on scroll ──
   var siteHeader = document.getElementById("site-header")
@@ -15,33 +17,62 @@ document.addEventListener("DOMContentLoaded", function () {
   var menuBtn = document.getElementById("site-header-toggle")
   var menuNav = document.getElementById("site-header-nav")
   if (menuBtn && menuNav) {
+    var mobileQuery = window.matchMedia("(max-width: 900px)")
+
+    function hideNavFromAT() {
+      menuNav.setAttribute("aria-hidden", "true")
+      menuNav.inert = true
+    }
+    function showNavToAT() {
+      menuNav.removeAttribute("aria-hidden")
+      menuNav.inert = false
+    }
+
     function closeMenu() {
       menuBtn.setAttribute("aria-expanded", "false")
       menuBtn.setAttribute("aria-label", "Open menu")
       menuNav.classList.remove("is-open")
+      if (mobileQuery.matches) hideNavFromAT()
     }
     function openMenu() {
       menuBtn.setAttribute("aria-expanded", "true")
       menuBtn.setAttribute("aria-label", "Close menu")
       menuNav.classList.add("is-open")
+      showNavToAT()
     }
+
     menuBtn.addEventListener("click", function () {
       if (menuBtn.getAttribute("aria-expanded") === "true") closeMenu()
       else openMenu()
     })
-    menuNav.querySelectorAll(".site-header-link, .site-header-nav-logo").forEach(function (link) {
-      link.addEventListener("click", closeMenu)
+    menuNav
+      .querySelectorAll(".site-header-link, .site-header-nav-logo")
+      .forEach(function (link) {
+        link.addEventListener("click", closeMenu)
+      })
+
+    // When resizing to desktop, ensure nav is always reachable
+    mobileQuery.addEventListener("change", function (e) {
+      if (!e.matches) showNavToAT()
     })
+
+    // Initial state: hide nav from AT on mobile (it starts closed)
+    if (mobileQuery.matches) hideNavFromAT()
   }
 
   // ── Theme ──
   var saved = localStorage.getItem("theme")
-  var preferred = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
+  var preferred = window.matchMedia("(prefers-color-scheme: light)").matches
+    ? "light"
+    : "dark"
   document.documentElement.setAttribute("data-theme", saved || preferred)
 
   document.querySelectorAll(".theme-toggle").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"
+      var next =
+        document.documentElement.getAttribute("data-theme") === "light"
+          ? "dark"
+          : "light"
       document.documentElement.setAttribute("data-theme", next)
       localStorage.setItem("theme", next)
     })
@@ -51,7 +82,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var img = document.getElementById("hero-image")
   var wrap = document.getElementById("hero-image-wrap")
   if (img && wrap) {
-    var done = function () { wrap.classList.remove("is-loading") }
+    var done = function () {
+      wrap.classList.remove("is-loading")
+    }
     if (img.complete) done()
     else {
       img.addEventListener("load", done, { once: true })
@@ -65,28 +98,25 @@ document.addEventListener("DOMContentLoaded", function () {
     if (reduceMotion) {
       cards.classList.add("is-visible")
     } else {
-      new IntersectionObserver(function (entries, observer) {
-        if (entries[0].isIntersecting) {
-          cards.classList.add("is-visible")
-          observer.disconnect()
-        }
-      }, { threshold: 0.2 }).observe(cards)
+      new IntersectionObserver(
+        function (entries, observer) {
+          if (entries[0].isIntersecting) {
+            cards.classList.add("is-visible")
+            observer.disconnect()
+          }
+        },
+        { threshold: 0.2 },
+      ).observe(cards)
     }
   }
 
-  // ── Project accordion ──
+  // ── Accordion ──
+  // Shared grid-template-rows accordion with ARIA state and label swap.
+  // opts: { pane, label, open (text), shut (text), afterToggle (fn, optional) }
   function initAccordion(items, opts) {
-    function clearCollapseListener(item) {
-      if (item._collapseTransEl && item._collapseEnd) {
-        item._collapseTransEl.removeEventListener("transitionend", item._collapseEnd)
-      }
-      item._collapseTransEl = null
-      item._collapseEnd = null
-    }
-
     function setExpanded(item, open) {
       if (open) item.classList.remove("is-collapsed")
-      item.setAttribute("aria-expanded", open ? "true" : "false")
+      item.setAttribute("data-expanded", open ? "true" : "false")
       var btn = item.querySelector(".hit-expand")
       var pane = item.querySelector(opts.pane)
       var lab = item.querySelector(opts.label)
@@ -98,58 +128,56 @@ document.addEventListener("DOMContentLoaded", function () {
       if (lab) lab.textContent = open ? opts.shut : opts.open
     }
 
-    function settleCollapsed(item) {
-      if (item.getAttribute("aria-expanded") === "true") return
-      item.classList.add("is-collapsed")
-    }
-
-    function markCollapsing(item) {
-      clearCollapseListener(item)
-      if (item._collapseTimer) {
-        clearTimeout(item._collapseTimer)
-        item._collapseTimer = null
-      }
-      if (reduceMotion) {
-        settleCollapsed(item)
-        return
-      }
-      var trans = item
-      var finished = false
-      function finish() {
-        if (finished) return
-        finished = true
-        if (item._collapseTimer) {
-          clearTimeout(item._collapseTimer)
-          item._collapseTimer = null
-        }
-        clearCollapseListener(item)
-        settleCollapsed(item)
-      }
-      function onEnd(e) {
-        if (e.target !== trans || e.propertyName !== "grid-template-rows") return
-        finish()
-      }
-      item._collapseTransEl = trans
-      item._collapseEnd = onEnd
-      trans.addEventListener("transitionend", onEnd)
-      item._collapseTimer = setTimeout(finish, 400)
-    }
-
-    function toggle(item) {
-      var open = item.getAttribute("aria-expanded") !== "true"
-      if (!open) markCollapsing(item)
-      setExpanded(item, open)
-    }
-
     items.forEach(function (item) {
+      var collapseTimer = null
+      var collapseHandler = null
+
+      function clearCollapse() {
+        if (collapseHandler) {
+          item.removeEventListener("transitionend", collapseHandler)
+          collapseHandler = null
+        }
+        clearTimeout(collapseTimer)
+        collapseTimer = null
+      }
+
+      function settleCollapsed() {
+        clearCollapse()
+        if (item.getAttribute("data-expanded") !== "true") {
+          item.classList.add("is-collapsed")
+        }
+      }
+
+      function markCollapsing() {
+        clearCollapse()
+        if (reduceMotion) {
+          item.classList.add("is-collapsed")
+          return
+        }
+        collapseHandler = function (e) {
+          if (e.target !== item || e.propertyName !== "grid-template-rows")
+            return
+          settleCollapsed()
+        }
+        item.addEventListener("transitionend", collapseHandler)
+        collapseTimer = setTimeout(settleCollapsed, 400)
+      }
+
+      function toggle() {
+        var open = item.getAttribute("data-expanded") !== "true"
+        if (!open) markCollapsing()
+        setExpanded(item, open)
+        if (opts.afterToggle) opts.afterToggle()
+      }
+
       var btn = item.querySelector(".hit-expand")
-      if (btn) btn.addEventListener("click", function () { toggle(item) })
+      if (btn) btn.addEventListener("click", toggle)
       setExpanded(item, false)
       item.classList.add("is-collapsed")
     })
   }
 
-  // ── Experience: timeline segment + milestone accordion ──
+  // ── Experience: timeline segment ──
   var roadmap = document.querySelector(".roadmap")
   var milestones = document.querySelectorAll(".milestone")
 
@@ -243,7 +271,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!best) {
-      milestones.forEach(function (m) { m.classList.remove("is-line-active") })
+      milestones.forEach(function (m) {
+        m.classList.remove("is-line-active")
+      })
       updateRoadmapSegment()
       return
     }
@@ -271,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
     new ResizeObserver(scheduleSegmentGeometry).observe(roadmap)
   }
 
+  // Update segment geometry when milestone expand/collapse animation finishes
   milestones.forEach(function (ms) {
     ms.addEventListener("transitionend", function (e) {
       if (e.propertyName === "grid-template-rows") scheduleSegmentGeometry()
@@ -278,44 +309,12 @@ document.addEventListener("DOMContentLoaded", function () {
   })
   pickLineActiveMilestone()
 
-  var OPEN_CTA = "View work"
-  var SHUT_CTA = "Hide"
-
-  function closeMilestone(ms) {
-    ms.setAttribute("aria-expanded", "false")
-    var btn = ms.querySelector(".hit-expand")
-    var pane = ms.querySelector(".pane")
-    var lab = ms.querySelector(".hit-cta-label")
-    if (btn) btn.setAttribute("aria-expanded", "false")
-    if (pane) { pane.setAttribute("aria-hidden", "true"); pane.inert = true }
-    if (lab) lab.textContent = OPEN_CTA
-  }
-
-  function openMilestone(ms) {
-    ms.setAttribute("aria-expanded", "true")
-    var btn = ms.querySelector(".hit-expand")
-    var pane = ms.querySelector(".pane")
-    var lab = ms.querySelector(".hit-cta-label")
-    if (btn) btn.setAttribute("aria-expanded", "true")
-    if (pane) { pane.setAttribute("aria-hidden", "false"); pane.inert = false }
-    if (lab) lab.textContent = SHUT_CTA
-  }
-
-  function toggleMilestone(ms) {
-    var isOpen = ms.getAttribute("aria-expanded") === "true"
-    if (isOpen) closeMilestone(ms)
-    else openMilestone(ms)
-    scheduleSegmentGeometry()
-  }
-
-  milestones.forEach(function (ms) {
-    var btn = ms.querySelector(".hit-expand")
-    if (btn) {
-      btn.addEventListener("click", function () {
-        toggleMilestone(ms)
-      })
-    }
-    closeMilestone(ms)
+  initAccordion(milestones, {
+    open: "View work",
+    shut: "Hide",
+    label: ".hit-cta-label",
+    pane: ".pane",
+    afterToggle: scheduleSegmentGeometry,
   })
 
   initAccordion(document.querySelectorAll(".proj"), {
@@ -325,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pane: ".proj-pane",
   })
 
-  // Move focus to in-page section targets after hash navigation
+  // ── Hash focus ──
   function focusHashTarget() {
     var id = window.location.hash.slice(1)
     if (!id) return
@@ -336,8 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("hashchange", focusHashTarget)
   if (window.location.hash) focusHashTarget()
 
-  // ── Web Vitals observers — buffered:true catches entries before registration ──
-  // Must use { type } not { entryTypes } for buffered to work (MDN spec)
+  // ── Web Vitals observers — must use { type } not { entryTypes } for buffered:true ──
   var lcpMs = null
   var fcpMs = null
   var clsScore = 0
@@ -388,11 +386,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return (bytes / (1024 * 1024)).toFixed(2) + "\u00a0MB"
     }
 
-    // good ≤ good-threshold, warn ≤ warn-threshold, else poor
     var THRESHOLDS = {
-      lcp:  { good: 2500, warn: 4000 },
-      fcp:  { good: 1800, warn: 3000 },
-      ttfb: { good: 800,  warn: 1800 },
+      lcp: { good: 2500, warn: 4000 },
+      fcp: { good: 1800, warn: 3000 },
+      ttfb: { good: 800, warn: 1800 },
     }
 
     function setMetric(key, value) {
@@ -406,7 +403,10 @@ document.addEventListener("DOMContentLoaded", function () {
       var item = cell && cell.closest(".site-footer-perf-metric")
       if (item && formatted && THRESHOLDS[key]) {
         var t = THRESHOLDS[key]
-        item.setAttribute("data-rating", rawMs <= t.good ? "good" : rawMs <= t.warn ? "warn" : "poor")
+        item.setAttribute(
+          "data-rating",
+          rawMs <= t.good ? "good" : rawMs <= t.warn ? "warn" : "poor",
+        )
       }
     }
 
@@ -418,7 +418,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var ttfbMs = nav.responseStart - nav.startTime
       setRatedMetric("ttfb", ttfbMs, formatMs(ttfbMs))
 
-      // LCP — observer value, then takeRecords() flush, then getEntriesByType fallback
       var lcpWrap = root.querySelector('[data-perf-wrap="lcp"]')
       if (lcpWrap) {
         if (lcpObserver) {
@@ -431,41 +430,52 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (lcpMs !== null) {
           var lcpFmt = formatMs(lcpMs)
-          if (lcpFmt) { setRatedMetric("lcp", lcpMs, lcpFmt); lcpWrap.hidden = false }
+          if (lcpFmt) {
+            setRatedMetric("lcp", lcpMs, lcpFmt)
+            lcpWrap.hidden = false
+          }
         }
       }
 
-      // FCP — observer value, then getEntriesByType fallback
       var fcpWrap = root.querySelector('[data-perf-wrap="fcp"]')
       if (fcpWrap) {
         if (fcpMs === null) {
           var paintBuf = performance.getEntriesByType("paint")
           for (var pi = 0; pi < paintBuf.length; pi++) {
-            if (paintBuf[pi].name === "first-contentful-paint") { fcpMs = paintBuf[pi].startTime; break }
+            if (paintBuf[pi].name === "first-contentful-paint") {
+              fcpMs = paintBuf[pi].startTime
+              break
+            }
           }
         }
         if (fcpMs !== null) {
           var fcpFmt = formatMs(fcpMs)
-          if (fcpFmt) { setRatedMetric("fcp", fcpMs, fcpFmt); fcpWrap.hidden = false }
+          if (fcpFmt) {
+            setRatedMetric("fcp", fcpMs, fcpFmt)
+            fcpWrap.hidden = false
+          }
         }
       }
 
-      // CLS — accumulated by observer
       var clsWrap = root.querySelector('[data-perf-wrap="cls"]')
       if (clsWrap) {
         var clsCell = root.querySelector('[data-perf="cls"]')
         var clsItem = clsCell && clsCell.closest(".site-footer-perf-metric")
         if (clsCell) clsCell.textContent = clsScore.toFixed(3)
         if (clsItem) {
-          clsItem.setAttribute("data-rating", clsScore <= 0.1 ? "good" : clsScore <= 0.25 ? "warn" : "poor")
+          clsItem.setAttribute(
+            "data-rating",
+            clsScore <= 0.1 ? "good" : clsScore <= 0.25 ? "warn" : "poor",
+          )
         }
         clsWrap.hidden = false
       }
 
-      // Transfer + requests — informational only, no rating
       var resources = performance.getEntriesByType("resource")
       var transfer = nav.transferSize || 0
-      resources.forEach(function (r) { if (r.transferSize) transfer += r.transferSize })
+      resources.forEach(function (r) {
+        if (r.transferSize) transfer += r.transferSize
+      })
       setMetric("transfer", formatBytes(transfer))
       setMetric("requests", String(resources.length + 1))
 

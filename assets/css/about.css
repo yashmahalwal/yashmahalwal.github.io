@@ -1,7 +1,4 @@
 /* ── About section ── */
-.about-section {
-  background: var(--bg);
-}
 
 .about-content {
   max-width: var(--container-max);
@@ -56,11 +53,6 @@
   font-size: 0.78rem;
   color: var(--muted);
   line-height: 1.4;
-}
-
-/* ── Body paragraph ── */
-.about-body {
-  margin-top: 0;
 }
 
 

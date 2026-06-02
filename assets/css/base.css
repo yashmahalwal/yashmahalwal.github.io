@@ -131,7 +131,7 @@ button.hit-expand:focus-visible {
   transition: grid-template-rows 0.36s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.proj[aria-expanded="true"] {
+.proj[data-expanded="true"] {
   grid-template-rows: auto 1fr;
 }
 
@@ -142,7 +142,7 @@ button.hit-expand:focus-visible {
   transition: margin-top 0.36s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.proj[aria-expanded="true"] .proj-pane {
+.proj[data-expanded="true"] .proj-pane {
   margin-top: var(--accordion-pane-gap, 2.5rem);
 }
 

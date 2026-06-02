@@ -1,10 +1,4 @@
-/* ============================================================
-   PROJECTS
-   ============================================================ */
-
-.projects-section {
-  background: var(--bg);
-}
+/* ── Projects section ── */
 
 .projects-content {
   max-width: var(--container-max);
@@ -969,7 +963,7 @@
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.proj[aria-expanded="true"] .proj-expand .hit-cta-icon {
+.proj[data-expanded="true"] .proj-expand .hit-cta-icon {
   transform: rotate(180deg);
 }
 
@@ -1177,7 +1171,7 @@
     transition: none;
   }
 
-  .proj[aria-expanded="true"] .proj-expand .hit-cta-icon {
+  .proj[data-expanded="true"] .proj-expand .hit-cta-icon {
     transform: rotate(180deg);
   }
 }

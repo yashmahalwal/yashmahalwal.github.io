@@ -1,10 +1,6 @@
 /* ── Experience: alternating columns, centered spine ── */
 /* Timeline segment: --wk-seg-* from JS (height = active milestone below dot, incl. pane). */
 
-.work-section {
-  background: var(--bg);
-}
-
 .work-content {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -70,7 +66,7 @@
   transition: grid-template-rows 0.36s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.milestone[aria-expanded="true"] {
+.milestone[data-expanded="true"] {
   grid-template-rows: auto 1fr;
 }
 
@@ -83,17 +79,10 @@
 }
 
 button.hit-expand {
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
   text-align: left;
   width: max-content;
   max-width: 100%;
   appearance: none;
-  -webkit-tap-highlight-color: transparent;
-  font-family: inherit;
 }
 
 .hit-grid {
@@ -352,7 +341,7 @@ button.hit-expand {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.milestone[aria-expanded="true"] .hit-cta-icon {
+.milestone[data-expanded="true"] .hit-cta-icon {
   transform: rotate(180deg);
 }
 
@@ -427,7 +416,7 @@ button.hit-expand {
   transition: opacity 0.3s ease;
 }
 
-.milestone[aria-expanded="true"] .pane-inner {
+.milestone[data-expanded="true"] .pane-inner {
   opacity: 1;
 }
 
@@ -629,11 +618,11 @@ button.hit-expand {
     transition: none !important;
   }
 
-  .milestone[aria-expanded="true"] .hit-cta-icon {
+  .milestone[data-expanded="true"] .hit-cta-icon {
     transform: rotate(180deg);
   }
 
-  .milestone[aria-expanded="true"] .pane-inner {
+  .milestone[data-expanded="true"] .pane-inner {
     opacity: 1;
   }
 }

@@ -1,10 +1,4 @@
-/* ============================================================
-   CONTACT + FOOTER
-   ============================================================ */
-
-.contact-section {
-  background: var(--bg);
-}
+/* ── Contact section ── */
 
 .contact-content {
   max-width: var(--container-max);
@@ -32,10 +26,6 @@
   margin-bottom: 1.15rem;
 }
 
-.contact-links {
-  margin: 0;
-}
-
 /* ── Right: availability card ── */
 .contact-avail-card {
   flex-shrink: 0;
@@ -55,23 +45,16 @@
   gap: 0.5rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #4ade80;
+  color: var(--color-good);
 }
-
-[data-theme="light"] .contact-avail-status { color: #16a34a; }
 
 .contact-avail-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #4ade80;
+  background: var(--color-good);
   flex-shrink: 0;
-  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18);
-}
-
-[data-theme="light"] .contact-avail-dot {
-  background: #16a34a;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-good) 18%, transparent);
 }
 
 .contact-avail-list {

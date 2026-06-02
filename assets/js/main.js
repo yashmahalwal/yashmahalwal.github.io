@@ -414,9 +414,13 @@ document.addEventListener("DOMContentLoaded", function () {
       var nav = performance.getEntriesByType("navigation")[0]
       if (!nav) return
 
-      // TTFB: nav start → first byte (includes DNS, TCP, TLS — matches web-vitals library)
+      // TTFB — 0 on disk-cache hits; show "cached" instead of hiding
       var ttfbMs = nav.responseStart - nav.startTime
-      setRatedMetric("ttfb", ttfbMs, formatMs(ttfbMs))
+      if (ttfbMs <= 0) {
+        setMetric("ttfb", "cached")
+      } else {
+        setRatedMetric("ttfb", ttfbMs, formatMs(ttfbMs))
+      }
 
       var lcpWrap = root.querySelector('[data-perf-wrap="lcp"]')
       if (lcpWrap) {
@@ -472,15 +476,36 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       var resources = performance.getEntriesByType("resource")
-      var transfer = nav.transferSize || 0
+      // transferSize is 0 for cached responses — fall back to decodedBodySize
+      var transfer = nav.transferSize || nav.decodedBodySize || 0
       resources.forEach(function (r) {
-        if (r.transferSize) transfer += r.transferSize
+        transfer += r.transferSize || r.decodedBodySize || 0
       })
       setMetric("transfer", formatBytes(transfer))
       setMetric("requests", String(resources.length + 1))
 
       root.hidden = false
     }
+
+    // LCP is only finalised on first user interaction; re-read then.
+    function onFirstInteraction() {
+      var lcpWrap = root.querySelector('[data-perf-wrap="lcp"]')
+      if (!lcpWrap || lcpWrap.hidden === false) return
+      if (lcpObserver) {
+        var pending = lcpObserver.takeRecords()
+        if (pending.length) lcpMs = pending[pending.length - 1].startTime
+      }
+      if (lcpMs !== null) {
+        var lcpFmt = formatMs(lcpMs)
+        if (lcpFmt) {
+          setRatedMetric("lcp", lcpMs, lcpFmt)
+          lcpWrap.hidden = false
+        }
+      }
+    }
+    ;["pointerdown", "keydown"].forEach(function (evt) {
+      window.addEventListener(evt, onFirstInteraction, { once: true, passive: true })
+    })
 
     function render() {
       requestAnimationFrame(function () {

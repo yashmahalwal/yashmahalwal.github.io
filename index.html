@@ -315,7 +315,7 @@
           <h2 class="section-heading" id="about-title">About</h2>
 
           <p class="about-lead">
-            Senior software engineer with five years building web and mobile
+            Senior software engineer with five years of experience in building web and mobile
             products used by over <strong>10 million</strong> people. I
             specialise in <strong>performance</strong> and
             <strong>real-time systems</strong>. My core work is frontend
@@ -2012,10 +2012,11 @@
                 </p>
                 <h3 class="hit-role">Optimising React Apps</h3>
                 <p class="proj-hook">
-                  A profiling walkthrough on a real-time stock UI. Covers
-                  memoization, state batching, list virtualization, and
-                  throttled state updates applied in sequence to measure the
-                  impact of each change.
+                  A step-by-step profiling exercise on a real-time stock
+                  monitoring app. Memoization, render batching, list
+                  virtualization, and throttled updates are applied in order,
+                  measuring what each change actually buys you and what it
+                  costs.
                 </p>
                 <div class="write-links">
                   <a
@@ -2047,128 +2048,7 @@
               </div>
             </article>
 
-            <!-- ── 2. Relay Modern: SSR and Next.js ── -->
-            <article class="write-card" id="write-relay-ssr">
-              <div class="write-card-art" aria-hidden="true">
-                <div class="art-waterfall">
-                  <div class="art-head">
-                    <span class="art-head-label"
-                      >Network &middot; Timeline</span
-                    >
-                    <span class="art-head-sublabel"
-                      >Relay SSR &middot; Next.js</span
-                    >
-                  </div>
-                  <div class="art-waterfall-body">
-                    <div class="art-waterfall-row">
-                      <span class="art-wf-name">GET /[page]</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 0%; width: 10%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status">incoming req</span>
-                    </div>
-                    <div class="art-waterfall-row">
-                      <span class="art-wf-name">new RelayEnv()</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 8%; width: 8%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status">fresh per req</span>
-                    </div>
-                    <div class="art-waterfall-row">
-                      <span class="art-wf-name">fetchQuery(env)</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 14%; width: 30%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status">&rarr; GitHub GQL</span>
-                    </div>
-                    <div class="art-waterfall-row">
-                      <span class="art-wf-name">renderToString()</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 44%; width: 18%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status">with data</span>
-                    </div>
-                    <div class="art-waterfall-row">
-                      <span class="art-wf-name">200 + store JSON</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 60%; width: 8%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status">ships</span>
-                    </div>
-                    <div class="art-waterfall-row art-waterfall-row--highlight">
-                      <span class="art-wf-name">hydrate(store)</span>
-                      <div class="art-wf-track">
-                        <div
-                          class="art-wf-bar"
-                          style="left: 66%; width: 18%"
-                        ></div>
-                      </div>
-                      <span class="art-wf-status art-wf-status--ok"
-                        >&#x2713;&nbsp;no flash</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="write-card-body">
-                <p class="write-meta">
-                  <span class="proj-type">Data / SSR</span>
-                  <span class="write-sep" aria-hidden="true">·</span>
-                  <span class="write-readtime">~15 min</span>
-                </p>
-                <h3 class="hit-role">Relay Modern: SSR and Next.js</h3>
-                <p class="proj-hook">
-                  How to integrate Relay with Next.js for server-side rendering.
-                  Covers per-request environments, prefetching with fetchQuery,
-                  and serializing the store so the client hydrates without
-                  refetching.
-                </p>
-                <div class="write-links">
-                  <a
-                    class="write-read-link"
-                    href="https://yashmahalwal.medium.com/relay-modern-ssr-and-next-js-e0a77ec3d7ea"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Read on Medium (opens in new tab)"
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <use href="#icon-medium" />
-                    </svg>
-                    Read on Medium
-                    <svg
-                      width="11"
-                      height="11"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <use href="#icon-ext" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- ── 3. Sharing Code Between Projects ── -->
+            <!-- ── 2. Sharing Code Between Projects ── -->
             <article class="write-card" id="write-code-sharing">
               <div class="write-card-art" aria-hidden="true">
                 <div class="art-matrix-wrap">
@@ -2405,9 +2285,11 @@
                 </p>
                 <h3 class="hit-role">Sharing Code Between Projects</h3>
                 <p class="proj-hook">
-                  Five approaches to sharing code between a web app and React
-                  Native: npm packages, Bit, monorepos, git submodules, and file
-                  sync, with trade-offs on versioning, DX, and access control.
+                  A comparison of five ways to share code across separate
+                  repositories: npm packages, Bit, monorepos, git submodules,
+                  and file sync. Each is weighed on developer experience,
+                  versioning, and access control, with an honest look at the
+                  trade-offs.
                 </p>
                 <div class="write-links">
                   <a
@@ -2439,7 +2321,7 @@
               </div>
             </article>
 
-            <!-- ── 4. The Heisenberg Manoeuvre ── -->
+            <!-- ── 3. The Heisenberg Manoeuvre ── -->
             <article class="write-card" id="write-heisenberg">
               <div class="write-card-art" aria-hidden="true">
                 <div class="art-console">
@@ -2518,13 +2400,138 @@
                 <h3 class="hit-role">The Heisenberg Manoeuvre</h3>
                 <p class="proj-hook">
                   A walkthrough of how a malicious npm package could capture
-                  keystrokes while remaining invisible to DevTools. Written as
-                  an exercise in understanding supply-chain attacks.
+                  keystrokes while remaining invisible to DevTools. The trick
+                  is observing your own behaviour — the package goes silent
+                  the moment it detects it is being watched. Written as an
+                  exercise in understanding supply-chain attacks.
                 </p>
                 <div class="write-links">
                   <a
                     class="write-read-link"
                     href="https://yashmahalwal.medium.com/the-heisenberg-manoeuvre-c554744665d4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Read on Medium (opens in new tab)"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="#icon-medium" />
+                    </svg>
+                    Read on Medium
+                    <svg
+                      width="11"
+                      height="11"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="#icon-ext" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- ── 4. Relay Modern: SSR and Next.js ── -->
+            <article class="write-card" id="write-relay-ssr">
+              <div class="write-card-art" aria-hidden="true">
+                <div class="art-waterfall">
+                  <div class="art-head">
+                    <span class="art-head-label"
+                      >Network &middot; Timeline</span
+                    >
+                    <span class="art-head-sublabel"
+                      >Relay SSR &middot; Next.js</span
+                    >
+                  </div>
+                  <div class="art-waterfall-body">
+                    <div class="art-waterfall-row">
+                      <span class="art-wf-name">GET /[page]</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 0%; width: 10%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status">incoming req</span>
+                    </div>
+                    <div class="art-waterfall-row">
+                      <span class="art-wf-name">new RelayEnv()</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 8%; width: 8%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status">fresh per req</span>
+                    </div>
+                    <div class="art-waterfall-row">
+                      <span class="art-wf-name">fetchQuery(env)</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 14%; width: 30%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status">&rarr; GitHub GQL</span>
+                    </div>
+                    <div class="art-waterfall-row">
+                      <span class="art-wf-name">renderToString()</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 44%; width: 18%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status">with data</span>
+                    </div>
+                    <div class="art-waterfall-row">
+                      <span class="art-wf-name">200 + store JSON</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 60%; width: 8%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status">ships</span>
+                    </div>
+                    <div class="art-waterfall-row art-waterfall-row--highlight">
+                      <span class="art-wf-name">hydrate(store)</span>
+                      <div class="art-wf-track">
+                        <div
+                          class="art-wf-bar"
+                          style="left: 66%; width: 18%"
+                        ></div>
+                      </div>
+                      <span class="art-wf-status art-wf-status--ok"
+                        >&#x2713;&nbsp;no flash</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="write-card-body">
+                <p class="write-meta">
+                  <span class="proj-type">Data / SSR</span>
+                  <span class="write-sep" aria-hidden="true">·</span>
+                  <span class="write-readtime">~15 min</span>
+                </p>
+                <h3 class="hit-role">Relay Modern: SSR and Next.js</h3>
+                <p class="proj-hook">
+                  Relay fires queries during render, which means SSR returns
+                  loading indicators instead of data by default. The article
+                  covers two ways to fix this: prefetching in
+                  getServerSideProps and passing serialized store records as
+                  props, or using relay-network-modern-ssr to collect queries
+                  automatically across the whole component tree.
+                </p>
+                <div class="write-links">
+                  <a
+                    class="write-read-link"
+                    href="https://yashmahalwal.medium.com/relay-modern-ssr-and-next-js-e0a77ec3d7ea"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Read on Medium (opens in new tab)"
